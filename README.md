@@ -1,3 +1,7 @@
+## Installing dependencies
+
+From the cmd: 'npm install' to fetch dependencies.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
