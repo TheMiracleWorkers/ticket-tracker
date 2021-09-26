@@ -69,7 +69,7 @@ export class User {
 
   save() {
     // TODO: implement transport layer functionality in UserStore.
-    // this.store.transportLayer.saveTodo(json)
+    // this.store.transportLayer.saveUser(json)
   }
 
   delete() {
