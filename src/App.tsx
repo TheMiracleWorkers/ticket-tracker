@@ -3,8 +3,9 @@ import "./App.css";
 import Button from "@mui/material/Button";
 import { TicketStore } from "./stores/TicketStore";
 import { observer, useLocalStore } from "mobx-react";
+import { RootStore } from "./stores/RootStore";
 
-const StoreContext = React.createContext(new TicketStore());
+const StoreContext = React.createContext(new RootStore());
 
 const StoreProvider: React.FC = ({ children }) => {
   const store = useContext(StoreContext);
@@ -14,10 +15,13 @@ const StoreProvider: React.FC = ({ children }) => {
 };
 
 // const Example = observer(() => {
-//   const ticketStore = useContext(StoreContext);
-//   var interval = setInterval(() => ticketStore.ticketArray[0].id++, 1000);
+//   const rootStore = useContext(StoreContext);
+//   var interval = setInterval(
+//     () => rootStore.ticketStore.ticketArray[0].id++,
+//     1000
+//   );
 
-//   return <p>{ticketStore.ticketArray[0].id}</p>;
+//   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
 // });
 
 function App() {
