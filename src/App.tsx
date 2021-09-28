@@ -24,14 +24,23 @@ const StoreProvider: React.FC = ({ children }) => {
 //   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
 // });
 
+// function App() {
+//   return (
+//     <StoreProvider>
+//       <div className="App">
+//         <h3> Website goes here. </h3>
+//         <Button variant="contained">MUI example</Button>
+//       </div>
+//     </StoreProvider>
+//   );
+// }
+
 function App() {
   return (
-    <StoreProvider>
-      <div className="App">
-        <h3> Website goes here. </h3>
-        <Button variant="contained">MUI example</Button>
-      </div>
-    </StoreProvider>
+    <div className="App">
+      <h3> Website goes here. </h3>
+      <Button variant="contained">MUI example</Button>
+    </div>
   );
 }
 
