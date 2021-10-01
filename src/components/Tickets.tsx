@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
 import { isTemplateExpression } from "typescript";
 import useTable from "../components/UseTable";
-import SearchTickets from "../components/SearchInput";
-import SubmitNewButton from "../components/AddButton";
+import AddButton from "../components/AddButton";
+import SearchInput from "../components/SearchInput";
 
 
 const useStyles = makeStyles(theme => ({
