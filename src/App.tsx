@@ -4,6 +4,9 @@ import Button from "@mui/material/Button";
 import { TicketStore } from "./stores/TicketStore";
 import { observer, useLocalStore } from "mobx-react";
 import { RootStore } from "./stores/RootStore";
+import Tickets from "./components/Tickets";
+import SideMenu from "./components/SideMenu";
+import Users from "./components/Users";
 
 const StoreContext = React.createContext(new RootStore());
 
@@ -35,11 +38,24 @@ const StoreProvider: React.FC = ({ children }) => {
 //   );
 // }
 
+// function App() {
+//   return (
+//     <div className="App">
+//       <h3> Website goes here. </h3>
+//       <Button variant="contained">MUI example</Button>
+//     </div>
+//   );
+// }
+
+
 function App() {
   return (
-    <div className="App">
-      <h3> Website goes here. </h3>
-      <Button variant="contained">MUI example</Button>
+    <div className="App" >
+      <SideMenu />
+      <div className="DataTable">
+        <Tickets />
+        <Users />
+      </div>
     </div>
   );
 }
