@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
 import { isTemplateExpression } from "typescript";
 import useTable from "../components/UseTable";
-import SearchTickets from "../components/SearchInput";
-import SubmitNewButton from "../components/AddButton";
+import SearchInput from "../components/SearchInput";
+import AddButton from "../components/AddButton";
 
 
 
@@ -36,14 +36,15 @@ const list = [
         projects: " Fontys, Rijksoverheid",
         dateOfBirth: "18-09-1999",
         created: " 18-09-2019"
-    }, {
-        id: "2",
+    }, 
+    {  id: "2",
         name: "Janssen, Geert",
         role: "Project Manager",
         projects: " Nationale Politie, Fontys",
         dateOfBirth: "18-0923-08-2000",
         created: "2-9-2021"
-    }, {
+    }, 
+    {
         id: "3",
         name: "VanHaren, Ellen",
         role: "Member",
@@ -52,8 +53,10 @@ const list = [
         created: " 12-04-2021"
     }]
 
+    
 
 export default function Users() {
+
     const [users, setUsers] = useState(list);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
