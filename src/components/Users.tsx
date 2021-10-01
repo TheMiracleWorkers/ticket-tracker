@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
 import { isTemplateExpression } from "typescript";
 import useTable from "../components/UseTable";
-import SearchTickets from "../components/SearchTickets";
+import SearchTickets from "../components/SearchInput";
 import SubmitNewButton from "../components/AddButton";
 
 
@@ -89,7 +89,7 @@ export default function Users() {
             <Grid container>
                 <AddButton variant="outlined" size="medium">+ Create user</AddButton>
                 <Grid item sm={6} style={{ border: '1px solid #fff' }}></Grid>
-                <SearchTickets placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
+                <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
             </Grid>
 
             <TblContainer>
