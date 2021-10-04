@@ -49,7 +49,7 @@ export class TicketStore {
   //   }
 
   getTicketsBySubmittee(user: User) {
-    // Access todoStore through the root store.
+    // Access ticketStore through the root store.
     return this.rootStore.ticketStore.ticketArray.filter(
       (ticket) => ticket.submittee === user
     );
@@ -104,7 +104,7 @@ export class Ticket {
 
   save() {
     // TODO: implement transport layer functionality in TicketStore.
-    // this.store.transportLayer.saveTodo(json)
+    // this.store.transportLayer.saveTicket(json)
   }
 
   delete() {
@@ -125,7 +125,7 @@ export class Ticket {
     };
   }
 
-  //   // Update this Todo with information from the server.
+  //   // Update this Ticket with information from the server.
   //   updateFromJson(json) {
   //     this.autoSave = false; // Prevent sending of our changes back to the server.
   //     this.category = json.category;
