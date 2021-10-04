@@ -3,6 +3,9 @@ import { Ticket } from "../stores/TicketStore";
 
 export class TransportLayer {
   apiUrl = process.env.REACT_APP_REST_API;
+  axiosInstance = axios.create({
+    baseURL: this.apiUrl,
+  });
 
   getAllTickets(onAllTicketsReceive: Function) {
     var allTickets: Ticket[];
@@ -19,5 +22,12 @@ export class TransportLayer {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  getAllTicketsPromise() {
+    return this.axiosInstance.request({
+      method: "GET",
+      url: "/tickets",
+    });
   }
 }
