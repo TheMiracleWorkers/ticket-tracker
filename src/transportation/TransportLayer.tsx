@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Ticket } from "../stores/TicketStore";
+import Ticket from "../domainObjects/Ticket";
 
 export class TransportLayer {
   apiUrl = process.env.REACT_APP_REST_API;
@@ -8,18 +8,16 @@ export class TransportLayer {
   });
 
   getAllTickets(onAllTicketsReceive: Function) {
-    var allTickets: Ticket[];
     if (this?.apiUrl === undefined) {
       console.log('API string undefined in environment variables ".env"');
     }
     axios
       .get(this.apiUrl + "tickets")
-      .then((tickets) => {
-        allTickets = tickets.data;
-        console.log("Transport Layer Fetched: ", allTickets);
+      .then((response: any) => {
+        const allTickets: Ticket[] = response.data.map((responseElement: any) => new Ticket(responseElement));
         onAllTicketsReceive(allTickets);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
       });
   }
@@ -29,5 +27,20 @@ export class TransportLayer {
       method: "GET",
       url: "/tickets",
     });
+  }
+
+  getTicketByIdPromise(id: number) {
+    return this.axiosInstance.request({
+      method: "GET",
+      url: "/tickets/" + id,
+    });
+  }
+
+  postTicket(ticket: Ticket) {
+    return this.axiosInstance.request({
+      method: "POST",
+      url: "/tickets/",
+      data: ticket.toJSON()
+    })
   }
 }
