@@ -1,20 +1,17 @@
-import React, { useContext } from "react";
 import "./App.css";
 import Button from "@mui/material/Button";
-import { TicketStore } from "./stores/TicketStore";
-import { observer, useLocalStore } from "mobx-react";
-import { RootStore } from "./stores/RootStore";
+
+import TransportLayerTest from "./components/TransportLayerTest";
 import AddTicketForm from "./components/AddTicketForm";
 
+// const StoreContext = React.createContext(new RootStore());
 
-const StoreContext = React.createContext(new RootStore());
-
-const StoreProvider: React.FC = ({ children }) => {
-  const store = useContext(StoreContext);
-  return (
-    <StoreContext.Provider value={store}> {children} </StoreContext.Provider>
-  );
-};
+// const StoreProvider: React.FC = ({ children }) => {
+//   const store = useContext(StoreContext);
+//   return (
+//     <StoreContext.Provider value={store}> {children} </StoreContext.Provider>
+//   );
+// };
 
 // const Example = observer(() => {
 //   const rootStore = useContext(StoreContext);
@@ -40,7 +37,6 @@ const StoreProvider: React.FC = ({ children }) => {
 function App() {
   return (
     <div className="App">
-
         <AddTicketForm></AddTicketForm>
     </div>
 
