@@ -49,8 +49,6 @@ function TransportLayerTest() {
     const newTicket = new Ticket({
       title: 'test title ' + new Date().getSeconds(),
       description: 'test description',
-      created_at: Date.now(),
-      updated_at: Date.now()
     })
     transportLayer.postTicket(newTicket).then((response: AxiosResponse) => {
       const postedTicket = new Ticket(response.data)
