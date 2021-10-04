@@ -13,7 +13,7 @@ export class TicketStore {
   userStore: UserStore;
   // TODO: define transport layer
   ticketArray: Ticket[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = false;
 
   constructor(userStore: UserStore, rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -48,12 +48,12 @@ export class TicketStore {
   //     }
   //   }
 
-  getTicketsBySubmittee(user: User) {
-    // Access todoStore through the root store.
-    return this.rootStore.ticketStore.ticketArray.filter(
-      (ticket) => ticket.submittee === user
-    );
-  }
+  // getTicketsBySubmittee(user: User) {
+  //   // Access todoStore through the root store.
+  //   return this.rootStore.ticketStore.ticketArray.filter(
+  //     (ticket) => ticket.submittee === user
+  //   );
+  // }
 
   createTicket() {
     const ticket = new Ticket(this);
@@ -70,15 +70,17 @@ export class TicketStore {
 
 export class Ticket {
   id: number | null = null;
-  category: string | null = null;
-  project: string | null = null;
-  priority: number = 0;
+  // category: string | null = null;
+  // project: string | null = null;
+  // priority: number = 0;
   dueDate: Date = new Date();
   createdDate: Date = new Date();
+  updatedDate: Date = new Date();
+  title: String = '';
   description: String = "";
-  submittee: User | null = null; // Who submitted the ticket. Reference to User domain object in UserStore.
-  personOfContact: User | null = null; // Customer liaison. Reference to User domain object in UserStore.
-  assignee: User[] | null = null; // People assigned to this ticket. Reference to User domain objects in UserStore.
+  // submittee: User | null = null; // Who submitted the ticket. Reference to User domain object in UserStore.
+  // personOfContact: User | null = null; // Customer liaison. Reference to User domain object in UserStore.
+  // assignee: User[] | null = null; // People assigned to this ticket. Reference to User domain objects in UserStore.
   ticketStore: TicketStore;
   autoSave: boolean = false;
   saveHandler: IReactionDisposer;
@@ -104,7 +106,8 @@ export class Ticket {
 
   save() {
     // TODO: implement transport layer functionality in TicketStore.
-    // this.store.transportLayer.saveTodo(json)
+    // this.store.transportLayer.saveTicket(json)
+    // this.ticketStore.loadTickets()
   }
 
   delete() {
@@ -116,27 +119,28 @@ export class Ticket {
   get asJson() {
     return {
       id: this.id,
-      category: this.category,
-      project: this.project,
-      priority: this.priority,
+      // category: this.category,
+      // project: this.project,
+      // priority: this.priority,
       dueDate: this.dueDate,
       createdDate: this.createdDate,
+      // issue: this.issue,
       description: this.description,
     };
   }
 
-  //   // Update this Todo with information from the server.
-  //   updateFromJson(json) {
-  //     this.autoSave = false; // Prevent sending of our changes back to the server.
-  //     this.category = json.category;
-  //     this.priority = json.priority;
-  //     this.dueDate = json.dueDate;
-  //     this.createdDate = json.createdDate;
-  //     this.description = json.description;
+    // // Update this Todo with information from the server.
+    // updateFromJson(json) {
+    //   this.autoSave = false; // Prevent sending of our changes back to the server.
+    //   this.category = json.category;
+    //   this.priority = json.priority;
+    //   this.dueDate = json.dueDate;
+    //   this.createdDate = json.createdDate;
+    //   this.description = json.description;
 
-  //     this.submittee = this.ticketStore.userStore.resolveUser(json.submitteeId);
-  //     this.autoSave = true;
-  //   }
+    //   this.submittee = this.ticketStore.userStore.resolveUser(json.submitteeId);
+    //   this.autoSave = true;
+    // }
 
   // Clean up the observer.
   dispose() {
