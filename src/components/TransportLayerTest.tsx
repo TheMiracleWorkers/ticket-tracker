@@ -20,7 +20,7 @@ function TransportLayerTest() {
   function fetchAllTicket() {
         transportLayer
       .getAllTicketsPromise()
-      .then((response: AxiosResponse) => {
+      .then((response: any) => {
         const allTickets: Ticket[] = response.data.map((responseElement: any) => new Ticket(responseElement));
         setTicketArrayState(allTickets);
         setLoading(false);
@@ -50,7 +50,7 @@ function TransportLayerTest() {
       title: 'test title ' + new Date().getSeconds(),
       description: 'test description',
     })
-    transportLayer.postTicket(newTicket).then((response: AxiosResponse) => {
+    transportLayer.postTicket(newTicket).then((response: any) => {
       const postedTicket = new Ticket(response.data)
       console.log('ticket posted id: ' + postedTicket.id)
     }).catch((response: AxiosResponse) => {
