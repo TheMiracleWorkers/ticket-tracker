@@ -1,6 +1,8 @@
 import "./App.css";
 import Button from "@mui/material/Button";
+
 import TransportLayerTest from "./components/TransportLayerTest";
+import AddTicketForm from "./components/AddTicketForm";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -35,10 +37,9 @@ import TransportLayerTest from "./components/TransportLayerTest";
 function App() {
   return (
     <div className="App">
-      <h3> Website goes here. </h3>
-      <Button variant="contained">MUI example</Button>
-      <TransportLayerTest />
+        <AddTicketForm></AddTicketForm>
     </div>
+
   );
 }
 
