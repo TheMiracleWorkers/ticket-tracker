@@ -6,3 +6,11 @@
   width: 80%;
   height: 100vh;
 }
+
+#content {
+  margin-top: 64px;
+}
+
+#topheader header {
+  padding-left: 60px
+}
