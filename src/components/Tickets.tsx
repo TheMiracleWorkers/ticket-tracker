@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
 import { isTemplateExpression } from "typescript";
 import useTable from "../components/UseTable";
 import AddButton from "../components/AddButton";
 import SearchInput from "../components/SearchInput";
+import { TransportLayer } from "../transportation/TransportLayer";
+import Ticket from "../domainObjects/Ticket";
+import { AxiosResponse } from "axios";
+import moment from "moment";
 
 
 const useStyles = makeStyles(theme => ({
@@ -16,99 +20,46 @@ const useStyles = makeStyles(theme => ({
 // Table header information, id is the name of the 
 // property to sort by when the header is clicked 
 const headCells = [
-    { id: 'issue', label: 'Issue' },
-    { id: 'created', label: 'Created' },
-    { id: 'due', label: 'Due' },
-    { id: 'assigned', label: 'Assigned' },
-    { id: 'status', label: 'Status' },
-    { id: 'priority', label: 'Priority' },
-    { id: 'severity', label: 'Severity' }
+    { id: 'id', label: ' Number' },
+    { id: 'title', label: 'Title' },
+    { id: 'description', label: 'Description' },
+    { id: 'dueDate', label: 'Due' },
+    { id: 'createDate', label: 'Created' },
+    { id: 'updateDate', label: 'Updated' },
 
 ]
 
-// initial set of rows, simulating Tickets data from the database
-const list = [
-    {
-        id: "1",
-        issue: "Everything is broken",
-        created: "18-09-2021",
-        due: "26-09-2021",
-        assigned: "Martijns, Victor",
-        status: " Open",
-        priority: " 1",
-        severity: " Critical"
-    },
-    {
-        id: "2",
-        issue: "No visual feedback on cancel button",
-        created: "23-08-2021",
-        due: "12-10-2021",
-        assigned: "Janssen, Geert",
-        status: " Open",
-        priority: " 5",
-        severity: " Very low"
-    },
-    {
-        id: "3",
-        issue: "My computer deleted my outlook e-mail program",
-        created: "2-9-2021",
-        due: "12-10-2021",
-        assigned: "Martijns, Victor",
-        status: " Reopened",
-        priority: " 4",
-        severity: " Marginal"
-    },
-    {
-        id: "4",
-        issue: "My computer deleted my outlook e-mail program",
-        created: "2-9-2021",
-        due: "12-10-2021",
-        assigned: "Martijns, Victor",
-        status: " Reopened",
-        priority: " 4",
-        severity: " Marginal"
-    },
-    {
-        id: "5",
-        issue: "My computer deleted my outlook e-mail program",
-        created: "2-9-2021",
-        due: "12-10-2021",
-        assigned: "Martijns, Victor",
-        status: " Reopened",
-        priority: " 4",
-        severity: " Marginal"
-    },
-    {
-        id: "6",
-        issue: "My computer deleted my outlook e-mail program",
-        created: "2-9-2021",
-        due: "12-10-2021",
-        assigned: "Martijns, Victor",
-        status: " Reopened",
-        priority: " 4",
-        severity: " Marginal"
-    },
-    {
-        id: "7",
-        issue: "My computer deleted my outlook e-mail program",
-        created: "2-9-2021",
-        due: "12-10-2021",
-        assigned: "Martijns, Victor",
-        status: " Reopened",
-        priority: " 4",
-        severity: " Marginal"
-    }
-];
+
+const transportLayer = new TransportLayer();
+
 export default function Tickets() {
-    const [tickets, setTickets] = useState(list);
-    const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return tickets; } })
+
+    const [tickets, setTickets] = useState<Ticket[]>([]);
+    const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return tickets } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(tickets, headCells, filterFn);
-
     const classes = useStyles();
-
     const [searchText, setSearchText] = React.useState('');
-    const [rows, setRows] = React.useState(list)
+   
+    useEffect(() => {
+       
+        fetchAllTicket()
 
+    }, []);
+
+    function fetchAllTicket() {
+        transportLayer
+            .getAllTicketsPromise()
+            .then((response: any) => {
+                const allTickets: Ticket[] = response.data.map((responseElement: any) => new Ticket(responseElement));
+                setTickets(allTickets);
+                setFilterFn({ fn: (allTickets) => { return allTickets } })
+            })
+            .catch((response: AxiosResponse) => {
+                // Handle error
+                console.log(response);
+            });
+
+    }
 
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -148,13 +99,12 @@ export default function Tickets() {
                     {
                         recordsAfterPagingAndSorting().map(item =>
                         (<TableRow key={item.id}>
-                            <TableCell>{item.issue} </TableCell>
-                            <TableCell>{item.created} </TableCell>
-                            <TableCell>{item.due} </TableCell>
-                            <TableCell>{item.assigned} </TableCell>
-                            <TableCell>{item.status} </TableCell>
-                            <TableCell>{item.priority} </TableCell>
-                            <TableCell>{item.severity} </TableCell>
+                            <TableCell>{item.id} </TableCell>
+                            <TableCell>{item.title} </TableCell>
+                            <TableCell>{item.description} </TableCell>
+                            <TableCell>{moment(item.dueDate).format('DD-MM-YYYY')} </TableCell>
+                            <TableCell>{moment(item.createDate).format('DD-MM-YYYY')} </TableCell>
+                            <TableCell>{moment(item.updateDate).format('DD-MM-YYYY')} </TableCell>
                         </TableRow>)
                         )
                     }
