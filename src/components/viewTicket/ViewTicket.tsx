@@ -10,11 +10,13 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { border } from "@mui/system";
+import TicketHeader from "./TicketHeader";
+import { Divider } from "@mui/material";
+import TicketBody from "./TicketBody";
+import Ticket from "../../domainObjects/Ticket";
+import PropTypes from "prop-types";
 
-const ViewTicket = () => {
-  let responsiveFontTheme = createTheme();
-  responsiveFontTheme = responsiveFontSizes(responsiveFontTheme);
-
+function ViewTicket(ticket: Ticket) {
   return (
     <React.Fragment>
       <Grid
@@ -24,79 +26,16 @@ const ViewTicket = () => {
         padding={{ md: 0.6 }}
         justifyContent={"space-between"}
       >
-        <Grid item xs={3} sm={6} md={10}>
-          <ThemeProvider theme={responsiveFontTheme}>
-            <Typography variant="h4" gutterBottom noWrap={true}>
-              #00005 Placeholder title
-            </Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid
-          item
-          xs={"auto"}
-          sm={"auto"}
-          md={"auto"}
-          container
-          display={"inline"}
-          alignContent={"center"}
-        >
-          <Grid item display={"inline"} justifyContent={"space-between"}>
-            <EditOutlinedIcon fontSize={"large"} />
-          </Grid>
-          <Grid item display={"inline"} paddingLeft={{ xs: 2, md: 4 }}>
-            <CloseIcon fontSize={"large"} />
-          </Grid>
-        </Grid>
-
-        <Grid item container spacing={1}>
-          <Grid item>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Assigned:</strong>
-            </Typography>
-          </Grid>
-          <Grid item>
-            <AccountCircleOutlinedIcon fontSize={"small"} />
-          </Grid>
-          <Grid item>
-            <Typography variant="body1" fontSize={"small"}>
-              Placeholder, Name
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item container>
-          <Grid item xs={4} sm={2} md={2}>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Created:</strong> Placeholder
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Due:</strong> Placeholder
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item container>
-          <Grid item xs={4} sm={2} md={2}>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Status:</strong> Placeholder
-            </Typography>
-          </Grid>
-          <Grid item xs={4} sm={2} md={2}>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Severity:</strong> Placeholder
-            </Typography>
-          </Grid>
-          <Grid item xs={4} sm={2} md={2}>
-            <Typography variant="body1" fontSize={"small"}>
-              <strong>Priority:</strong> Placeholder
-            </Typography>
-          </Grid>
-        </Grid>
+        <TicketHeader ticket={ticket} />
+        <Divider style={{ width: "100%", margin: 20 }} />
+        <TicketBody />
       </Grid>
     </React.Fragment>
   );
+}
+
+ViewTicket.propTypes = {
+  ticket: PropTypes.instanceOf(Ticket),
 };
 
 export default ViewTicket;
