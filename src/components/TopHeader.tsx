@@ -4,30 +4,27 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HelpIcon from '@mui/icons-material/Help';
 import {AppBar} from "@mui/material";
-import {makeStyles} from "@material-ui/core/styles";
+import {Link} from "react-router-dom";
+import {styled} from '@mui/material/styles';
 
-const useStyles = makeStyles({
-    header: {
-        background: '#fff',
-        color: 'rgba(0, 0, 0, 0.54) !important',
-        alignItems: 'flex-end',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-        boxShadow: 'unset !important',
-    },
+const AppBarStyled = styled(AppBar)({
+    background: '#fff',
+    color: 'rgba(0, 0, 0, 0.54) !important',
+    alignItems: 'flex-end',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    boxShadow: 'unset !important',
 });
 
 export default function TopHeader() {
-    const classes = useStyles();
-
     return (
         <div id="topheader">
-            <AppBar className={classes.header}>
+            <AppBarStyled>
                 <Toolbar>
                     <HelpIcon/>
                     <NotificationsIcon/>
-                    <AccountCircleIcon/>
+                    <Link to={"/login"}><AccountCircleIcon/></Link>
                 </Toolbar>
-            </AppBar>
+            </AppBarStyled>
         </div>
     );
 }
