@@ -29,35 +29,39 @@ export default function Login() {
     };
 
     return (
-        <Grid container>
-            <FormControl variant="standard" component={Grid} item xs={12}>
-                <InputLabel htmlFor="username">Username</InputLabel>
-                <Input
-                    id="username"
-                    value={values.username}
-                    onChange={handleChange('username')}
-                />
-            </FormControl>
-
-            <FormControl variant="standard" component={Grid} item xs={12}>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                    id="password"
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton onClick={handleClickShowPassword}>
-                                {values.showPassword ? <VisibilityOff/> : <Visibility/>}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                />
-            </FormControl>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <FormControl variant="standard" fullWidth>
+                    <InputLabel htmlFor="username">Username</InputLabel>
+                    <Input
+                        id="username"
+                        value={values.username}
+                        onChange={handleChange('username')}
+                    />
+                </FormControl>
+            </Grid>
 
             <Grid item xs={12}>
-                <Button type={"submit"} variant="outlined">Login</Button>
+                <FormControl variant="standard" fullWidth>
+                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <Input
+                        id="password"
+                        type={values.showPassword ? 'text' : 'password'}
+                        value={values.password}
+                        onChange={handleChange('password')}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleClickShowPassword}>
+                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Button type={"submit"} variant="outlined" fullWidth>Login</Button>
             </Grid>
 
         </Grid>

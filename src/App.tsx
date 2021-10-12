@@ -35,7 +35,7 @@ function App() {
             <SideMenu/>
             <TopHeader/>
 
-            <div id="content" className="App">
+            <div id="content">
                 <Switch>
                     <Route exact path="/">
                         <Dashboard/>
