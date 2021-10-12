@@ -1,16 +1,13 @@
 import "./App.css";
 import SideMenu from "./components/SideMenu";
 import TopHeader from "./components/TopHeader";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Tickets from "./components/Tickets";
 import Users from "./components/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -38,7 +35,7 @@ function App() {
             <SideMenu/>
             <TopHeader/>
 
-            <div id="content">
+            <div id="content" className="App">
                 <Switch>
                     <Route exact path="/">
                         <Dashboard/>

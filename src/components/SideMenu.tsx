@@ -1,18 +1,7 @@
 import * as React from 'react';
-import {styled, Theme, CSSObject} from '@mui/material/styles';
 
-import MuiDrawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import {ChevronLeft, ChevronRight, Home, FormatListBulleted, Settings, PersonOutline} from '@mui/icons-material';
+import {Drawer as MuiDrawer, List, Divider, ListItem, ListItemIcon, ListItemText, styled, Theme, CSSObject} from '@mui/material';
 import {Link} from "react-router-dom";
 
 const openedSidebar = (theme: Theme): CSSObject => ({
@@ -38,10 +27,10 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
         ...(open && {
-            '#sidemenu & .MuiDrawer-paper': openedSidebar(theme),
+            '#side-menu & .MuiDrawer-paper': openedSidebar(theme),
         }),
         ...(!open && {
-            '#sidemenu & .MuiDrawer-paper': closedSidebar(theme),
+            '#side-menu & .MuiDrawer-paper': closedSidebar(theme),
         }),
     }),
 );
@@ -62,28 +51,28 @@ export default function SideMenu() {
     const menu: { [index: string]: any } = {
         0: {
             "text": "Home",
-            "element": <HomeIcon/>,
+            "element": <Home/>,
             "to": "/",
         },
         1: {
             "text": "Tickets",
-            "element": <ListIcon/>,
+            "element": <FormatListBulleted/>,
             "to": "/tickets",
         },
         2: {
             "text": "Users",
-            "element": <PersonOutlineIcon/>,
+            "element": <PersonOutline/>,
             "to": "/users",
         },
         3: {
             "text": "Settings",
-            "element": <SettingsIcon/>,
+            "element": <Settings/>,
             "to": "/settings",
         }
     }
 
     return (
-        <div id="sidemenu">
+        <div id="side-menu">
             <Drawer variant="permanent" open={open}>
                 <List>
                     {Object.keys(menu).map((key) => (
@@ -98,11 +87,11 @@ export default function SideMenu() {
                 <Divider/>
                 {!open ? (
                     <ListItem button onClick={handleDrawerOpen}>
-                        <ChevronRightIcon/>
+                        <ChevronRight/>
                     </ListItem>
                 ) : (
                     <ListItem button onClick={handleDrawerClose}>
-                        <ChevronLeftIcon/>
+                        <ChevronLeft/>
                     </ListItem>
                 )}
             </Drawer>

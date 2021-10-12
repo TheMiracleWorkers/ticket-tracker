@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Toolbar from "@mui/material/Toolbar";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import HelpIcon from '@mui/icons-material/Help';
-import {AppBar} from "@mui/material";
+
+import {AccountCircle, Notifications, Help} from '@mui/icons-material';
+import {Toolbar, AppBar, styled} from '@mui/material';
 import {Link} from "react-router-dom";
-import {styled} from '@mui/material/styles';
 
 const AppBarStyled = styled(AppBar)({
     background: '#fff',
@@ -17,12 +14,12 @@ const AppBarStyled = styled(AppBar)({
 
 export default function TopHeader() {
     return (
-        <div id="topheader">
+        <div id="top-header">
             <AppBarStyled>
                 <Toolbar>
-                    <HelpIcon/>
-                    <NotificationsIcon/>
-                    <Link to={"/login"}><AccountCircleIcon/></Link>
+                    <Help/>
+                    <Notifications/>
+                    <Link to={"/login"}><AccountCircle/></Link>
                 </Toolbar>
             </AppBarStyled>
         </div>
