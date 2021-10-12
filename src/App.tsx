@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import * as React from "react";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -29,10 +30,41 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 // });
 
 function App() {
+
+    const [state, setState] = React.useState({
+        logged_in: !!localStorage.getItem('token'),
+        username: ''
+    });
+
+    // Log user out
+    function handle_logout(): void {
+        localStorage.removeItem('token');
+        setState({logged_in: false, username: ''});
+    }
+
+    // Log user in
+    function handle_login(data: any): void {
+        fetch('http://localhost:8000/token-auth/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+                localStorage.setItem('token', json.token);
+                setState({
+                    logged_in: true,
+                    username: json.user.username
+                });
+            });
+    }
+
     return (
         <Router>
             <SideMenu/>
-            <TopHeader/>
+            <TopHeader handle_logout={handle_logout} logged_in={state.logged_in}/>
 
             <div id="content">
                 <Switch>
@@ -50,7 +82,7 @@ function App() {
                     </Route>
 
                     <Route path="/login">
-                        <Login/>
+                        <Login handle_login={handle_login}/>
                     </Route>
                 </Switch>
             </div>

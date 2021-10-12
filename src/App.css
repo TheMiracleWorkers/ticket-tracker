@@ -32,3 +32,7 @@
     font-size: 25px;
     font-weight: bold;
 }
+
+#top-header a {
+    color: #000
+}

@@ -3,13 +3,15 @@ import * as React from 'react';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
 
+import PropTypes from 'prop-types';
+
 interface State {
     showPassword: boolean;
     username: string;
     password: string;
 }
 
-export default function Login() {
+export default function Login(props: { handle_login: (arg0: State) => void; }) {
     const [values, setValues] = React.useState<State>({
         showPassword: false,
         username: '',
@@ -21,6 +23,7 @@ export default function Login() {
             setValues({...values, [prop]: event.target.value});
         };
 
+    // Toggle password visibility
     const handleClickShowPassword = () => {
         setValues({
             ...values,
@@ -30,7 +33,6 @@ export default function Login() {
 
     return (
         <Grid container spacing={2}>
-
             <Grid item xs={12}>
                 <Typography variant="h1">Login</Typography>
             </Grid>
@@ -65,9 +67,14 @@ export default function Login() {
                 </FormControl>
             </Grid>
 
-            <Grid item xs={6}>
-                <Button type={"submit"} variant="outlined" fullWidth>Login</Button>
+            <Grid item xs={3}>
+                <Button onClick={e => props.handle_login(values)} type={"submit"} variant="outlined" fullWidth>Login</Button>
             </Grid>
         </Grid>
     )
 }
+
+// Add prop types
+Login.propTypes = {
+    handle_login: PropTypes.func.isRequired
+};

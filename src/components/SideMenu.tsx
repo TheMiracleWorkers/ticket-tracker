@@ -4,6 +4,7 @@ import {ChevronLeft, ChevronRight, Home, FormatListBulleted, Settings, PersonOut
 import {Drawer as MuiDrawer, List, Divider, ListItem, ListItemIcon, ListItemText, styled, Theme, CSSObject} from '@mui/material';
 import {Link} from "react-router-dom";
 
+// Open sidebar
 const openedSidebar = (theme: Theme): CSSObject => ({
     width: 250,
     transition: theme.transitions.create('width', {
@@ -11,8 +12,11 @@ const openedSidebar = (theme: Theme): CSSObject => ({
         duration: theme.transitions.duration.enteringScreen,
     }),
     overflowX: 'hidden',
+    backgroundColor: '#F6F4F5',
+    border: 0,
 });
 
+// Close sidebar
 const closedSidebar = (theme: Theme): CSSObject => ({
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -20,8 +24,11 @@ const closedSidebar = (theme: Theme): CSSObject => ({
     }),
     overflowX: 'hidden',
     width: `calc(${theme.spacing(7)} + 1px)`,
+    backgroundColor: '#F6F4F5',
+    border: 0,
 });
 
+// Trigger close and open sidebar style changes
 const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
     ({theme, open}) => ({
         whiteSpace: 'nowrap',
@@ -48,6 +55,7 @@ export default function SideMenu() {
         (document.getElementById("content") as HTMLFormElement).classList.toggle("open");
     };
 
+    // map of menu items
     const menu: { [index: string]: any } = {
         0: {
             "text": "Home",
