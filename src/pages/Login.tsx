@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid} from '@mui/material';
+import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
 
 interface State {
     showPassword: boolean;
@@ -30,6 +30,11 @@ export default function Login() {
 
     return (
         <Grid container spacing={2}>
+
+            <Grid item xs={12}>
+                <Typography variant="h1">Login</Typography>
+            </Grid>
+
             <Grid item xs={12}>
                 <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="username">Username</InputLabel>
@@ -60,10 +65,9 @@ export default function Login() {
                 </FormControl>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
                 <Button type={"submit"} variant="outlined" fullWidth>Login</Button>
             </Grid>
-
         </Grid>
     )
 }
