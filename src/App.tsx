@@ -1,23 +1,16 @@
 import "./App.css";
-import Button from "@mui/material/Button";
-import Box from '@mui/material/Box';
-
-
-import TransportLayerTest from "./components/TransportLayerTest";
-import AddTicketForm from "./components/AddTicketForm";
 import SideMenu from "./components/SideMenu";
 import TopHeader from "./components/TopHeader";
-import {Grid} from "@mui/material";
-
 import {
     BrowserRouter as Router,
     Switch,
     Route
 } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Tickets from "./components/Tickets";
 import Users from "./components/Users";
-import Settings from "./components/Settings";
+import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -38,53 +31,34 @@ import Settings from "./components/Settings";
 //   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
 // });
 
-// function App() {
-//   return (
-//     <StoreProvider>
-//       <div className="App">
-//         <h3> Website goes here. </h3>
-//         <Button variant="contained">MUI example</Button>
-//       </div>
-//     </StoreProvider>
-//   );
-// }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <h3> Website goes here. </h3>
-//       <Button variant="contained">MUI example</Button>
-//     </div>
-//   );
-// }
-
-
 function App() {
     return (
-        <Grid container>
-            <Router>
+        <Router>
 
-                <SideMenu></SideMenu>
-                <TopHeader></TopHeader>
+            <SideMenu/>
+            <TopHeader/>
 
-                <div id="content">
-                    <Switch>
-                        <Route exact path="/">
-                            <Dashboard/>
-                        </Route>
-                        <Route path="/tickets">
-                            <Tickets/>
-                        </Route>
-                        <Route path="/users">
-                            <Users/>
-                        </Route>
-                        <Route path="/settings">
-                            <Settings/>
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
-        </Grid>
+            <div id="content">
+                <Switch>
+                    <Route exact path="/">
+                        <Dashboard/>
+                    </Route>
+                    <Route path="/tickets">
+                        <Tickets/>
+                    </Route>
+                    <Route path="/users">
+                        <Users/>
+                    </Route>
+                    <Route path="/settings">
+                        <Settings/>
+                    </Route>
+
+                    <Route path="/login">
+                        <Login/>
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
     );
 }
 

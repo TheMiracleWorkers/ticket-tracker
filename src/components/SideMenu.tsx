@@ -14,9 +14,8 @@ import ListIcon from '@mui/icons-material/List';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import {Link} from "react-router-dom";
-import {makeStyles} from '@material-ui/core/styles';
 
-const openedMixin = (theme: Theme): CSSObject => ({
+const openedSidebar = (theme: Theme): CSSObject => ({
     width: 250,
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -25,7 +24,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     overflowX: 'hidden',
 });
 
-const closedMixin = (theme: Theme): CSSObject => ({
+const closedSidebar = (theme: Theme): CSSObject => ({
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -39,33 +38,25 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
         ...(open && {
-            ...openedMixin(theme),
-            '& .MuiDrawer-paper': openedMixin(theme),
+            '#sidemenu & .MuiDrawer-paper': openedSidebar(theme),
         }),
         ...(!open && {
-            ...closedMixin(theme),
-            '& .MuiDrawer-paper': closedMixin(theme),
+            '#sidemenu & .MuiDrawer-paper': closedSidebar(theme),
         }),
     }),
 );
-
-const useStyles = makeStyles({
-    sidemenu_item: {
-        display: 'flex !important',
-        padding: '8px 16px !important',
-        justifyContent: 'flex-start !important',
-    },
-});
 
 export default function SideMenu() {
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
+        (document.getElementById("content") as HTMLFormElement).classList.toggle("open");
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
+        (document.getElementById("content") as HTMLFormElement).classList.toggle("open");
     };
 
     const menu: { [index: string]: any } = {
@@ -91,14 +82,12 @@ export default function SideMenu() {
         }
     }
 
-    const classes = useStyles();
-
     return (
         <div id="sidemenu">
             <Drawer variant="permanent" open={open}>
                 <List>
                     {Object.keys(menu).map((key) => (
-                        <ListItem className={classes.sidemenu_item} button role="button" component={Link} to={menu[key]['to']}>
+                        <ListItem button role="button" component={Link} to={menu[key]['to']} key={key}>
                             <ListItemIcon>
                                 {menu[key]['element']}
                             </ListItemIcon>
@@ -108,11 +97,11 @@ export default function SideMenu() {
                 </List>
                 <Divider/>
                 {!open ? (
-                    <ListItem className={classes.sidemenu_item} button onClick={handleDrawerOpen}>
+                    <ListItem button onClick={handleDrawerOpen}>
                         <ChevronRightIcon/>
                     </ListItem>
                 ) : (
-                    <ListItem className={classes.sidemenu_item} button onClick={handleDrawerClose}>
+                    <ListItem button onClick={handleDrawerClose}>
                         <ChevronLeftIcon/>
                     </ListItem>
                 )}
