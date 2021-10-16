@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TableSortLabel, TablePagination, TablePaginationProps } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableSortLabel, TablePagination } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 
 

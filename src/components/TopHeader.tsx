@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Toolbar from "@mui/material/Toolbar";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import HelpIcon from '@mui/icons-material/Help';
-import {AppBar} from "@mui/material";
-import {Link} from "react-router-dom";
-import {styled} from '@mui/material/styles';
 
+import {AccountCircle, Notifications, Help, Logout} from '@mui/icons-material';
+import {Toolbar, AppBar, styled} from '@mui/material';
+import {Link} from "react-router-dom";
+
+import PropTypes from 'prop-types';
+
+// Add styling to header bar
 const AppBarStyled = styled(AppBar)({
     background: '#fff',
     color: 'rgba(0, 0, 0, 0.54) !important',
@@ -15,16 +15,26 @@ const AppBarStyled = styled(AppBar)({
     boxShadow: 'unset !important',
 });
 
-export default function TopHeader() {
+export default function TopHeader(props: { logged_in: boolean; handle_logout: React.MouseEventHandler<HTMLLIElement>; }) {
     return (
-        <div id="topheader">
+        <div id="top-header">
             <AppBarStyled>
                 <Toolbar>
-                    <HelpIcon/>
-                    <NotificationsIcon/>
-                    <Link to={"/login"}><AccountCircleIcon/></Link>
+                    {props.logged_in ? (
+                        <li onClick={props.handle_logout}
+                            style={{marginRight: 16, cursor: "pointer", listStyle: "none"}}><Logout/></li>
+                    ) : ("")}
+                    <Link to={"/"} style={{marginRight: 16}}><Help/></Link>
+                    <Link to={"/"} style={{marginRight: 16}}><Notifications/></Link>
+                    <Link to={"/"}><AccountCircle/></Link>
                 </Toolbar>
             </AppBarStyled>
         </div>
     );
 }
+
+// Add prop types
+TopHeader.propTypes = {
+    logged_in: PropTypes.bool.isRequired,
+    handle_logout: PropTypes.func.isRequired
+};

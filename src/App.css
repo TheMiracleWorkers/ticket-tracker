@@ -11,9 +11,13 @@
     margin-top: 70px;
     margin-left: 55px;
     transition: margin-left 0.3s ease;
+    padding: 10px;
 }
 
 @media screen and (min-width: 768px) {
+    #content {
+        padding: 20px;
+    }
     #content.open {
         margin-left: 250px;
         transition: margin-left 0.3s ease;
@@ -22,4 +26,17 @@
 
 #topheader header {
     padding-left: 60px
+}
+
+#content h1 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#top-header a {
+    color: #000
+}
+
+.message {
+    margin-bottom: 15px;
 }

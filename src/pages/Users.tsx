@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, Button } from '@mui/material';
+import {TableBody, TableRow, TableCell, Paper, Divider, Grid, Button, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import SearchInput from "../components/SearchInput";
 
@@ -12,7 +12,6 @@ const headCells = [
     { id: 'projects', label: 'Projects' },
     { id: 'dateOfBirth', label: 'Date of birth' },
     { id: 'created', label: 'Created' }
-
 ]
 
 // initial set of rows, simulating data from the database
@@ -42,17 +41,12 @@ const list = [
         created: " 12-04-2021"
     }]
 
-
-
 export default function Users() {
 
-    const [users, setUsers] = useState(list);
+    const [users] = useState(list);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [searchText, setSearchText] = React.useState('');
-
-
-
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
         let target = e.target;
@@ -61,7 +55,7 @@ export default function Users() {
         setSearchText(target.value)
         setFilterFn({
             fn: items => {
-                if (target.value == "") {
+                if (target.value === "") {
                     console.log("target value is null", items);
                     return items;
                 }
@@ -77,9 +71,12 @@ export default function Users() {
     return (
 
         <Paper>
+
+            <Typography variant="h1">Users</Typography>
+
             <Grid container>
                 <Button variant="outlined" size="medium">+ Create user</Button>
-                <Grid item sm={6} style={{ border: '1px solid #fff' }}></Grid>
+                <Grid item sm={6} style={{border: '1px solid #fff'}}/>
                 <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
             </Grid>
 

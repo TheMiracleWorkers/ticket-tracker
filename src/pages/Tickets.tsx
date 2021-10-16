@@ -63,7 +63,7 @@ export default function Tickets() {
         setSearchText(target.value)
         setFilterFn({
             fn: items => {
-                if (target.value == "") {
+                if (target.value === "") {
                     console.log("target value is null", items);
                     return items;
                 }
@@ -80,9 +80,11 @@ export default function Tickets() {
 
         <React.Fragment>
 
+            <Typography variant="h1">Tickets</Typography>
+
             <Grid container >
                 <Button component={Link} to={"/add-ticket"} variant="outlined" size="medium">+ New submit</Button> 
-                <Grid item sm={6} style={{ border: '1px solid #fff' }}></Grid>
+                <Grid item sm={6} style={{border: '1px solid #fff'}}/>
                 <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
             </Grid>
 
