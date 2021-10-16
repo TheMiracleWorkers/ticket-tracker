@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
-import { isTemplateExpression } from "typescript";
+import { TableBody, TableRow, TableCell, Divider, Grid, Button, Typography } from '@mui/material';
 import useTable from "../components/UseTable";
-import AddButton from "../components/AddButton";
+
 import SearchInput from "../components/SearchInput";
 import { TransportLayer } from "../transportation/TransportLayer";
 import Ticket from "../domainObjects/Ticket";
 import { AxiosResponse } from "axios";
 import moment from "moment";
+import { Link } from "react-router-dom";
+import TopHeader from "./TopHeader";
 
 
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3)
-    },
-}))
 
 // Table header information, id is the name of the 
 // property to sort by when the header is clicked 
@@ -37,11 +32,10 @@ export default function Tickets() {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return tickets } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(tickets, headCells, filterFn);
-    const classes = useStyles();
     const [searchText, setSearchText] = React.useState('');
-   
+
     useEffect(() => {
-       
+
         fetchAllTicket()
 
     }, []);
@@ -75,7 +69,7 @@ export default function Tickets() {
                 }
                 else {
 
-                    return items.filter((x: { issue: string; }) => x.issue.toLowerCase().includes(target.value))
+                    return items.filter((x: { title: string; }) => x.title.toLowerCase().includes(target.value))
                 }
             }
 
@@ -84,13 +78,9 @@ export default function Tickets() {
 
     return (
 
-        <Paper className={classes.pageContent}>
-            <Grid container>
-                <AddButton variant="outlined" size="medium">+ New submit</AddButton>
-                <Grid item sm={6}></Grid>
-                <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
+        <React.Fragment>
 
-            </Grid>
+            <TopHeader placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e)} />
 
             <TblContainer>
                 <TblHead />
@@ -111,7 +101,8 @@ export default function Tickets() {
                 </TableBody>
             </TblContainer>
             <TblPagination />
-        </Paper>
+
+        </React.Fragment>
     )
 
 }
