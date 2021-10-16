@@ -1,8 +1,7 @@
-import React, { Children, ReactNode } from "react"
-import { AppBar, Toolbar, Grid, IconButton, Badge, InputBase, Button, InputProps } from "@mui/material";
+import React from "react"
+import { InputBase, InputBaseProps } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha, InputBaseProps } from "@material-ui/core";
-
+import { styled, alpha } from '@mui/material/styles';
 
 
 const Search = styled('div')(({ theme }) => ({

@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, makeStyles, TableSortLabel, TablePagination } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableSortLabel, TablePagination, TablePaginationProps } from '@mui/material';
+import { makeStyles } from "@mui/styles";
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     table: {
-        marginTop: theme.spacing(10),
-        marginLeft: theme.spacing(2),
-        minWidth: 400,
-        size: "small",
+        marginTop: '70px',            
         '& thead th': {
             fontWeight: '600',
-            color: theme.palette.primary.main,
         },
         '& tbody td': {
             fontWeight: '200',
@@ -20,11 +17,10 @@ const useStyles = makeStyles(theme => ({
             cursor: 'pointer',
         },
     },
-}))
-
-
+})
 
 export default function useTable(records: any[], headCells: any[], filterFn: { fn: (arg0: any) => any; }) {
+
 
     const classes = useStyles();
     const pages = [5, 10, 25];
@@ -37,6 +33,7 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
     //The TblContainer component wil be on the top of the Table component
     const TblContainer = (props: { children: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
         <Table className={classes.table}>
+
             {props.children}
         </Table>)
 
@@ -69,30 +66,36 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
         </TableHead>)
     }
 
-    // No overload matches this call. I Couldn't find a fix for the issue.
-    // With using '//@ts-ignore' the type error is ignored in TblPagination
-    //toolbar to select the number of rows to display with the TablePagination component.
 
-    // @ts-ignore
-    const TblPagination = () => (<TablePagination
-        component="div"
-        page={page}
-        rowsPerPageOptions={pages}
-        rowsPerPage={rowsPerPage}
-        count={records.length}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-    />)
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage)
+    function TblPagination() {
+
+        const handleChangePage = (
+            event: React.MouseEvent<HTMLButtonElement> | null,
+            newPage: number,
+        ) => {
+            setPage(newPage);
+        };
+
+        const handleChangeRowsPerPage = (
+            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+        };
+
+        return (
+            <TablePagination
+                component="div"
+                rowsPerPageOptions={pages}
+                count={records.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        );
     }
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         console.warn(a, b, orderBy)
         if (b[orderBy] < a[orderBy]) {

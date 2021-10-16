@@ -1,20 +1,8 @@
 import React, { useState } from "react";
-import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
-import { isTemplateExpression } from "typescript";
+import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, Button } from '@mui/material';
 import useTable from "../components/UseTable";
 import SearchInput from "../components/SearchInput";
-import AddButton from "../components/AddButton";
 
-
-
-
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3)
-    },
-
-}))
 
 // Header information of the table, key is the name of the 
 // property to sort by when the header is clicked 
@@ -36,14 +24,15 @@ const list = [
         projects: " Fontys, Rijksoverheid",
         dateOfBirth: "18-09-1999",
         created: " 18-09-2019"
-    }, 
-    {  id: "2",
+    },
+    {
+        id: "2",
         name: "Janssen, Geert",
         role: "Project Manager",
         projects: " Nationale Politie, Fontys",
         dateOfBirth: "18-0923-08-2000",
         created: "2-9-2021"
-    }, 
+    },
     {
         id: "3",
         name: "VanHaren, Ellen",
@@ -53,14 +42,13 @@ const list = [
         created: " 12-04-2021"
     }]
 
-    
+
 
 export default function Users() {
 
     const [users, setUsers] = useState(list);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
-    const classes = useStyles();
     const [searchText, setSearchText] = React.useState('');
 
 
@@ -88,9 +76,9 @@ export default function Users() {
 
     return (
 
-        <Paper className={classes.pageContent}>
+        <Paper>
             <Grid container>
-                <AddButton variant="outlined" size="medium">+ Create user</AddButton>
+                <Button variant="outlined" size="medium">+ Create user</Button>
                 <Grid item sm={6} style={{ border: '1px solid #fff' }}></Grid>
                 <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
             </Grid>
