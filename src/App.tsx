@@ -2,12 +2,12 @@ import "./App.css";
 import SideMenu from "./components/SideMenu";
 import TopHeader from "./components/TopHeader";
 import Dashboard from "./pages/Dashboard";
-import Tickets from "./components/Tickets";
-import Users from "./components/Users";
+import Tickets from "./pages/Tickets";
+import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import * as React from "react";
 import {Alert} from "@mui/material";
 
@@ -50,7 +50,7 @@ function App() {
 
     // Log user in
     function handle_login(data: any): void {
-        fetch('http://localhost:8000/token-auth/', {
+        fetch(process.env.REACT_APP_REST_API + 'token-auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,19 +73,19 @@ function App() {
     }
 
     // Get current user data
-    function get_current_user(data: any): void {
-        if (user.logged_in) {
-            fetch('http://localhost:8000/current-user/', {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`
-                }
-            })
-                .then(res => res.json())
-                .then(json => {
-                    console.log(json.username)
-                });
-        }
-    }
+    // function get_current_user(data: any): void {
+    //     if (user.logged_in) {
+    //         fetch(process.env.REACT_APP_REST_API + 'current-user', {
+    //             headers: {
+    //                 Authorization: `JWT ${localStorage.getItem('token')}`
+    //             }
+    //         })
+    //             .then(res => res.json())
+    //             .then(json => {
+    //                 console.log(json.username)
+    //             });
+    //     }
+    // }
 
     return (
         <Router>
