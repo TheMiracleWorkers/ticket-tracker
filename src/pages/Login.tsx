@@ -31,6 +31,13 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
         });
     };
 
+    // Check for enter presses
+    const handleKeypress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            props.handle_login(values);
+        }
+    };
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -44,6 +51,7 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
                         id="username"
                         value={values.username}
                         onChange={handleChange('username')}
+                        onKeyPress={handleKeypress}
                     />
                 </FormControl>
             </Grid>
@@ -56,6 +64,7 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.password}
                         onChange={handleChange('password')}
+                        onKeyPress={e => handleKeypress(e)}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton onClick={handleClickShowPassword}>
@@ -68,7 +77,8 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
             </Grid>
 
             <Grid item xs={3}>
-                <Button onClick={e => props.handle_login(values)} type={"submit"} variant="outlined" fullWidth>Login</Button>
+                <Button type="submit" onClick={e => props.handle_login(values)} variant="outlined"
+                        fullWidth>Login</Button>
             </Grid>
         </Grid>
     )

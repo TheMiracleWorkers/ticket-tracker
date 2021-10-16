@@ -26,7 +26,7 @@ export default function TopHeader(props: { logged_in: boolean; handle_logout: Re
                     ) : ("")}
                     <Link to={"/"} style={{marginRight: 16}}><Help/></Link>
                     <Link to={"/"} style={{marginRight: 16}}><Notifications/></Link>
-                    <Link to={"/login"}><AccountCircle/></Link>
+                    <Link to={"/"}><AccountCircle/></Link>
                 </Toolbar>
             </AppBarStyled>
         </div>
