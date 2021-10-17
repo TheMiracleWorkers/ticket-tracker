@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
 import Ticket from '../domainObjects/Ticket';
 import {TransportLayer} from '../transportation/TransportLayer';
+import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const validationSchema = yup.object({
     title: yup
@@ -20,8 +22,10 @@ const validationSchema = yup.object({
         .required('Ticket description is required')
 });
 
+
 export default function AddTicketForm() {
     const transportLayer = new TransportLayer();
+    const history = useHistory();
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -34,9 +38,9 @@ export default function AddTicketForm() {
                 'description': values.description
             });
             transportLayer.postTicket(newTicket).catch(err => {
-                console.log(err)
+                // TODO: Show error
             }).then(res =>{
-                // TODO: Close Add ticket form
+                history.push('/tickets');
             });
         },
     });
@@ -44,9 +48,6 @@ export default function AddTicketForm() {
     return (
         <React.Fragment>
             <form onSubmit={formik.handleSubmit}>
-                <Typography variant="h6" gutterBottom>
-                    Add Ticket
-                </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
                         <TextField
