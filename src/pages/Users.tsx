@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {TableBody, TableRow, TableCell, Paper, Divider, Grid, Button, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import SearchInput from "../components/SearchInput";
@@ -41,45 +41,38 @@ const list = [
         created: " 12-04-2021"
     }]
 
-export default function Users() {
+export default function Users(props: any) {
 
     const [users] = useState(list);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [searchText, setSearchText] = React.useState('');
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        let target = e.target;
-        console.log("event", e);
-        console.log("target value", target.value);
-        setSearchText(target.value)
+    useEffect(() => {
+
+        handleSearch(props.searchTextInput);
+
+    }, [props]);
+
+
+
+    const handleSearch = (text: any): void => {
+
+        setSearchText(text)
         setFilterFn({
             fn: items => {
-                if (target.value === "") {
-                    console.log("target value is null", items);
-                    return items;
-                }
-                else {
-
-                    return items.filter((x: { name: string; }) => x.name.toLowerCase().includes(target.value))
-                }
+                if (text === "") return items;
+                else return items.filter((x: { name: string; }) => x.name.toLowerCase().includes(text))
             }
-
         })
+        setSearchText("");
     };
 
     return (
 
-        <Paper>
+        <React.Fragment>
 
             <Typography variant="h1">Users</Typography>
-
-            <Grid container>
-                <Button variant="outlined" size="medium">+ Create user</Button>
-                <Grid item sm={6} style={{border: '1px solid #fff'}}/>
-                <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
-            </Grid>
-
             <TblContainer>
                 <TblHead />
                 <Divider />
@@ -98,7 +91,7 @@ export default function Users() {
                 </TableBody>
             </TblContainer>
             <TblPagination />
-        </Paper>
+        </React.Fragment>
     )
 
 }

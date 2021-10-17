@@ -33,6 +33,7 @@ import AddTicket from "./pages/AddTicket";
 
 function App() {
 
+    const [searchText, setSearchText] = React.useState("");
     const [user, setUser] = React.useState({
         logged_in: !!localStorage.getItem('token'),
         username: '',
@@ -91,7 +92,7 @@ function App() {
     return (
         <Router>
             <SideMenu/>
-            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in}/>
+            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in} searchText={searchText} setSearchText={setSearchText}/>
 
             <div id="content">
 
@@ -112,10 +113,10 @@ function App() {
                     )}
 
                     <Route path="/tickets">
-                        <Tickets/>
+                        <Tickets searchTextInput={searchText}/>
                     </Route>
                     <Route path="/users">
-                        <Users/>
+                        <Users searchTextInput={searchText}/>
                     </Route>
                     <Route path="/settings">
                         <Settings/>
@@ -123,7 +124,6 @@ function App() {
                     <Route path="/add-ticket">
                        <AddTicket/>
                     </Route>
-
 
                 </Switch>
             </div>
