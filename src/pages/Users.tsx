@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {TableBody, TableRow, TableCell, Paper, Divider, Grid, Button, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
-import SearchInput from "../components/SearchInput";
+
 
 
 // Header information of the table, key is the name of the 
