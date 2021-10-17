@@ -11,8 +11,9 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import Ticket, { TicketInterface } from "../../domainObjects/Ticket";
+import { number } from "prop-types";
 
-function TicketHeader(ticket: Ticket) {
+function TicketHeader(props: {ticket: TicketInterface | null}) {
   let responsiveFontTheme = createTheme();
   responsiveFontTheme = responsiveFontSizes(responsiveFontTheme);
 
@@ -88,12 +89,7 @@ function TicketHeader(ticket: Ticket) {
           </Typography>
         </Grid>
       </Grid>
-    </React.Fragment>
-  );
+    </React.Fragment>)
 }
-
-TicketHeader.propTypes = {
-  ticket: PropTypes.instanceOf(Ticket),
-};
 
 export default TicketHeader;

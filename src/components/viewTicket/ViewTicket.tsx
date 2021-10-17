@@ -13,10 +13,11 @@ import { border } from "@mui/system";
 import TicketHeader from "./TicketHeader";
 import { Divider } from "@mui/material";
 import TicketBody from "./TicketBody";
-import Ticket from "../../domainObjects/Ticket";
+import Ticket, { TicketInterface } from "../../domainObjects/Ticket";
 import PropTypes from "prop-types";
 
-function ViewTicket(ticket: Ticket) {
+function ViewTicket(props: {ticket: TicketInterface | null}) {
+
   return (
     <React.Fragment>
       <Grid
@@ -26,16 +27,12 @@ function ViewTicket(ticket: Ticket) {
         padding={{ md: 0.6 }}
         justifyContent={"space-between"}
       >
-        <TicketHeader ticket={ticket} />
+        <TicketHeader ticket={props.ticket}/>
         <Divider style={{ width: "100%", margin: 20 }} />
         <TicketBody />
       </Grid>
     </React.Fragment>
   );
 }
-
-ViewTicket.propTypes = {
-  ticket: PropTypes.instanceOf(Ticket),
-};
 
 export default ViewTicket;
