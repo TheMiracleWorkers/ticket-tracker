@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import * as React from "react";
 import {Alert} from "@mui/material";
+import AddTicket from "./pages/AddTicket";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -119,6 +120,10 @@ function App() {
                     <Route path="/settings">
                         <Settings/>
                     </Route>
+                    <Route path="/add-ticket">
+                       <AddTicket/>
+                    </Route>
+
 
                 </Switch>
             </div>
