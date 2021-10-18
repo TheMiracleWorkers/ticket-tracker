@@ -51,7 +51,7 @@ function App() {
 
     // Log user in
     function handle_login(data: any): void {
-        fetch(process.env.REACT_APP_REST_API + 'token-auth', {
+        fetch(process.env.REACT_APP_REST_API + 'token-auth/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
