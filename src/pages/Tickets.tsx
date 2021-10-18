@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { TableBody, TableRow, TableCell, Divider, Grid, Button, Typography } from '@mui/material';
+import { TableBody, TableRow, TableCell, Divider, Typography } from '@mui/material';
 import useTable from "../components/UseTable";
 
-import SearchInput from "../components/SearchInput";
 import { TransportLayer } from "../transportation/TransportLayer";
 import Ticket from "../domainObjects/Ticket";
 import { AxiosResponse } from "axios";
 import moment from "moment";
-import { Link } from "react-router-dom";
+
+
 
 
 
@@ -26,12 +26,11 @@ const headCells = [
 
 const transportLayer = new TransportLayer();
 
-export default function Tickets() {
+export default function Tickets(props: any) {
 
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return tickets } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(tickets, headCells, filterFn);
-    // const classes = useStyles();
     const [searchText, setSearchText] = React.useState('');
 
     useEffect(() => {
@@ -39,6 +38,13 @@ export default function Tickets() {
         fetchAllTicket()
 
     }, []);
+
+
+    useEffect(() => {
+
+        handleSearch(props.searchTextInput);
+
+    }, [props]);
 
     function fetchAllTicket() {
         transportLayer
@@ -50,30 +56,21 @@ export default function Tickets() {
             })
             .catch((response: AxiosResponse) => {
                 // Handle error
-                console.log(response);
             });
 
     }
 
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        let target = e.target;
-        console.log("event", e);
-        console.log("target value", target.value);
-        setSearchText(target.value)
+    const handleSearch = (text: any): void => {
+
+        setSearchText(text)
         setFilterFn({
             fn: items => {
-                if (target.value === "") {
-                    console.log("target value is null", items);
-                    return items;
-                }
-                else {
-
-                    return items.filter((x: { title: string; }) => x.title.toLowerCase().includes(target.value))
-                }
+                if (text === "")  return items;                
+                else  return items.filter((x: { title: string; }) => x.title.toLowerCase().includes(text))
             }
-
         })
+        
     };
 
     return (
@@ -81,12 +78,6 @@ export default function Tickets() {
         <React.Fragment>
 
             <Typography variant="h1">Tickets</Typography>
-
-            <Grid container >
-                <Button component={Link} to={"/add-ticket"} variant="outlined" size="medium">+ New submit</Button> 
-                <Grid item sm={6} style={{border: '1px solid #fff'}}/>
-                <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
-            </Grid>
 
             <TblContainer>
                 <TblHead />
