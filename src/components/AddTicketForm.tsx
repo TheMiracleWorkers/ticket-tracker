@@ -1,15 +1,12 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import * as yup from "yup";
 import {useFormik} from "formik";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
 import Ticket from '../domainObjects/Ticket';
 import {TransportLayer} from '../transportation/TransportLayer';
-import {Link} from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 const validationSchema = yup.object({

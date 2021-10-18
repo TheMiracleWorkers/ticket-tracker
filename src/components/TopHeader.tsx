@@ -45,6 +45,7 @@ TopHeader.propTypes = {
     searchText: PropTypes.string,
     setSearchText: PropTypes.func,
 };
+
 interface TopHeaderProps {
     logged_in: boolean;
     handle_logout: React.MouseEventHandler<HTMLLIElement>;
