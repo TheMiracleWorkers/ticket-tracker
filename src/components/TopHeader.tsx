@@ -79,7 +79,6 @@ export default function TopHeader(props: TopHeaderProps) {
 
     return (
         <div id="top-header">
-            <h1> Hallo Test </h1>
             <AppBar className={classes.appBarStyled}>
                 <Toolbar>
                     {props.logged_in ? (
