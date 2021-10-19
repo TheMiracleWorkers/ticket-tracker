@@ -25,7 +25,7 @@ function TicketHeader(props: {
         <Grid item xs={3} sm={6} md={10}>
           <ThemeProvider theme={responsiveFontTheme}>
             <Typography variant="h4" gutterBottom noWrap={true}>
-              {ticket.title}
+              {"#" + ticket.id + " " + ticket.title}
             </Typography>
           </ThemeProvider>
         </Grid>
