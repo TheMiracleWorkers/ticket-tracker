@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  TableBody,
-  TableRow,
-  TableCell,
-  Divider,
-  Typography,
-} from "@mui/material";
+
+import { TableBody, TableRow, TableCell, Typography } from '@mui/material';
 import useTable from "../components/UseTable";
 import { TransportLayer } from "../transportation/TransportLayer";
 import Ticket from "../domainObjects/Ticket";
@@ -57,6 +52,42 @@ export default function Tickets(props: any) {
         );
         setTickets(allTickets);
         setFilterFn({
+            fn: items => {
+                if (text === "")  return items;
+                else  return items.filter((x: { title: string; }) => x.title.toLowerCase().includes(text))
+            }
+        })
+
+    };
+
+    return (
+
+        <React.Fragment>
+
+            <Typography variant="h1">Tickets</Typography>
+
+            <TblContainer>
+                <TblHead />
+                <TableBody>
+                    {
+                        recordsAfterPagingAndSorting().map(item =>
+                        (<TableRow key={item.id}>
+                            <TableCell>{item.id} </TableCell>
+                            <TableCell>{item.title} </TableCell>
+                            <TableCell>{item.description} </TableCell>
+                            <TableCell>{moment(item.dueDate).format('DD-MM-YYYY')} </TableCell>
+                            <TableCell>{moment(item.createDate).format('DD-MM-YYYY')} </TableCell>
+                            <TableCell>{moment(item.updateDate).format('DD-MM-YYYY')} </TableCell>
+                        </TableRow>)
+                        )
+                    }
+                </TableBody>
+            </TblContainer>
+            <TblPagination />
+
+        </React.Fragment>
+    )
+
           fn: (allTickets) => {
             return allTickets;
           },
@@ -125,5 +156,6 @@ export default function Tickets(props: any) {
       <TblPagination />
     </React.Fragment>
   );
+
 }
 export {};
