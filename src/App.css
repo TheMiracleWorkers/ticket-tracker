@@ -7,13 +7,10 @@
     height: 100vh;
 }
 
-#top-header header > div:first-child, #content {
-    margin-left: 55px;
-    transition: margin-left 0.3s ease;
-}
-
 #content {
     margin-top: 70px;
+    margin-left: 55px;
+    transition: margin-left 0.3s ease;
     padding: 10px;
 }
 
@@ -21,11 +18,14 @@
     #content {
         padding: 20px;
     }
-
-    #top-header.open header > div:first-child, #content.open {
+    #content.open {
         margin-left: 250px;
         transition: margin-left 0.3s ease;
     }
+}
+
+#topheader header {
+    padding-left: 60px
 }
 
 #content h1 {
@@ -39,16 +39,4 @@
 
 .message {
     margin-bottom: 15px;
-}
-
-#top-header .app-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    background: #fff;
-    color: rgba(0, 0, 0, 0.54) !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    box-shadow: unset !important;
-    width: 100%;
 }
