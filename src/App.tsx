@@ -6,7 +6,6 @@ import Tickets from "./pages/Tickets";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import * as React from "react";
 import {Alert} from "@mui/material";
