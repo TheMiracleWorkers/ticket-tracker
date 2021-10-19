@@ -7,7 +7,6 @@ import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import AddTicket from "./pages/AddTicket";
-
 import {Router, Switch, Route} from "react-router-dom";
 import {createBrowserHistory} from 'history';
 import * as React from "react";
