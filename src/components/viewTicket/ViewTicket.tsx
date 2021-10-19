@@ -1,24 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import CloseIcon from "@mui/icons-material/Close";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import {
-  createTheme,
-  responsiveFontSizes,
-  ThemeProvider,
-} from "@mui/material/styles";
-import { border } from "@mui/system";
 import TicketHeader from "./TicketHeader";
 import { Divider } from "@mui/material";
 import TicketBody from "./TicketBody";
 import Ticket, { TicketInterface } from "../../domainObjects/Ticket";
-import PropTypes from "prop-types";
+import { TransportLayer } from "../../transportation/TransportLayer";
+import { AxiosResponse } from "axios";
 
-function ViewTicket(props: {ticket: TicketInterface | null}) {
+const transportLayer = new TransportLayer();
 
-  return (
+function ViewTicket(props: {ticketId: number}) {
+  const [ticketState, setTicketState] = useState<TicketInterface>();
+
+    useEffect(() => {
+    // transportLayer.getAllTickets(onAllTicketsReceive);
+    setTicketState(new Ticket({
+    id: 5,
+    title: 'ioueabrg',
+    description: 'test description',
+    dueDate: Date.now(),
+    createdDate: Date.now(),
+    updatedDate: Date.now()
+  })) 
+  }, []);
+
+    function fetchOneTicket() {
+    transportLayer
+    .getTicketByIdPromise(1)
+    .then((response: AxiosResponse) => {
+        const ticket: Ticket = new Ticket(response.data)
+        setTicketState(ticket);
+      })
+      .catch((response: AxiosResponse) => {
+        // Handle error.
+        console.log(response);
+      });
+  }
+
+
+
+  if (ticketState) {
+      return (
     <React.Fragment>
       <Grid
         container
@@ -27,12 +49,16 @@ function ViewTicket(props: {ticket: TicketInterface | null}) {
         padding={{ md: 0.6 }}
         justifyContent={"space-between"}
       >
-        <TicketHeader ticket={props.ticket}/>
+        <TicketHeader ticket={ticketState}/>
         <Divider style={{ width: "100%", margin: 20 }} />
         <TicketBody />
       </Grid>
     </React.Fragment>
   );
+  } else {
+    return <React.Fragment>Loading</React.Fragment>
+  }
+
 }
 
 export default ViewTicket;
