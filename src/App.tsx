@@ -32,6 +32,8 @@ import {Alert} from "@mui/material";
 //   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
 // });
 
+const history = createBrowserHistory();
+
 function App() {
 
     const [searchText, setSearchText] = React.useState("");
@@ -46,7 +48,6 @@ function App() {
     });
 
     // Listen on router change
-    const history = createBrowserHistory();
     history.listen((location) => {
         setMessage({show_message: false, message: ''})
     })
