@@ -16,25 +16,32 @@ const boxStyle: SxProps = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
-  height: "90%",
+  width: "85%",
+  height: "85%",
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-function ViewTicket(props: { ticketId: number }) {
+function ViewTicket(props: {
+  ticketId: number | null;
+  modalIsOpen: boolean;
+  onClose: Function;
+}) {
   const [ticketState, setTicketState] = useState<TicketInterface>();
-  const [modalOpen, setModalOpen] = useState(true);
 
   useEffect(() => {
-    fetchOneTicket();
-  }, []);
+    if (props.modalIsOpen) {
+      setTicketState(undefined);
+      fetchOneTicket();
+    } else {
+    }
+  }, [props.modalIsOpen]);
 
   function fetchOneTicket() {
     transportLayer
-      .getTicketByIdPromise(props.ticketId)
+      .getTicketByIdPromise(props.ticketId as number)
       .then((response: AxiosResponse) => {
         const ticket: Ticket = new Ticket(response.data);
         setTicketState(ticket);
@@ -47,9 +54,12 @@ function ViewTicket(props: { ticketId: number }) {
 
   return (
     <Modal
-      open={modalOpen}
+      open={props.modalIsOpen}
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
+      onBackdropClick={() => {
+        props.onClose();
+      }}
     >
       <Box sx={boxStyle}>
         <Grid
@@ -59,7 +69,7 @@ function ViewTicket(props: { ticketId: number }) {
           padding={{ md: 0.6 }}
           justifyContent={"space-between"}
         >
-          <TicketHeader ticket={ticketState} />
+          <TicketHeader ticket={ticketState} onClose={props.onClose} />
           <Divider style={{ width: "100%", margin: 20 }} />
           <TicketBody ticket={ticketState} />
         </Grid>

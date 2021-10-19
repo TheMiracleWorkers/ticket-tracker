@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import { IconButton } from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import {
   createTheme,
@@ -11,7 +12,10 @@ import {
 } from "@mui/material/styles";
 import { TicketInterface } from "../../domainObjects/Ticket";
 
-function TicketHeader(props: { ticket: TicketInterface | undefined }) {
+function TicketHeader(props: {
+  ticket: TicketInterface | undefined;
+  onClose: Function;
+}) {
   const ticket = props.ticket;
   let responsiveFontTheme = responsiveFontSizes(createTheme());
 
@@ -35,10 +39,18 @@ function TicketHeader(props: { ticket: TicketInterface | undefined }) {
           alignContent={"center"}
         >
           <Grid item display={"inline"} justifyContent={"space-between"}>
-            <EditOutlinedIcon fontSize={"large"} />
+            <IconButton>
+              <EditOutlinedIcon fontSize={"large"} />
+            </IconButton>
           </Grid>
-          <Grid item display={"inline"} paddingLeft={{ xs: 2, md: 4 }}>
-            <CloseIcon fontSize={"large"} />
+          <Grid item display={"inline"} paddingLeft={{ xs: 1, sm: 2, md: 2 }}>
+            <IconButton
+              onClick={() => {
+                props.onClose();
+              }}
+            >
+              <CloseIcon fontSize={"large"} />{" "}
+            </IconButton>
           </Grid>
         </Grid>
 
@@ -59,7 +71,7 @@ function TicketHeader(props: { ticket: TicketInterface | undefined }) {
         </Grid>
 
         <Grid item container>
-          <Grid item xs={4} sm={2} md={2}>
+          <Grid item xs={4} sm={4} md={2}>
             <Typography variant="body1" fontSize={"small"}>
               <strong>Created:</strong> {ticket.createdDate?.toDateString()}
             </Typography>
