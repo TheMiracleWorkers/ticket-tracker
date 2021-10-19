@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
+import {TableBody, TableRow, TableCell,  Divider, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 
 
@@ -75,6 +75,7 @@ export default function Users(props: any) {
             <Typography variant="h1">Users</Typography>
             <TblContainer>
                 <TblHead />
+                <Divider />
                 <TableBody>
                     {
                         recordsAfterPagingAndSorting().map(item =>

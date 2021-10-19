@@ -6,11 +6,10 @@ import Tickets from "./pages/Tickets";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import AddTicket from "./pages/AddTicket";
-import {Router, Switch, Route} from "react-router-dom";
-import {createBrowserHistory} from 'history';
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import * as React from "react";
 import {Alert} from "@mui/material";
+import AddTicket from "./pages/AddTicket";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -31,8 +30,6 @@ import {Alert} from "@mui/material";
 //   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
 // });
 
-const history = createBrowserHistory();
-
 function App() {
 
     const [searchText, setSearchText] = React.useState("");
@@ -45,11 +42,6 @@ function App() {
         show_message: false,
         message: '',
     });
-
-    // Listen on router change
-    history.listen((location) => {
-        setMessage({show_message: false, message: ''})
-    })
 
     // Log user out
     function handle_logout(): void {
@@ -97,17 +89,14 @@ function App() {
     // }
 
     return (
-        <Router history={history}>
+        <Router>
             <SideMenu/>
-            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in} searchText={searchText}
-                       setSearchText={setSearchText}/>
+            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in} searchText={searchText} setSearchText={setSearchText}/>
 
             <div id="content">
 
                 {message.show_message ? (
-                    <Alert onClose={() => {
-                        setMessage({show_message: false, message: ''})
-                    }} className="message" severity='error'>{message.message}</Alert>
+                    <Alert className="message" severity='error'>{message.message}</Alert>
                 ) : ("")}
 
                 <Switch>
@@ -132,7 +121,7 @@ function App() {
                         <Settings/>
                     </Route>
                     <Route path="/add-ticket">
-                        <AddTicket/>
+                       <AddTicket/>
                     </Route>
 
                 </Switch>
