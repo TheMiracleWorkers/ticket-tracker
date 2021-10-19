@@ -47,18 +47,18 @@ export default function TopHeader(props: TopHeaderProps) {
                     ) : ("")}
                 </Toolbar>
                 <Toolbar>
-                    {props.logged_in ? (
-                        <li onClick={props.handle_logout}
-                            style={{marginRight: 16, cursor: "pointer", listStyle: "none"}}><Logout/></li>
-                    ) : ("")}
-
                     {buttonText ? (
                         <SearchInput type={'input'} placeholder={" Search..."} label={"search"} name={"search"}
                                      value={props.searchText}
                                      onChange={(e) => props.setSearchText(e.target.value)}/>
                     ) : ("")}
 
-                    <Link to={"/"} style={{marginRight: 16, marginLeft: 16}}><Help/></Link>
+                    {props.logged_in ? (
+                        <li onClick={props.handle_logout}
+                            style={{marginRight: 16, cursor: "pointer", listStyle: "none"}}><Logout/></li>
+                    ) : ("")}
+
+                    <Link to={"/"} style={{marginRight: 16}}><Help/></Link>
                     <Link to={"/"} style={{marginRight: 16}}><Notifications/></Link>
                     <Link to={"/"}><AccountCircle/></Link>
                 </Toolbar>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TableBody, TableRow, TableCell, Divider, Typography } from '@mui/material';
+import { TableBody, TableRow, TableCell, Typography } from '@mui/material';
 import useTable from "../components/UseTable";
 
 import { TransportLayer } from "../transportation/TransportLayer";
@@ -66,11 +66,11 @@ export default function Tickets(props: any) {
         setSearchText(text)
         setFilterFn({
             fn: items => {
-                if (text === "")  return items;                
+                if (text === "")  return items;
                 else  return items.filter((x: { title: string; }) => x.title.toLowerCase().includes(text))
             }
         })
-        
+
     };
 
     return (
@@ -81,7 +81,6 @@ export default function Tickets(props: any) {
 
             <TblContainer>
                 <TblHead />
-                <Divider />
                 <TableBody>
                     {
                         recordsAfterPagingAndSorting().map(item =>
