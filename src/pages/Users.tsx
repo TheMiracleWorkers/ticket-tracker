@@ -1,20 +1,8 @@
-import React, { useState } from "react";
-import { TableBody, TableRow, TableCell, makeStyles, Paper, Divider, Grid, InputAdornment, Button } from '@material-ui/core';
-import { isTemplateExpression } from "typescript";
+import React, { useEffect, useState } from "react";
+import {TableBody, TableRow, TableCell,  Divider, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
-import SearchInput from "../components/SearchInput";
-import AddButton from "../components/AddButton";
 
 
-
-
-const useStyles = makeStyles(theme => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3)
-    },
-
-}))
 
 // Header information of the table, key is the name of the 
 // property to sort by when the header is clicked 
@@ -24,7 +12,6 @@ const headCells = [
     { id: 'projects', label: 'Projects' },
     { id: 'dateOfBirth', label: 'Date of birth' },
     { id: 'created', label: 'Created' }
-
 ]
 
 // initial set of rows, simulating data from the database
@@ -36,14 +23,15 @@ const list = [
         projects: " Fontys, Rijksoverheid",
         dateOfBirth: "18-09-1999",
         created: " 18-09-2019"
-    }, 
-    {  id: "2",
+    },
+    {
+        id: "2",
         name: "Janssen, Geert",
         role: "Project Manager",
         projects: " Nationale Politie, Fontys",
         dateOfBirth: "18-0923-08-2000",
         created: "2-9-2021"
-    }, 
+    },
     {
         id: "3",
         name: "VanHaren, Ellen",
@@ -53,48 +41,38 @@ const list = [
         created: " 12-04-2021"
     }]
 
-    
+export default function Users(props: any) {
 
-export default function Users() {
-
-    const [users, setUsers] = useState(list);
+    const [users] = useState(list);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
-    const classes = useStyles();
     const [searchText, setSearchText] = React.useState('');
 
+    useEffect(() => {
+
+        handleSearch(props.searchTextInput);
+
+    }, [props]);
 
 
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        let target = e.target;
-        console.log("event", e);
-        console.log("target value", target.value);
-        setSearchText(target.value)
+    const handleSearch = (text: any): void => {
+
+        setSearchText(text)
         setFilterFn({
             fn: items => {
-                if (target.value == "") {
-                    console.log("target value is null", items);
-                    return items;
-                }
-                else {
-
-                    return items.filter((x: { name: string; }) => x.name.toLowerCase().includes(target.value))
-                }
+                if (text === "") return items;
+                else return items.filter((x: { name: string; }) => x.name.toLowerCase().includes(text))
             }
-
         })
+        setSearchText("");
     };
 
     return (
 
-        <Paper className={classes.pageContent}>
-            <Grid container>
-                <AddButton variant="outlined" size="medium">+ Create user</AddButton>
-                <Grid item sm={6} style={{ border: '1px solid #fff' }}></Grid>
-                <SearchInput placeholder={" Search..."} label={"search"} name={"search"} value={searchText} onChange={(e) => handleSearch(e)} />
-            </Grid>
+        <React.Fragment>
 
+            <Typography variant="h1">Users</Typography>
             <TblContainer>
                 <TblHead />
                 <Divider />
@@ -113,7 +91,7 @@ export default function Users() {
                 </TableBody>
             </TblContainer>
             <TblPagination />
-        </Paper>
+        </React.Fragment>
     )
 
 }
