@@ -10,7 +10,7 @@ import { DoNotDisturbAltTwoTone } from "@mui/icons-material";
 function App() {
   return (
     <div className="App">
-      <ViewTicket ticketId={5}/>
+      <ViewTicket ticketId={5} />
     </div>
   );
 }
