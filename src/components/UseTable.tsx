@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TableSortLabel, TablePagination } from '@mui/material';
+import { Table,
+         TableHead,
+         TableRow, 
+         TableCell, 
+         TableSortLabel, 
+         Pagination } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 
 
@@ -17,6 +22,26 @@ const useStyles = makeStyles({
             cursor: 'pointer',
         },
     },
+    paginationContainer: {
+
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        padding: '1em',
+        fontSize: '.75em'
+    },
+    paginationSelect: {
+        width: 45,
+        border: 0,
+    },
+    paginationSection: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    paginationText: {
+        margin: '0.75em',       
+    },
 })
 
 export default function useTable(records: any[], headCells: any[], filterFn: { fn: (arg0: any) => any; }) {
@@ -24,8 +49,8 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
 
     const classes = useStyles();
     const pages = [5, 10, 25];
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(pages[page]);
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = React.useState(pages[0]);
     type Order = 'asc' | 'desc';
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof any>('');
@@ -69,31 +94,42 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
 
 
     function TblPagination() {
-
+           
         const handleChangePage = (
-            event: React.MouseEvent<HTMLButtonElement> | null,
-            newPage: number,
-        ) => {
+            event: React.ChangeEvent<unknown> | null,
+                 newPage: number ) => {
             setPage(newPage);
         };
 
         const handleChangeRowsPerPage = (
-            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+            event: React.ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>
         ) => {
             setRowsPerPage(parseInt(event.target.value, 10));
-            setPage(0);
+            setPage(1);
         };
 
-        return (
-            <TablePagination
-                component="div"
-                rowsPerPageOptions={pages}
-                count={records.length}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+        
+        return (<div className={classes.paginationContainer}>
+            
+                <div className={classes.paginationText}>
+                    Rows Per Page:
+                </div>
+                <select onChange={handleChangeRowsPerPage} value={rowsPerPage} className={classes.paginationSelect}>
+                    {pages.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                </select>
+                <Pagination 
+                    className={classes.paginationSection}
+                    count={Math.ceil(filterFn.fn(records).length / rowsPerPage)}
+                    page={page}               
+                    onChange={handleChangePage}
+                    showFirstButton={true}
+                    showLastButton={true}
+                />
+            </div>
         );
     }
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -137,7 +173,11 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
 
     const recordsAfterPagingAndSorting = () => {
         return stableSort(filterFn.fn(records), getComparator(order, orderBy))
-            .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+              .slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    }
+
+    const resetPage = () => {
+        if (page != 1) return setPage(1)
     }
 
     return {
@@ -145,7 +185,6 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-
+        resetPage,
     }
-
 }
