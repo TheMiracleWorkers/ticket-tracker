@@ -36,7 +36,7 @@ export default function Tickets(props: any) {
   const [rowClicked, setRowClicked] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting, resetPage } =
     useTable(tickets, headCells, filterFn);
   const [searchText, setSearchText] = React.useState("");
 
@@ -45,6 +45,7 @@ export default function Tickets(props: any) {
   }, []);
 
   useEffect(() => {
+    resetPage();
     handleSearch(props.searchTextInput);
   }, [props]);
 
