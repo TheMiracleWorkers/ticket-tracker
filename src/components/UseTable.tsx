@@ -10,7 +10,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
     table: {
-        marginTop: '70px',            
+        marginTop: '20px',
         '& thead th': {
             fontWeight: '600',
         },
@@ -133,7 +133,7 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
         );
     }
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-        console.warn(a, b, orderBy)
+        // console.warn(a, b, orderBy)
         if (b[orderBy] < a[orderBy]) {
             return -1;
         }
@@ -164,7 +164,7 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
             if (order !== 0) return order;
             return a[1] - b[1];
         });
-        console.warn(stabilizedThis);
+        // console.warn(stabilizedThis);
         return stabilizedThis.map((el) => el[0]);
     }
 
@@ -177,7 +177,7 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
     }
 
     const resetPage = () => {
-        if (page != 1) return setPage(1)
+        if (page !== 1) return setPage(1)
     }
 
     return {

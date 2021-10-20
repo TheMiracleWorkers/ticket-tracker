@@ -48,11 +48,14 @@ export default function SideMenu() {
     const handleDrawerOpen = () => {
         setOpen(true);
         (document.getElementById("content") as HTMLFormElement).classList.toggle("open");
+        (document.getElementById("top-header") as HTMLFormElement).classList.toggle("open");
+
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
         (document.getElementById("content") as HTMLFormElement).classList.toggle("open");
+        (document.getElementById("top-header") as HTMLFormElement).classList.toggle("open");
     };
 
     // map of menu items

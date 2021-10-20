@@ -3,7 +3,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Divider,
   Typography,
 } from "@mui/material";
 import useTable from "../components/UseTable";
@@ -103,7 +102,6 @@ export default function Tickets(props: any) {
       <Typography variant="h1">Tickets</Typography>
       <TblContainer>
         <TblHead />
-        <Divider />
         <TableBody>
           {recordsAfterPagingAndSorting().map((item) => (
             <TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
