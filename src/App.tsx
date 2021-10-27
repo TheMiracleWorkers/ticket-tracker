@@ -129,10 +129,7 @@ function App() {
                     <Route path="/settings">
                         <Settings/>
                     </Route>
-                    <Route path="/add-ticket">
-                       <AddTicket/>
-                    </Route>
-
+                    
                 </Switch>
             </div>
         </Router>
