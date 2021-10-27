@@ -93,7 +93,8 @@ function App() {
     // }
 
     history.listen((location) => {
-        setMessage({show_message: false, message: ''})
+        setMessage({show_message: false, message: ''});
+        setSearchText("");
     })
 
     return (
