@@ -22,7 +22,7 @@ const headCells = [
   { id: "createDate", label: "Created" },
   { id: "updateDate", label: "Updated" },
 ];
-
+const maxCaracteresToDisplay = 200;
 const transportLayer = new TransportLayer();
 
 export default function Tickets(props: any) {
@@ -91,6 +91,9 @@ export default function Tickets(props: any) {
   function onModalClose() {
     setModalOpen(false);
   }
+  function displayCountCaracteres(text: string, count: number){
+    return (text.length > count) ? text.substring(0, count): text
+  }
 
   return (
     <React.Fragment>
@@ -107,7 +110,8 @@ export default function Tickets(props: any) {
             <TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
               <TableCell>{item.id} </TableCell>
               <TableCell>{item.title} </TableCell>
-              <TableCell>{item.description} </TableCell>
+              <TableCell>{displayCountCaracteres(item.description as string, maxCaracteresToDisplay)}
+              </TableCell>
               <TableCell>
                 {moment(item.dueDate).format("DD-MM-YYYY")}{" "}
               </TableCell>
