@@ -73,8 +73,16 @@ export default function Tickets(props: any) {
       fn: (items) => {
         if (text === "") return items;
         else
-          return items.filter((x: { title: string }) =>
+          return items.filter((x: { title: string,
+                                    description: string,
+                                    dueDate: Date,
+                                    createdDate: Date,
+                                    updatedDate: Date }) =>
             x.title.toLowerCase().includes(text)
+            || x.description.toLowerCase().includes(text)
+            || moment(x.dueDate).format("DD-MM-YYYY").includes(text)
+            || moment(x.createdDate).format("DD-MM-YYYY").includes(text)
+            || moment(x.updatedDate).format("DD-MM-YYYY").includes(text)
           );
       },
     });
@@ -110,16 +118,17 @@ export default function Tickets(props: any) {
             <TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
               <TableCell>{item.id} </TableCell>
               <TableCell>{item.title} </TableCell>
-              <TableCell>{displayCountCaracteres(item.description as string, maxCaracteresToDisplay)}
+              <TableCell>
+                {displayCountCaracteres(item.description as string, maxCaracteresToDisplay)}
               </TableCell>
               <TableCell>
-                {moment(item.dueDate).format("DD-MM-YYYY")}{" "}
+                {moment((item.dueDate),("DD-MM-YYYY")).isValid() ? moment(item.dueDate).format("DD-MM-YYYY") : " "}              
               </TableCell>
               <TableCell>
-                {moment(item.createDate).format("DD-MM-YYYY")}{" "}
+                {moment((item.createdDate), ("DD-MM-YYYY")).isValid() ? moment(item.createdDate).format("DD-MM-YYYY") : " "}
               </TableCell>
               <TableCell>
-                {moment(item.updateDate).format("DD-MM-YYYY")}{" "}
+                {moment((item.updatedDate), ("DD-MM-YYYY")).isValid() ? moment(item.updatedDate).format("DD-MM-YYYY") : " "}
               </TableCell>
             </TableRow>
           ))}
