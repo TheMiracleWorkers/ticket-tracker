@@ -22,7 +22,7 @@ const headCells = [
   { id: "createDate", label: "Created" },
   { id: "updateDate", label: "Updated" },
 ];
-
+const maxCaracteresToDisplay = 200;
 const transportLayer = new TransportLayer();
 
 export default function Tickets(props: any) {
@@ -73,8 +73,16 @@ export default function Tickets(props: any) {
       fn: (items) => {
         if (text === "") return items;
         else
-          return items.filter((x: { title: string }) =>
+          return items.filter((x: { title: string,
+                                    description: string,
+                                    dueDate: Date,
+                                    createdDate: Date,
+                                    updatedDate: Date }) =>
             x.title.toLowerCase().includes(text)
+            || x.description.toLowerCase().includes(text)
+            || moment(x.dueDate).format("DD-MM-YYYY").includes(text)
+            || moment(x.createdDate).format("DD-MM-YYYY").includes(text)
+            || moment(x.updatedDate).format("DD-MM-YYYY").includes(text)
           );
       },
     });
@@ -90,6 +98,9 @@ export default function Tickets(props: any) {
 
   function onModalClose() {
     setModalOpen(false);
+  }
+  function displayCountCaracteres(text: string, count: number){
+    return (text.length > count) ? text.substring(0, count): text
   }
 
   return (
@@ -107,15 +118,17 @@ export default function Tickets(props: any) {
             <TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
               <TableCell>{item.id} </TableCell>
               <TableCell>{item.title} </TableCell>
-              <TableCell>{item.description} </TableCell>
               <TableCell>
-                {moment(item.dueDate).format("DD-MM-YYYY")}{" "}
+                {displayCountCaracteres(item.description as string, maxCaracteresToDisplay)}
               </TableCell>
               <TableCell>
-                {moment(item.createDate).format("DD-MM-YYYY")}{" "}
+                {moment((item.dueDate),("DD-MM-YYYY")).isValid() ? moment(item.dueDate).format("DD-MM-YYYY") : " "}              
               </TableCell>
               <TableCell>
-                {moment(item.updateDate).format("DD-MM-YYYY")}{" "}
+                {moment((item.createdDate), ("DD-MM-YYYY")).isValid() ? moment(item.createdDate).format("DD-MM-YYYY") : " "}
+              </TableCell>
+              <TableCell>
+                {moment((item.updatedDate), ("DD-MM-YYYY")).isValid() ? moment(item.updatedDate).format("DD-MM-YYYY") : " "}
               </TableCell>
             </TableRow>
           ))}

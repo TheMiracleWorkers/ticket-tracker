@@ -93,7 +93,8 @@ function App() {
     // }
 
     history.listen((location) => {
-        setMessage({show_message: false, message: ''})
+        setMessage({show_message: false, message: ''});
+        setSearchText("");
     })
 
     return (
@@ -128,10 +129,7 @@ function App() {
                     <Route path="/settings">
                         <Settings/>
                     </Route>
-                    <Route path="/add-ticket">
-                       <AddTicket/>
-                    </Route>
-
+                    
                 </Switch>
             </div>
         </Router>

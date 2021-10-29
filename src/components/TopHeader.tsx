@@ -6,6 +6,7 @@ import {Link, useLocation} from "react-router-dom";
 
 import PropTypes from 'prop-types';
 import SearchInput from './SearchInput';
+import AddTicket from '../pages/AddTicket';
 
 TopHeader.propTypes = {
     logged_in: PropTypes.bool.isRequired,
@@ -23,6 +24,7 @@ interface TopHeaderProps {
 
 export default function TopHeader(props: TopHeaderProps) {
     const location = useLocation();
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
     let buttonText;
     switch (location.pathname) {
@@ -37,13 +39,18 @@ export default function TopHeader(props: TopHeaderProps) {
             break;
     }
 
+    function onModalClose() {
+        setModalIsOpen(false);
+    }
+
     return (
         <div id="top-header">
+            <AddTicket modalIsOpen={modalIsOpen} onClose={onModalClose} />
             <AppBar className={'app-bar'}>
                 <Toolbar>
                     {buttonText ? (
-                        <Button component={Link} to={"/add-ticket"} variant="outlined"
-                                size="medium">{buttonText}</Button>
+                        <Button variant="outlined"
+                            size="medium" onClick={() => setModalIsOpen(true)}>{buttonText} </Button>
                     ) : ("")}
                 </Toolbar>
                 <Toolbar>

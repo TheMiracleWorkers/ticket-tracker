@@ -20,7 +20,9 @@ const validationSchema = yup.object({
 });
 
 
-export default function AddTicketForm() {
+export default function AddTicketForm(props: {
+    onClose: Function;
+}) {
     const transportLayer = new TransportLayer();
     const history = useHistory();
     const formik = useFormik({
@@ -38,6 +40,7 @@ export default function AddTicketForm() {
                 // TODO: Show error
             }).then(res =>{
                 history.push('/tickets');
+                props.onClose();
             });
         },
     });
@@ -148,7 +151,7 @@ export default function AddTicketForm() {
                             <Button color="primary" variant="contained" type="submit">
                                 Submit
                             </Button>
-                            <Button color="primary" variant="outlined">
+                            <Button color="primary" variant="outlined" onClick={() => props.onClose()}>
                                 Cancel
                             </Button>
                         </Stack>
