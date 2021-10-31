@@ -22,6 +22,7 @@ const boxStyle: SxProps = {
   border: "1px solid #000",
   boxShadow: 24,
   p: 4,
+  overflow:'auto'
 };
 
 function ViewTicket(props: {

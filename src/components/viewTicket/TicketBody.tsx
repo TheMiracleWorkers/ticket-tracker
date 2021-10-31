@@ -6,16 +6,17 @@ import { TicketInterface } from "../../domainObjects/Ticket";
 function TicketBody(props: { ticket: TicketInterface | undefined }) {
   const ticket = props.ticket;
 
+
   if (ticket) {
     return (
-      <React.Fragment>
-        <Grid item xs={3} sm={6} md={10}>
+        <Grid item xs={4} sm={8} md={12}>
+
           <Typography variant="body1">
             <strong>Description</strong>
             <p>{ticket.description}</p>
           </Typography>
+
         </Grid>
-      </React.Fragment>
     );
   } else {
     return <p>loading...</p>;
