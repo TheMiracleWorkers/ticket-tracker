@@ -6,12 +6,13 @@ import Tickets from "./pages/Tickets";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import AddTicket from "./pages/AddTicket";
+import Register from "./pages/Register";
 
 import {Router, Switch, Route} from "react-router-dom";
 import {createBrowserHistory} from 'history';
 import * as React from "react";
 import {Alert} from "@mui/material";
+import PrivateRoute from "./components/PrivateRoute";
 
 // const StoreContext = React.createContext(new RootStore());
 
@@ -77,6 +78,31 @@ function App() {
             });
     }
 
+    // Register user
+    function handle_register(data: any): void {
+        fetch(process.env.REACT_APP_REST_API + 'users/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json)
+                if (json.user !== undefined) {
+                    localStorage.setItem('token', json.token);
+                    setUser({
+                        logged_in: true,
+                        username: json.user.username
+                    });
+                } else {
+                    setMessage({show_message: true, message: 'Something went wrong while trying to register user!'})
+                }
+            });
+    }
+
+
     // Get current user data
     // function get_current_user(data: any): void {
     //     if (user.logged_in) {
@@ -92,6 +118,7 @@ function App() {
     //     }
     // }
 
+    // Change variables on route change
     history.listen((location) => {
         setMessage({show_message: false, message: ''});
         setSearchText("");
@@ -100,12 +127,15 @@ function App() {
     return (
         <Router history={history}>
             <SideMenu/>
-            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in} searchText={searchText} setSearchText={setSearchText}/>
+            <TopHeader handle_logout={handle_logout} logged_in={user.logged_in} searchText={searchText}
+                       setSearchText={setSearchText}/>
 
             <div id="content">
 
                 {message.show_message ? (
-                    <Alert onClose={() => {setMessage({show_message: false, message: ''})}} className="message" severity='error'>{message.message}</Alert>
+                    <Alert onClose={() => {
+                        setMessage({show_message: false, message: ''})
+                    }} className="message" severity='error'>{message.message}</Alert>
                 ) : ("")}
 
                 <Switch>
@@ -113,6 +143,7 @@ function App() {
                     {!user.logged_in ? (
                         <Route exact path="/">
                             <Login handle_login={handle_login}/>
+                            <Register handle_register={handle_register}/>
                         </Route>
                     ) : (
                         <Route exact path="/">
@@ -120,16 +151,10 @@ function App() {
                         </Route>
                     )}
 
-                    <Route path="/tickets">
-                        <Tickets searchTextInput={searchText}/>
-                    </Route>
-                    <Route path="/users">
-                        <Users searchTextInput={searchText}/>
-                    </Route>
-                    <Route path="/settings">
-                        <Settings/>
-                    </Route>
-                    
+                    <PrivateRoute path="/tickets" component={<Tickets searchTextInput={searchText}/>} isLoggedIn={user.logged_in}/>
+                    <PrivateRoute path="/users" component={<Users searchTextInput={searchText}/>} isLoggedIn={user.logged_in}/>
+                    <PrivateRoute path="/settings" component={<Settings/>} isLoggedIn={user.logged_in}/>
+
                 </Switch>
             </div>
         </Router>

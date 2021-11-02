@@ -11,7 +11,7 @@ interface State {
     password: string;
 }
 
-export default function Login(props: { handle_login: (arg0: State) => void; }) {
+export default function Register(props: { handle_register: (arg0: State) => void; }) {
     const [values, setValues] = React.useState<State>({
         showPassword: false,
         username: '',
@@ -34,21 +34,21 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
     // Check for enter presses
     const handleKeypress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
-            props.handle_login(values);
+            props.handle_register(values);
         }
     };
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography variant="h1">Login</Typography>
+                <Typography variant="h1">Register</Typography>
             </Grid>
 
             <Grid item xs={12}>
                 <FormControl variant="standard" fullWidth>
-                    <InputLabel htmlFor="username">Username</InputLabel>
+                    <InputLabel htmlFor="r_username">Username</InputLabel>
                     <Input
-                        id="username"
+                        id="r_username"
                         value={values.username}
                         onChange={handleChange('username')}
                         onKeyPress={handleKeypress}
@@ -58,9 +58,9 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
 
             <Grid item xs={12}>
                 <FormControl variant="standard" fullWidth>
-                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <InputLabel htmlFor="r_password">Password</InputLabel>
                     <Input
-                        id="password"
+                        id="r_password"
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.password}
                         onChange={handleChange('password')}
@@ -77,18 +77,18 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
             </Grid>
 
             <Grid item xs={3}>
-                <Button type="submit" onClick={e => props.handle_login(values)} variant="outlined"
-                        fullWidth>Login</Button>
+                <Button type="submit" onClick={e => props.handle_register(values)} variant="outlined"
+                        fullWidth>Register</Button>
             </Grid>
 
             <Grid item xs={3}>
-                <Button>Don't have an account yet?</Button>
+                <Button>Already have an account?</Button>
             </Grid>
         </Grid>
     )
 }
 
 // Add prop types
-Login.propTypes = {
-    handle_login: PropTypes.func.isRequired
+Register.propTypes = {
+    handle_register: PropTypes.func.isRequired
 };
