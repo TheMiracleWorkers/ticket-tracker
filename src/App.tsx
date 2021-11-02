@@ -44,6 +44,7 @@ function App() {
     });
 
     const [message, setMessage] = React.useState({
+        status: '',
         show_message: false,
         message: '',
     });
@@ -52,6 +53,7 @@ function App() {
     function handle_logout(): void {
         localStorage.removeItem('token');
         setUser({logged_in: false, username: ''});
+        // window.location.reload();
     }
 
     // Log user in
@@ -66,14 +68,14 @@ function App() {
             .then(res => res.json())
             .then(json => {
                 if (json.user !== undefined) {
-                    setMessage({show_message: false, message: ''})
+                    setMessage({status: '', show_message: false, message: ''})
                     localStorage.setItem('token', json.token);
                     setUser({
                         logged_in: true,
                         username: json.user.username
                     });
                 } else {
-                    setMessage({show_message: true, message: 'Something went wrong while trying to login!'})
+                    setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
                 }
             });
     }
@@ -89,14 +91,10 @@ function App() {
         })
             .then(res => res.json())
             .then(json => {
-                if (json.user !== undefined) {
-                    localStorage.setItem('token', json.token);
-                    setUser({
-                        logged_in: true,
-                        username: json.user.username
-                    });
+                if (json.token !== undefined) {
+                    setMessage({status: 'success', show_message: true, message: 'Successfully registered account! Please login'})
                 } else {
-                    setMessage({show_message: true, message: 'Something went wrong while trying to register user!'})
+                    setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to register user!'})
                 }
             });
     }
@@ -119,7 +117,7 @@ function App() {
 
     // Change variables on route change
     history.listen((location) => {
-        setMessage({show_message: false, message: ''});
+        setMessage({status: '', show_message: false, message: ''});
         setSearchText("");
     })
 
@@ -131,28 +129,41 @@ function App() {
 
             <div id="content">
 
-                {message.show_message ? (
+                {message.show_message && message.status === "error" ? (
                     <Alert onClose={() => {
-                        setMessage({show_message: false, message: ''})
-                    }} className="message" severity='error'>{message.message}</Alert>
+                        setMessage({status: '', show_message: false, message: ''})
+                    }} className="message" severity="error">{message.message}</Alert>
+                ) : ("")}
+
+                {message.show_message && message.status === "success" ? (
+                    <Alert onClose={() => {
+                        setMessage({status: '', show_message: false, message: ''})
+                    }} className="message" severity="success">{message.message}</Alert>
                 ) : ("")}
 
                 <Switch>
 
                     {!user.logged_in ? (
-                        <><Route exact path="/">
+                        <Route exact path="/">
                             <Login handle_login={handle_login}/>
-                        </Route><Route path="/register">
+                        </Route>
+                    ) : (
+                        ""
+                    )}
+                    {!user.logged_in ? (
+                        <Route path="/register">
                             <Register handle_register={handle_register}/>
-                        </Route></>
+                        </Route>
                     ) : (
                         <Route exact path="/">
                             <Dashboard/>
                         </Route>
                     )}
 
-                    <PrivateRoute path="/tickets" component={<Tickets searchTextInput={searchText}/>} isLoggedIn={user.logged_in}/>
-                    <PrivateRoute path="/users" component={<Users searchTextInput={searchText}/>} isLoggedIn={user.logged_in}/>
+                    <PrivateRoute path="/tickets" component={<Tickets searchTextInput={searchText}/>}
+                                  isLoggedIn={user.logged_in}/>
+                    <PrivateRoute path="/users" component={<Users searchTextInput={searchText}/>}
+                                  isLoggedIn={user.logged_in}/>
                     <PrivateRoute path="/settings" component={<Settings/>} isLoggedIn={user.logged_in}/>
 
                 </Switch>
