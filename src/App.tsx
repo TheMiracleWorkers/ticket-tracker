@@ -89,7 +89,6 @@ function App() {
         })
             .then(res => res.json())
             .then(json => {
-                console.log(json)
                 if (json.user !== undefined) {
                     localStorage.setItem('token', json.token);
                     setUser({
@@ -141,10 +140,11 @@ function App() {
                 <Switch>
 
                     {!user.logged_in ? (
-                        <Route exact path="/">
+                        <><Route exact path="/">
                             <Login handle_login={handle_login}/>
+                        </Route><Route path="/register">
                             <Register handle_register={handle_register}/>
-                        </Route>
+                        </Route></>
                     ) : (
                         <Route exact path="/">
                             <Dashboard/>
