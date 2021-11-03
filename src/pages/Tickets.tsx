@@ -51,6 +51,10 @@ export default function Tickets(props: any) {
     handleSearch(props.searchTextInput);
   }, [props]);
 
+  useEffect(() => {
+    fetchOneTicket();
+  }, [rowClicked]);
+
   function fetchAllTicket() {
     transportLayer
       .getAllTicketsPromise()
