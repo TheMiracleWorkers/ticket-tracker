@@ -43,4 +43,12 @@ export class TransportLayer {
       data: ticket.toJSON()
     })
   }
+
+  updateTicketPromise(ticket: Ticket) {
+    return this.axiosInstance.request({
+      method: "PUT",
+      url: "/tickets/" + ticket.id + "/",
+      data: ticket.toJSON()
+    });
+  }
 }
