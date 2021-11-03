@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 import Ticket, { TicketInterface } from '../domainObjects/Ticket';
 import { TransportLayer } from '../transportation/TransportLayer';
-import { useHistory } from "react-router-dom";
 
 
 const validationSchema = yup.object({
@@ -26,7 +25,6 @@ export default function EditTicketForm(props: {
     ticket: TicketInterface | undefined
 }) {
     const transportLayer = new TransportLayer();
-    const history = useHistory();
     const ticket = props.ticket;
 
     const formik = useFormik({
@@ -48,12 +46,11 @@ export default function EditTicketForm(props: {
                 'createdDate': values.createdDate,
                 'updatedDate': values.updatedDate
             });
-            console.log("onsubmit", updateTicket.toJSON())
+            
             transportLayer.updateTicketPromise(updateTicket)
-                .then(res => {
-                    console.log(res)
-                    //    history.push('/tickets');
+                .then(res => {                 
                     props.onClose();
+                    window.location.reload();
                 }).catch(err => {
                     // TODO: Show error
                 });
@@ -62,8 +59,7 @@ export default function EditTicketForm(props: {
 
     return (
         <React.Fragment>
-
-
+            
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
