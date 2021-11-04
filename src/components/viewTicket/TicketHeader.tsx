@@ -15,6 +15,7 @@ import { TicketInterface } from "../../domainObjects/Ticket";
 function TicketHeader(props: {
   ticket: TicketInterface | undefined;
   onClose: Function;
+  onEdit: Function;
 }) {
   const ticket = props.ticket;
   let responsiveFontTheme = responsiveFontSizes(createTheme());
@@ -39,7 +40,11 @@ function TicketHeader(props: {
           alignContent={"center"}
         >
           <Grid item display={"inline"} justifyContent={"space-between"}>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                props.onEdit();
+              }}
+            >
               <EditOutlinedIcon fontSize={"large"} />
             </IconButton>
           </Grid>

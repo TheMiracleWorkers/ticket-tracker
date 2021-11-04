@@ -7,10 +7,11 @@ import {
 } from "@mui/material";
 import useTable from "../components/UseTable";
 import { TransportLayer } from "../transportation/TransportLayer";
-import Ticket from "../domainObjects/Ticket";
+import Ticket, { TicketInterface } from "../domainObjects/Ticket";
 import { AxiosResponse } from "axios";
 import moment from "moment";
 import ViewTicket from "../components/viewTicket/ViewTicket";
+import EditTicket from "./EditTicket";
 
 // Table header information, id is the name of the
 // property to sort by when the header is clicked
@@ -38,6 +39,8 @@ export default function Tickets(props: any) {
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting, resetPage } =
     useTable(tickets, headCells, filterFn);
   const [searchText, setSearchText] = React.useState("");
+  const [ticketState, setTicketState] = useState<TicketInterface>();
+  const [modalEditTicketOpen, setModalEditTicketOpen] = useState(false);
 
   useEffect(() => {
     fetchAllTicket();
@@ -47,6 +50,10 @@ export default function Tickets(props: any) {
     resetPage();
     handleSearch(props.searchTextInput);
   }, [props]);
+
+  useEffect(() => {
+    fetchOneTicket();
+  }, [rowClicked]);
 
   function fetchAllTicket() {
     transportLayer
@@ -103,12 +110,43 @@ export default function Tickets(props: any) {
     return (text.length > count) ? text.substring(0, count): text
   }
 
+  function onEditTicket() {
+    setModalOpen(false);
+    setModalEditTicketOpen(true);
+  }
+  function onModalEditTicketClose() {
+    setModalEditTicketOpen(false);
+  }
+
+
+  function fetchOneTicket() {
+    transportLayer
+      .getTicketByIdPromise(rowClicked as number)
+      .then((response: AxiosResponse) => {
+        const ticket: Ticket = new Ticket(response.data);
+        setTicketState(ticket);
+        console.log("fetchOneTicket+++++++++++++", ticket);
+        console.log("rowClicked+++++++++++++", rowClicked);
+
+      })
+      .catch((response: AxiosResponse) => {
+        // Handle error.
+        console.log(response);
+      });
+  }
+
   return (
     <React.Fragment>
       <ViewTicket
         ticketId={rowClicked}
         modalIsOpen={modalOpen}
         onClose={onModalClose}
+        onEdit={onEditTicket}
+      />
+      <EditTicket
+        modalIsOpen={modalEditTicketOpen}
+        onClose={onModalEditTicketClose}
+        ticket={ticketState}
       />
       <Typography variant="h1">Tickets</Typography>
       <TblContainer>
