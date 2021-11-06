@@ -29,6 +29,7 @@ function ViewTicket(props: {
   ticketId: number | null;
   modalIsOpen: boolean;
   onClose: Function;
+  onEdit: Function;
 }) {
   const [ticketState, setTicketState] = useState<TicketInterface>();
 
@@ -70,7 +71,7 @@ function ViewTicket(props: {
           padding={{ md: 0.6 }}
           justifyContent={"space-between"}
         >
-          <TicketHeader ticket={ticketState} onClose={props.onClose} />
+          <TicketHeader ticket={ticketState} onClose={props.onClose} onEdit={props.onEdit} /> 
           <Divider style={{ width: "100%", margin: 20 }} />
           <TicketBody ticket={ticketState} />
         </Grid>
