@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 interface State {
     showPassword: boolean;
     username: string;
+    email: string;
     password: string;
 }
 
@@ -15,6 +16,7 @@ export default function Register(props: { handle_register: (arg0: State) => void
     const [values, setValues] = React.useState<State>({
         showPassword: false,
         username: '',
+        email: '',
         password: '',
     });
 
@@ -51,6 +53,18 @@ export default function Register(props: { handle_register: (arg0: State) => void
                         id="r_username"
                         value={values.username}
                         onChange={handleChange('username')}
+                        onKeyPress={handleKeypress}
+                    />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+                <FormControl variant="standard" fullWidth>
+                    <InputLabel htmlFor="r_email">Email</InputLabel>
+                    <Input
+                        id="r_email"
+                        value={values.email}
+                        onChange={handleChange('email')}
                         onKeyPress={handleKeypress}
                     />
                 </FormControl>

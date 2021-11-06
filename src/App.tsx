@@ -82,7 +82,7 @@ function App() {
 
     // Register user
     function handle_register(data: any): void {
-        fetch(process.env.REACT_APP_REST_API + 'users/', {
+        fetch(process.env.REACT_APP_REST_API + 'register/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
