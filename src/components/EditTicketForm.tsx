@@ -37,6 +37,7 @@ export default function EditTicketForm(props: {
             createdDate: ticket?.createdDate,
             updatedDate: ticket?.updatedDate,
             assigned: "",
+            priority: ticket?.priority
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -47,6 +48,7 @@ export default function EditTicketForm(props: {
                 'due_date': values.dueDate && new Date(values.dueDate),
                 'created_at': ticket?.createdDate,
                 'updated_at': ticket?.updatedDate,
+                'priority': values.priority
             });
             
             transportLayer.updateTicketPromise(updateTicket)
@@ -140,7 +142,8 @@ export default function EditTicketForm(props: {
                             label="Priority"
                             fullWidth
                             variant="standard"
-                            disabled
+                            value={formik.values.priority}
+                            onChange={formik.handleChange}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>

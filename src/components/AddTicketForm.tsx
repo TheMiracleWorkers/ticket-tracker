@@ -29,12 +29,14 @@ export default function AddTicketForm(props: {
         initialValues: {
             title: '',
             description: '',
+            priority: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
             const newTicket = new Ticket({
                 'title': values.title,
-                'description': values.description
+                'description': values.description,
+                'priority': values.priority
             });
             transportLayer.postTicket(newTicket).catch(err => {
                 // TODO: Show error
@@ -115,7 +117,8 @@ export default function AddTicketForm(props: {
                             label="Priority"
                             fullWidth
                             variant="standard"
-                            disabled
+                            value={formik.values.priority}
+                            onChange={formik.handleChange}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
