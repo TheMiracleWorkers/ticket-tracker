@@ -101,7 +101,7 @@ function TicketHeader(props: {
           </Grid>
           <Grid item xs={4} sm={2} md={2}>
             <Typography variant="body1" fontSize={"small"}>
-              <strong>Priority:</strong> Placeholder
+              <strong>Priority:</strong> {ticket.priority}
             </Typography>
           </Grid>
         </Grid>
