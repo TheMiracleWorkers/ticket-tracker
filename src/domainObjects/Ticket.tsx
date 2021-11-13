@@ -29,7 +29,7 @@ export default class Ticket implements TicketInterface{
             id: this.id ? this.id : '',
             title: this.title,
             description: this.description,
-            due_date: this.dueDate ? this.dueDate.toUTCString() : null,
+            due_date: this.dueDate ? this.dueDate.toISOString() : null,
             created_at: this.createdDate?.toUTCString(),
             updated_at: this.createdDate?.toUTCString()
         }

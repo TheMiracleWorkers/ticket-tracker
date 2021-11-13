@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 import Ticket, { TicketInterface } from '../domainObjects/Ticket';
 import { TransportLayer } from '../transportation/TransportLayer';
+import { DateTimePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 
 const validationSchema = yup.object({
@@ -42,9 +44,9 @@ export default function EditTicketForm(props: {
                 'id': ticket?.id,
                 'title': values.title,
                 'description': values.description,
-                'dueDate': values.dueDate,
-                'createdDate': values.createdDate,
-                'updatedDate': values.updatedDate
+                'due_date': values.dueDate && new Date(values.dueDate),
+                'created_at': ticket?.createdDate,
+                'updated_at': ticket?.updatedDate,
             });
             
             transportLayer.updateTicketPromise(updateTicket)
@@ -111,18 +113,24 @@ export default function EditTicketForm(props: {
                         />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                        <TextField
-                            required
-                            id="due_date"
-                            name="due_date"
-                            label="Due Date"
-                            fullWidth
-                            variant="standard"
-                            value={formik.values.dueDate}
-                            onChange={formik.handleChange}
-                            disabled
+                        <LocalizationProvider dateAdapter={AdapterDateFns} >
+                            <DateTimePicker
+                                label="Due Date"
+                                value={formik.values.dueDate}
+                                inputFormat="dd-MM-yyyy HH:mm"
+                                onChange={value => formik.setFieldValue("dueDate", value)}
 
-                        />
+                                renderInput={(params) => <TextField
+                                    required
+                                    id="due_date"
+                                    name="due_date"
+                                    label="Due Date"
+                                    fullWidth
+                                    variant="standard"
+                                    {...params}
+                                />}
+                            />
+                        </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12} sm={1}>
                         <TextField
