@@ -4,16 +4,17 @@ import useTable from "../components/UseTable";
 import { TransportUsers } from "../transportation/TransportUsers";
 import User, { UserInterface } from "../domainObjects/User";
 import {AxiosResponse} from "axios";
+import moment from "moment";
 
 const transportLayer = new TransportUsers();
 // Header information of the table, key is the name of the 
 // property to sort by when the header is clicked 
 const headCells = [
-    { id: 'name', label: 'Name' },
-    { id: 'role', label: 'Role' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'dateOfBirth', label: 'Date of birth' },
-    { id: 'created', label: 'Created' }
+    { id: 'username', label: 'Name' },
+    { id: 'email', label: 'Email' },
+    { id: 'groups', label: 'Roles' },
+    { id: 'last_login', label: 'Last Login' },
+    { id: 'date_joined', label: 'Created' }
 ]
 
 export default function Users(props: any) {
@@ -27,7 +28,6 @@ export default function Users(props: any) {
     useEffect(() => {
         fetchAllUsers();
     }, []);
-
 
     useEffect(() => {
         handleSearch(props.searchTextInput);
@@ -75,11 +75,11 @@ export default function Users(props: any) {
                     {
                         recordsAfterPagingAndSorting().map(item =>
                         (<TableRow key={item.id}>
-                            <TableCell>{item.name} </TableCell>
-                            <TableCell>{item.role} </TableCell>
-                            <TableCell>{item.projects} </TableCell>
-                            < TableCell > {item.dateOfBirth} </TableCell>
-                            <TableCell>{item.created} </TableCell>
+                            <TableCell>{item.username} </TableCell>
+                            <TableCell>{item.email} </TableCell>
+                            <TableCell>{item.groups} </TableCell>
+                            <TableCell>{moment(item.last_login).format('DD-MM-YYYY HH:mm')} </TableCell>
+                            <TableCell>{moment(item.date_joined).format('DD-MM-YYYY HH:mm')} </TableCell>
                         </TableRow>))
                     }
 

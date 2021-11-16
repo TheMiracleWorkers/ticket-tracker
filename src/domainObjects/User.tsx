@@ -1,37 +1,41 @@
 export interface UserInterface {
     id: number | null;
-    name: string;
-    role: string;
-    projects: string;
-    dateOfBirth: Date | null;
-    created: Date | null;
+    url: string;
+    username: string;
+    email: string;
+    groups: string[];
+    last_login: string | null;
+    date_joined: string | null;
 }
 
 export default class User implements UserInterface{
     id: number;
-    name: string;
-    role: string;
-    projects: string;
-    dateOfBirth: Date | null;
-    created: Date | null;
+    url: string;
+    username: string;
+    email: string;
+    groups: string[];
+    last_login: string | null;
+    date_joined: string | null;
 
     constructor(json: any) {
         this.id = json.id ? json.id : null;
-        this.name = json.name;
-        this.role = json.role;
-        this.projects = json.projects;
-        this.dateOfBirth = json.dateOfBirth ? new Date(json.dateOfBirth) : null;
-        this.created = json.created ? new Date(json.created) : null;
+        this.url = json.url;
+        this.username = json.username;
+        this.email = json.email;
+        this.groups = json.groups ? json.groups : null;
+        this.last_login = json.last_login ? json.last_login : null;
+        this.date_joined = json.date_joined ? json.date_joined : null;
     }
 
     toJSON() {
         return {
             id: this.id ? this.id : '',
-            title: this.name,
-            description: this.role,
-            due_date: this.projects,
-            created_at: this.dateOfBirth,
-            updated_at: this.created
+            url: this.url,
+            username: this.username,
+            email: this.email,
+            groups: this.groups,
+            last_login: this.last_login,
+            date_joined: this.date_joined,
         }
     }
 }

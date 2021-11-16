@@ -99,21 +99,26 @@ function App() {
             });
     }
 
-
-    // Get current user data
-    // function get_current_user(data: any): void {
-    //     if (user.logged_in) {
-    //         fetch(process.env.REACT_APP_REST_API + 'current-user', {
-    //             headers: {
-    //                 Authorization: `JWT ${localStorage.getItem('token')}`
-    //             }
-    //         })
-    //             .then(res => res.json())
-    //             .then(json => {
-    //                 console.log(json.username)
-    //             });
-    //     }
-    // }
+    // Refresh token
+    setInterval(function () {
+        fetch(process.env.REACT_APP_REST_API + 'token-refresh/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: "Token: " + localStorage.getItem('token')
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (json.user !== undefined) {
+                    localStorage.setItem('token', json.token);
+                    setUser({
+                        logged_in: true,
+                        username: json.user.username
+                    });
+                }
+            });
+    },275000);
 
     // Change variables on route change
     history.listen((location) => {
