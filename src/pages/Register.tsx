@@ -2,12 +2,13 @@ import * as React from 'react';
 
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
-
+import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 
 interface State {
     showPassword: boolean;
     username: string;
+    email: string;
     password: string;
 }
 
@@ -15,6 +16,7 @@ export default function Register(props: { handle_register: (arg0: State) => void
     const [values, setValues] = React.useState<State>({
         showPassword: false,
         username: '',
+        email: '',
         password: '',
     });
 
@@ -58,6 +60,18 @@ export default function Register(props: { handle_register: (arg0: State) => void
 
             <Grid item xs={12}>
                 <FormControl variant="standard" fullWidth>
+                    <InputLabel htmlFor="r_email">Email</InputLabel>
+                    <Input
+                        id="r_email"
+                        value={values.email}
+                        onChange={handleChange('email')}
+                        onKeyPress={handleKeypress}
+                    />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+                <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="r_password">Password</InputLabel>
                     <Input
                         id="r_password"
@@ -82,7 +96,7 @@ export default function Register(props: { handle_register: (arg0: State) => void
             </Grid>
 
             <Grid item xs={3}>
-                <Button>Already have an account?</Button>
+                <Button component={Link} to="/">Already have an account?</Button>
             </Grid>
         </Grid>
     )
