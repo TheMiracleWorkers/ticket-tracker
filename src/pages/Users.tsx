@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import { TransportUsers } from "../transportation/TransportUsers";
-import User, { UserInterface } from "../domainObjects/User";
+import User from "../domainObjects/User";
 import {AxiosResponse} from "axios";
 import moment from "moment";
 
@@ -22,8 +22,7 @@ export default function Users(props: any) {
     const [users, setUsers] = useState<User[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
-    const [searchText, setSearchText] = React.useState('');
-    const [userState, setUserState] = useState<UserInterface>();
+    const [, setSearchText] = React.useState('');
 
     useEffect(() => {
         fetchAllUsers();
@@ -58,7 +57,7 @@ export default function Users(props: any) {
         setFilterFn({
             fn: items => {
                 if (text === "") return items;
-                else return items.filter((x: { name: string; }) => x.name.toLowerCase().includes(text))
+                else return items.filter((x: { username: string; }) => x.username.toLowerCase().includes(text))
             }
         })
         setSearchText("");

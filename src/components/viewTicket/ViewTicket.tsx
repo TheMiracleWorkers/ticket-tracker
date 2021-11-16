@@ -79,7 +79,6 @@ function ViewTicket(props: {
     </Modal>
   );
 
-  function handleOpen() {}
 }
 
 export default ViewTicket;

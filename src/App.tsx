@@ -14,26 +14,8 @@ import * as React from "react";
 import {Alert} from "@mui/material";
 import PrivateRoute from "./components/PrivateRoute";
 
-// const StoreContext = React.createContext(new RootStore());
-
-// const StoreProvider: React.FC = ({ children }) => {
-//   const store = useContext(StoreContext);
-//   return (
-//     <StoreContext.Provider value={store}> {children} </StoreContext.Provider>
-//   );
-// };
-
-// const Example = observer(() => {
-//   const rootStore = useContext(StoreContext);
-//   var interval = setInterval(
-//     () => rootStore.ticketStore.ticketArray[0].id++,
-//     1000
-//   );
-
-//   return <p>{rootStore.ticketStore.ticketArray[0].id}</p>;
-// });
-
 const history = createBrowserHistory();
+let refreshInterval: NodeJS.Timeout
 
 function App() {
 
@@ -53,7 +35,7 @@ function App() {
     function handle_logout(): void {
         localStorage.removeItem('token');
         setUser({logged_in: false, username: ''});
-        // window.location.reload();
+        clearInterval(refreshInterval)
     }
 
     // Log user in
@@ -74,6 +56,9 @@ function App() {
                         logged_in: true,
                         username: json.user.username
                     });
+                    // Refresh token
+                    refresh_token()
+                    startInterval()
                 } else {
                     setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
                 }
@@ -100,13 +85,21 @@ function App() {
     }
 
     // Refresh token
-    setInterval(function () {
+    function startInterval(): void {
+        if (user.logged_in) {
+            refreshInterval = setInterval(function () {
+                refresh_token()
+            }, 500000);
+        }
+    }
+
+    function refresh_token(): void {
         fetch(process.env.REACT_APP_REST_API + 'token-refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: "Token: " + localStorage.getItem('token')
+            body: JSON.stringify({token: localStorage.getItem('token')})
         })
             .then(res => res.json())
             .then(json => {
@@ -116,15 +109,22 @@ function App() {
                         logged_in: true,
                         username: json.user.username
                     });
+                } else {
+                    handle_logout()
                 }
             });
-    },275000);
+    }
 
     // Change variables on route change
     history.listen((location) => {
         setMessage({status: '', show_message: false, message: ''});
         setSearchText("");
     })
+
+    // Start interval on page load
+    window.addEventListener('load', (event) => {
+        startInterval()
+    });
 
     return (
         <Router history={history}>
