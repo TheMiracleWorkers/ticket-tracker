@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import useTable from "../components/UseTable";
 import { TransportLayer } from "../transportation/TransportLayer";
-import Ticket, { TicketInterface } from "../domainObjects/Ticket";
+import Ticket from "../domainObjects/Ticket";
 import { AxiosResponse } from "axios";
 import moment from "moment";
 import ViewTicket from "../components/viewTicket/ViewTicket";
@@ -33,13 +33,12 @@ export default function Tickets(props: any) {
       return tickets;
     },
   });
-  const [rowClicked, setRowClicked] = useState<number | null>(null);
+  const [rowClicked, setRowClicked] = useState<number | null>(1);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting, resetPage } =
     useTable(tickets, headCells, filterFn);
   const [searchText, setSearchText] = React.useState("");
-  const [ticketState, setTicketState] = useState<TicketInterface>();
   const [modalEditTicketOpen, setModalEditTicketOpen] = useState(false);
 
   useEffect(() => {
@@ -51,9 +50,7 @@ export default function Tickets(props: any) {
     handleSearch(props.searchTextInput);
   }, [props]);
 
-  useEffect(() => {
-    fetchOneTicket();
-  }, [rowClicked]);
+
 
   function fetchAllTicket() {
     transportLayer
@@ -118,23 +115,6 @@ export default function Tickets(props: any) {
     setModalEditTicketOpen(false);
   }
 
-
-  function fetchOneTicket() {
-    transportLayer
-      .getTicketByIdPromise(rowClicked as number)
-      .then((response: AxiosResponse) => {
-        const ticket: Ticket = new Ticket(response.data);
-        setTicketState(ticket);
-        console.log("fetchOneTicket+++++++++++++", ticket);
-        console.log("rowClicked+++++++++++++", rowClicked);
-
-      })
-      .catch((response: AxiosResponse) => {
-        // Handle error.
-        console.log(response);
-      });
-  }
-
   return (
     <React.Fragment>
       <ViewTicket
@@ -146,7 +126,7 @@ export default function Tickets(props: any) {
       <EditTicket
         modalIsOpen={modalEditTicketOpen}
         onClose={onModalEditTicketClose}
-        ticket={ticketState}
+        ticketId={rowClicked}
       />
       <Typography variant="h1">Tickets</Typography>
       <TblContainer>
