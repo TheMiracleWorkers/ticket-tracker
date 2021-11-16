@@ -4,9 +4,11 @@ import TextField from '@mui/material/TextField';
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
-import { Stack } from "@mui/material";
+import { MenuItem, Stack } from "@mui/material";
 import Ticket, { TicketInterface } from '../domainObjects/Ticket';
 import { TransportLayer } from '../transportation/TransportLayer';
+import { DateTimePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 
 const validationSchema = yup.object({
@@ -26,7 +28,21 @@ export default function EditTicketForm(props: {
 }) {
     const transportLayer = new TransportLayer();
     const ticket = props.ticket;
-
+    const priorities = [
+        {
+            label: 'LOW',
+            value: 1,
+        },
+        {
+            label: 'MEDIUM',
+            value: 2,
+        },
+        {
+            label: 'HIGH',
+            value: 3,
+        }
+    ];
+    
     const formik = useFormik({
         initialValues: {
             title: ticket?.title,
@@ -35,6 +51,7 @@ export default function EditTicketForm(props: {
             createdDate: ticket?.createdDate,
             updatedDate: ticket?.updatedDate,
             assigned: "",
+            priority: ticket?.priority
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -42,9 +59,10 @@ export default function EditTicketForm(props: {
                 'id': ticket?.id,
                 'title': values.title,
                 'description': values.description,
-                'dueDate': values.dueDate,
-                'createdDate': values.createdDate,
-                'updatedDate': values.updatedDate
+                'due_date': values.dueDate && new Date(values.dueDate),
+                'created_at': ticket?.createdDate,
+                'updated_at': ticket?.updatedDate,
+                'priority': values.priority
             });
             
             transportLayer.updateTicketPromise(updateTicket)
@@ -85,7 +103,6 @@ export default function EditTicketForm(props: {
                             fullWidth
                             variant="standard"
                             disabled
-
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -111,29 +128,44 @@ export default function EditTicketForm(props: {
                         />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                        <TextField
-                            required
-                            id="due_date"
-                            name="due_date"
-                            label="Due Date"
-                            fullWidth
-                            variant="standard"
-                            value={formik.values.dueDate}
-                            onChange={formik.handleChange}
-                            disabled
-
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDateFns} >
+                            <DateTimePicker
+                                label="Due Date"
+                                value={formik.values.dueDate}
+                                inputFormat="dd-MM-yyyy HH:mm"
+                                onChange={value => formik.setFieldValue("dueDate", value)}
+                                minDate={formik.initialValues.createdDate}
+                                maxDate={new Date()}
+                                renderInput={(params) => <TextField
+                                id="due_date"
+                                name="due_date"
+                                label="Due Date"
+                                fullWidth
+                                variant="standard"
+                                {...params}
+                                />}
+                            />
+                        </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12} sm={1}>
                         <TextField
+                            select
                             required
                             id="priority"
                             name="priority"
                             label="Priority"
                             fullWidth
                             variant="standard"
-                            disabled
-                        />
+                            value={formik.values.priority}
+                            onChange={event => formik.setFieldValue("priority", (event.target.value))}
+                            onBlur={formik.handleBlur}                     
+                        >
+                        {priorities.map((option)=> (
+                            <MenuItem key={option.label} value={option.value}>
+                                {option.value}
+                            </MenuItem>                            
+                        ))}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
