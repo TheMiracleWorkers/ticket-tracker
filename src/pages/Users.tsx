@@ -5,6 +5,8 @@ import { TransportUsers } from "../transportation/TransportUsers";
 import User from "../domainObjects/User";
 import {AxiosResponse} from "axios";
 import moment from "moment";
+import EditUser from "./EditUser";
+import {UserInterface} from "../domainObjects/User";
 
 const transportLayer = new TransportUsers();
 // Header information of the table, key is the name of the 
@@ -18,11 +20,15 @@ const headCells = [
 ]
 
 export default function Users(props: any) {
+    const [rowClicked, setRowClicked] = useState<number | null>(null);
+    const [modalEditUserOpen, setModalEditUserOpen] = useState(false);
 
     const [users, setUsers] = useState<User[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [, setSearchText] = React.useState('');
+    const [userState, setUserState] = useState<UserInterface>();
+
 
     useEffect(() => {
         fetchAllUsers();
@@ -31,6 +37,10 @@ export default function Users(props: any) {
     useEffect(() => {
         handleSearch(props.searchTextInput);
     }, [props]);
+
+    useEffect(() => {
+        fetchOneUser();
+    }, [rowClicked]);
 
     function fetchAllUsers() {
         transportLayer
@@ -51,6 +61,20 @@ export default function Users(props: any) {
             });
     }
 
+    function fetchOneUser() {
+        transportLayer
+            .getUserByIdPromise(rowClicked as number)
+            .then((response: AxiosResponse) => {
+                const user: User = new User(response.data);
+                setUserState(user);
+
+            })
+            .catch((response: AxiosResponse) => {
+                // Handle error.
+                console.log(response);
+            });
+    }
+
     const handleSearch = (text: any): void => {
 
         setSearchText(text)
@@ -63,17 +87,30 @@ export default function Users(props: any) {
         setSearchText("");
     };
 
+    function onModalEditUserClose() {
+        setModalEditUserOpen(false);
+    }
+
+    function handleClickEvent(ticketId: number | string) {
+        const id = ticketId as number;
+        setRowClicked(id);
+        setModalEditUserOpen(true);
+    }
+
     return (
-
         <React.Fragment>
-
+            <EditUser
+                modalIsOpen={modalEditUserOpen}
+                onClose={onModalEditUserClose}
+                user={userState}
+            />
             <Typography variant="h1">Users</Typography>
             <TblContainer>
                 <TblHead />
                 <TableBody>
                     {
                         recordsAfterPagingAndSorting().map(item =>
-                        (<TableRow key={item.id}>
+                        (<TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
                             <TableCell>{item.username} </TableCell>
                             <TableCell>{item.email} </TableCell>
                             <TableCell>{item.groups} </TableCell>
