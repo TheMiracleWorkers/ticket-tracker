@@ -38,7 +38,8 @@ export default function Tickets(props: any) {
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting, resetPage } =
     useTable(tickets, headCells, filterFn);
-  const [searchText, setSearchText] = React.useState("");
+  const [, setSearchText] = React.useState("");
+  const [ticketState, setTicketState] = useState<TicketInterface>();
   const [modalEditTicketOpen, setModalEditTicketOpen] = useState(false);
 
   useEffect(() => {

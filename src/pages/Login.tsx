@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
-
+import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 
 interface State {
@@ -82,7 +82,7 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
             </Grid>
 
             <Grid item xs={3}>
-                <Button>Don't have an account yet?</Button>
+                <Button component={Link} to="/register">Don't have an account yet?</Button>
             </Grid>
         </Grid>
     )
