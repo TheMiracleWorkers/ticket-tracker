@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Box, Grid, Modal, Typography } from "@mui/material";
 import EditUserForm from "../components/EditUserForm";
 import { SxProps } from "@mui/system";
-import { UserInterface } from '../domainObjects/User';
+import {UserInterface} from "../domainObjects/User";
 
 export default function EditUser(props: {
-    modalIsOpen: boolean;
     onClose: Function;
     user: UserInterface | undefined;
 }) {
@@ -25,7 +24,7 @@ export default function EditUser(props: {
 
     return (
         <div>
-            <Modal open={props.modalIsOpen}>
+            <Modal open={true}>
                 <Box sx={boxStyle}>
                     <Grid
                         container

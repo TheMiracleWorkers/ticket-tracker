@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import { TransportUsers } from "../transportation/TransportUsers";
-import User from "../domainObjects/User";
+import User, {UserInterface} from "../domainObjects/User";
 import {AxiosResponse} from "axios";
 import moment from "moment";
 import EditUser from "./EditUser";
-import {UserInterface} from "../domainObjects/User";
 
 const transportLayer = new TransportUsers();
 // Header information of the table, key is the name of the 
@@ -20,15 +19,13 @@ const headCells = [
 ]
 
 export default function Users(props: any) {
-    const [rowClicked, setRowClicked] = useState<number | null>(null);
     const [modalEditUserOpen, setModalEditUserOpen] = useState(false);
 
     const [users, setUsers] = useState<User[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [, setSearchText] = React.useState('');
-    const [userState, setUserState] = useState<UserInterface>();
-
+    const [userToUpdate, setUserToUpdate] = useState<UserInterface>();
 
     useEffect(() => {
         fetchAllUsers();
@@ -37,10 +34,6 @@ export default function Users(props: any) {
     useEffect(() => {
         handleSearch(props.searchTextInput);
     }, [props]);
-
-    useEffect(() => {
-        fetchOneUser();
-    }, [rowClicked]);
 
     function fetchAllUsers() {
         transportLayer
@@ -61,22 +54,7 @@ export default function Users(props: any) {
             });
     }
 
-    function fetchOneUser() {
-        transportLayer
-            .getUserByIdPromise(rowClicked as number)
-            .then((response: AxiosResponse) => {
-                const user: User = new User(response.data);
-                setUserState(user);
-
-            })
-            .catch((response: AxiosResponse) => {
-                // Handle error.
-                console.log(response);
-            });
-    }
-
     const handleSearch = (text: any): void => {
-
         setSearchText(text)
         setFilterFn({
             fn: items => {
@@ -91,19 +69,33 @@ export default function Users(props: any) {
         setModalEditUserOpen(false);
     }
 
-    function handleClickEvent(ticketId: number | string) {
-        const id = ticketId as number;
-        setRowClicked(id);
-        setModalEditUserOpen(true);
+    function handleClickEvent(userId: number | string) {
+        const id = userId as number;
+
+        // Get user
+        new TransportUsers()
+            .getUserByIdPromise(id as number)
+            .then((response: AxiosResponse) => {
+                const user: User = new User(response.data);
+                setUserToUpdate(user);
+
+                // Open modal
+                setModalEditUserOpen(true);
+            })
+            .catch((response: AxiosResponse) => {
+                // Handle error.
+                console.log(response);
+            });
     }
 
     return (
         <React.Fragment>
+            {modalEditUserOpen ? (
             <EditUser
-                modalIsOpen={modalEditUserOpen}
                 onClose={onModalEditUserClose}
-                user={userState}
+                user={userToUpdate}
             />
+            ) : ("")}
             <Typography variant="h1">Users</Typography>
             <TblContainer>
                 <TblHead />

@@ -13,7 +13,7 @@ export default function EditUserForm(props: {
 }) {
     const transportLayer = new TransportUsers();
     const user = props.user;
-    
+
     const formik = useFormik({
         initialValues: {
             username: user?.username,
@@ -56,6 +56,7 @@ export default function EditUserForm(props: {
                             fullWidth
                             variant="standard"
                             value={formik.values.username}
+                            onChange={formik.handleChange}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -67,6 +68,7 @@ export default function EditUserForm(props: {
                             fullWidth
                             variant="standard"
                             value={formik.values.email}
+                            onChange={formik.handleChange}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -77,11 +79,11 @@ export default function EditUserForm(props: {
                             label="Roles"
                             fullWidth
                             variant="standard"
-                            value={formik.values.groups}
+                            value={(formik.values.groups) ? formik.values.groups : ''}
+                            onChange={formik.handleChange}
                         >
-                            <MenuItem key="TBD" value="TBD">
-                                TBD
-                            </MenuItem>
+                            <MenuItem key="" value="" disabled>Select role</MenuItem>
+                            <MenuItem key="TBD" value="TBD">TBD</MenuItem>
                         </TextField>
                     </Grid>
 
