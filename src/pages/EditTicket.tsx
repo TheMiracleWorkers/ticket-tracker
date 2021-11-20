@@ -1,14 +1,16 @@
-import * as React from 'react';
 import { Box, Grid, Modal, Typography } from "@mui/material";
 import EditTicketForm from "../components/EditTicketForm";
 import { SxProps } from "@mui/system";
-import { TicketInterface } from '../domainObjects/Ticket';
+import Ticket, { TicketInterface } from '../domainObjects/Ticket';
+import { AxiosResponse } from 'axios';
+import { TransportLayer } from '../transportation/TransportLayer';
+import { useEffect, useState } from 'react';
 
 export default function EditTicket(props: {
 
     modalIsOpen: boolean;
     onClose: Function;
-    ticket: TicketInterface | undefined;
+    ticketId: number | null;
 }) {
 
     const boxStyle: SxProps = {
@@ -24,7 +26,25 @@ export default function EditTicket(props: {
         p: 4,
     };
 
+    const transportLayer = new TransportLayer();
+    const [ticketToUpdate, setTicketToUpdate] = useState<TicketInterface>();
 
+    useEffect(() => {
+         fetchOneTicket();       
+    }, [props.modalIsOpen]);
+
+    function fetchOneTicket() {
+        transportLayer
+            .getTicketByIdPromise(props.ticketId as number)
+            .then((response: AxiosResponse) => {
+                const ticket: Ticket = new Ticket(response.data);
+                setTicketToUpdate(ticket);
+            })
+            .catch((response: AxiosResponse) => {
+                // Handle error.
+                console.log(response);
+            });
+    }    
     return (
         <div>
             <Modal
@@ -39,11 +59,10 @@ export default function EditTicket(props: {
                         justifyContent={"space-between"}
                     >
                         <Typography variant="h4">Edit Ticket</Typography>
-                        <EditTicketForm onClose={props.onClose} ticket={props.ticket} />
+                        <EditTicketForm onClose={props.onClose} ticket={ticketToUpdate} />
                     </Grid>
                 </Box>
-            </Modal>
-            
+            </Modal>            
         </div>
     )
 }
