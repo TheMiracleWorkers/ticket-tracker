@@ -10,6 +10,8 @@ import {TransportLayer} from '../transportation/TransportLayer';
 import { useHistory } from "react-router-dom";
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {useEffect, useState} from "react";
+import Project from "../domainObjects/Project";
 
 const validationSchema = yup.object({
     title: yup
@@ -28,8 +30,10 @@ const validationSchema = yup.object({
 export default function AddTicketForm(props: {
     onClose: Function;
 }) {
+    const [projects, setProjects] = useState<Project[]>([]);
     const transportLayer = new TransportLayer();
     const history = useHistory();
+
     const priorities = [
         {
             label: 'LOW',
@@ -44,12 +48,29 @@ export default function AddTicketForm(props: {
             value: 3,
         }
     ];
+
+    function getAllProjects() {
+        transportLayer.getAllProjectPromise().then((response: any) => {
+            const allProjects: Project[] = response.data.map(
+                (responseElement: any) => new Project(responseElement)
+            );
+            setProjects(allProjects);
+            console.log(projects);
+        })
+    }
+
+    useEffect(() => {
+        getAllProjects();
+    }, []);
+
+
     const formik = useFormik({
         initialValues: {
             title: '',
             description: '',
             dueDate: null,
-            priority: ''
+            priority: '',
+            project: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -57,7 +78,8 @@ export default function AddTicketForm(props: {
                 'title': values.title,
                 'description': values.description,
                 'due_date': values.dueDate && new Date(values.dueDate),
-                'priority': values.priority
+                'priority': values.priority,
+                'project': values.project,
             });
             transportLayer.postTicket(newTicket).catch(err => {
                 // TODO: Show error
@@ -88,14 +110,23 @@ export default function AddTicketForm(props: {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
+                            select
                             required
                             id="project"
                             name="project"
                             label="Project"
                             fullWidth
                             variant="standard"
-                            disabled
-                        />
+                            value={formik.values.project}
+                            onChange={event => formik.setFieldValue("project", (event.target.value))}
+                            onBlur={formik.handleBlur}
+                        >
+                            {projects.map((option) => (
+                                <MenuItem key={option.id} value={option.id}>
+                                    {option.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField

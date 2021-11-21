@@ -19,6 +19,7 @@ const headCells = [
   { id: "id", label: " Number" },
   { id: "title", label: "Title" },
   { id: "description", label: "Description" },
+  { id: "project_name", label: "Project"},
   { id: "dueDate", label: "Due" },
   { id: "createDate", label: "Created" },
   { id: "updateDate", label: "Updated" },
@@ -139,6 +140,7 @@ export default function Tickets(props: any) {
               <TableCell>
                 {displayCountCaracteres(item.description as string, maxCaracteresToDisplay)}
               </TableCell>
+              <TableCell>{item.project_name} </TableCell>
               <TableCell>
                 {moment((item.dueDate),("DD-MM-YYYY")).isValid() ? moment(item.dueDate).format("DD-MM-YYYY") : " "}              
               </TableCell>
