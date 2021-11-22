@@ -13,6 +13,7 @@ import {createBrowserHistory} from 'history';
 import * as React from "react";
 import {Alert} from "@mui/material";
 import PrivateRoute from "./components/PrivateRoute";
+import Projects from "./pages/Projects";
 
 const history = createBrowserHistory();
 let refreshInterval: NodeJS.Timeout
@@ -170,6 +171,8 @@ function App() {
                     <PrivateRoute path="/users" component={<Users searchTextInput={searchText}/>}
                                   isLoggedIn={user.logged_in}/>
                     <PrivateRoute path="/settings" component={<Settings/>} isLoggedIn={user.logged_in}/>
+                    <PrivateRoute path="/projects" component={<Projects/>} isLoggedIn={user.logged_in}/>
+
 
                 </Switch>
             </div>

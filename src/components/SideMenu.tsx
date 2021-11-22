@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {ChevronLeft, ChevronRight, Home, FormatListBulleted, Settings, PersonOutline} from '@mui/icons-material';
+import {ChevronLeft, ChevronRight, Home, FormatListBulleted, Settings, PersonOutline, AccountTree} from '@mui/icons-material';
 import {Drawer as MuiDrawer, List, Divider, ListItem, ListItemIcon, ListItemText, styled, Theme, CSSObject} from '@mui/material';
 import {Link} from "react-router-dom";
 
@@ -71,15 +71,21 @@ export default function SideMenu() {
             "to": "/tickets",
         },
         2: {
+            "text": "Projects",
+            "element": <AccountTree/>,
+            "to": "/projects",
+        },
+        3: {
             "text": "Users",
             "element": <PersonOutline/>,
             "to": "/users",
         },
-        3: {
+        4: {
             "text": "Settings",
             "element": <Settings/>,
             "to": "/settings",
         }
+        
     }
 
     return (
