@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import { TransportUsers } from "../transportation/TransportUsers";
-import User from "../domainObjects/User";
+import User, {UserInterface} from "../domainObjects/User";
 import {AxiosResponse} from "axios";
 import moment from "moment";
+import EditUser from "./EditUser";
 
 const transportLayer = new TransportUsers();
 // Header information of the table, key is the name of the 
@@ -18,11 +19,13 @@ const headCells = [
 ]
 
 export default function Users(props: any) {
+    const [modalEditUserOpen, setModalEditUserOpen] = useState(false);
 
     const [users, setUsers] = useState<User[]>([]);
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return users; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [, setSearchText] = React.useState('');
+    const [userToUpdate, setUserToUpdate] = useState<UserInterface>();
 
     useEffect(() => {
         fetchAllUsers();
@@ -52,7 +55,6 @@ export default function Users(props: any) {
     }
 
     const handleSearch = (text: any): void => {
-
         setSearchText(text)
         setFilterFn({
             fn: items => {
@@ -63,17 +65,44 @@ export default function Users(props: any) {
         setSearchText("");
     };
 
+    function onModalEditUserClose() {
+        setModalEditUserOpen(false);
+    }
+
+    function handleClickEvent(userId: number | string) {
+        const id = userId as number;
+
+        // Get user
+        new TransportUsers()
+            .getUserByIdPromise(id as number)
+            .then((response: AxiosResponse) => {
+                const user: User = new User(response.data);
+                setUserToUpdate(user);
+
+                // Open modal
+                setModalEditUserOpen(true);
+            })
+            .catch((response: AxiosResponse) => {
+                // Handle error.
+                console.log(response);
+            });
+    }
+
     return (
-
         <React.Fragment>
-
+            {modalEditUserOpen ? (
+            <EditUser
+                onClose={onModalEditUserClose}
+                user={userToUpdate}
+            />
+            ) : ("")}
             <Typography variant="h1">Users</Typography>
             <TblContainer>
                 <TblHead />
                 <TableBody>
                     {
                         recordsAfterPagingAndSorting().map(item =>
-                        (<TableRow key={item.id}>
+                        (<TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
                             <TableCell>{item.username} </TableCell>
                             <TableCell>{item.email} </TableCell>
                             <TableCell>{item.groups} </TableCell>

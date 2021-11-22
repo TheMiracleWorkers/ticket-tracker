@@ -31,7 +31,7 @@ export default function EditTicket(props: {
 
     useEffect(() => {
          fetchOneTicket();       
-    }, [props.modalIsOpen]);
+    }, [props.modalIsOpen, props.ticketId]);
 
     function fetchOneTicket() {
         transportLayer
@@ -58,7 +58,7 @@ export default function EditTicket(props: {
                         padding={{ md: 0.6 }}
                         justifyContent={"space-between"}
                     >
-                        <Typography variant="h4">Edit Ticket</Typography>
+                        <Typography variant="h4">Edit Ticket Number {"#" + props.ticketId} </Typography>
                         <EditTicketForm onClose={props.onClose} ticket={ticketToUpdate} />
                     </Grid>
                 </Box>

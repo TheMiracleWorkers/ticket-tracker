@@ -9,6 +9,8 @@ import Ticket, { TicketInterface } from '../domainObjects/Ticket';
 import { TransportLayer } from '../transportation/TransportLayer';
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import Project from "../domainObjects/Project";
+import {useEffect, useState} from "react";
 
 
 const validationSchema = yup.object({
@@ -26,6 +28,7 @@ export default function EditTicketForm(props: {
     onClose: Function;
     ticket: TicketInterface | undefined
 }) {
+    const [projects, setProjects] = useState<Project[]>([]);
     const transportLayer = new TransportLayer();
     const ticket = props.ticket;
     const priorities = [
@@ -69,6 +72,19 @@ export default function EditTicketForm(props: {
             value: 6,
         }
     ];
+    function getAllProjects() {
+        transportLayer.getAllProjectPromise().then((response: any) => {
+            const allProjects: Project[] = response.data.map(
+                (responseElement: any) => new Project(responseElement)
+            );
+            setProjects(allProjects);
+            console.log(projects);
+        })
+    }
+
+    useEffect(() => {
+        getAllProjects();
+    }, []);
     
     const formik = useFormik({
         initialValues: {
@@ -79,7 +95,8 @@ export default function EditTicketForm(props: {
             updatedDate: ticket?.updatedDate,
             status:ticket?.status,
             assigned: "",
-            priority: ticket?.priority
+            priority: ticket?.priority,
+            project: ticket ? ticket.project : "",
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -91,7 +108,8 @@ export default function EditTicketForm(props: {
                 'created_at': ticket?.createdDate,
                 'updated_at': ticket?.updatedDate,
                 'status': values.status,
-                'priority': values.priority
+                'priority': values.priority,
+                'project': values.project,
             });
             
             transportLayer.updateTicketPromise(updateTicket)
@@ -125,14 +143,23 @@ export default function EditTicketForm(props: {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
+                            select
                             required
                             id="project"
                             name="project"
                             label="Project"
                             fullWidth
                             variant="standard"
-                            disabled
-                        />
+                            value={formik.values.project}
+                            onChange={event => formik.setFieldValue("project", (event.target.value))}
+                            onBlur={formik.handleBlur}
+                        >
+                            {projects.map((option) => (
+                                <MenuItem key={option.id} value={option.id}>
+                                    {option.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField

@@ -104,6 +104,11 @@ function TicketHeader(props: {
               <strong>Priority:</strong> {ticket.priority}
             </Typography>
           </Grid>
+          <Grid item xs={4} sm={2} md={2}>
+            <Typography variant="body1" fontSize={"small"}>
+              <strong>Project:</strong> {ticket.project_name}
+            </Typography>
+          </Grid>
         </Grid>
       </React.Fragment>
     );

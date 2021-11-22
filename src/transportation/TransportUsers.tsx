@@ -36,6 +36,9 @@ export class TransportUsers {
     return this.axiosInstance.request({
       method: "GET",
       url: "/users/" + id,
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('token')}`
+      }
     });
   }
 
@@ -43,7 +46,10 @@ export class TransportUsers {
     return this.axiosInstance.request({
       method: "POST",
       url: "/users/",
-      data: User.toJSON()
+      data: User.toJSON(),
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('token')}`
+      }
     })
   }
 
@@ -51,7 +57,10 @@ export class TransportUsers {
     return this.axiosInstance.request({
       method: "PUT",
       url: "/users/" + User.id + "/",
-      data: User.toJSON()
+      data: User.toJSON(),
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('token')}`
+      }
     });
   }
 }
