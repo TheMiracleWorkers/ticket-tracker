@@ -14,12 +14,12 @@ const transportLayer = new TransportLayer();
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'delete', label: 'Delete?'}
+    { id: 'delete', label: 'Delete?'},  
 ]
 
 export default function Projects(props: any) {
 
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);    
     const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return projects; } })
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(projects, headCells, filterFn);
     const [, setSearchText] = React.useState('');
@@ -68,19 +68,27 @@ export default function Projects(props: any) {
         fetchAllProjects();
     }
 
+
+
     function onModalClose() {
         setModalIsOpen(false);
+        refreshProjects();
     }
 
     function handleDeletePressed(project: Project) {
         transportLayer.deleteProject(project).then(r => refreshProjects())
     }
+   
+
+    function handleAddProjectPressed(){
+        setModalIsOpen(true);
+    }
 
     return (
-
-        <React.Fragment>
+        <React.Fragment>            
             <ProjectForm modalIsOpen={modalIsOpen} onClose={onModalClose}/>
             <Typography variant="h1">Projects</Typography>
+            <Button sx={{m:2}} variant="outlined" onClick={handleAddProjectPressed}>+ Add Project</Button>
             <TblContainer>
             <TblHead />
             <TableBody>
@@ -89,7 +97,7 @@ export default function Projects(props: any) {
                         (<TableRow key={item.id}>
                             <TableCell>{item.id} </TableCell>
                             <TableCell>{item.name} </TableCell>
-                            <TableCell><Button onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>
+                            <TableCell><Button onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>                            
                         </TableRow>))
 }
 
