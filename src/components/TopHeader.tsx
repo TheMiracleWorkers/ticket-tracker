@@ -31,9 +31,12 @@ export default function TopHeader(props: TopHeaderProps) {
         case "/tickets":
             buttonText = "+ Add ticket"
             break;
-        case "/users":
-            buttonText = "+ Add user"
-            break;
+        // case "/projects":
+        //     buttonText = "+ Add project"
+        //     break;
+        // case "/users":
+        //     buttonText = "+ Add user"
+        //     break;
         default:
             buttonText = "";
             break;
