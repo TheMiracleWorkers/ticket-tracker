@@ -22,6 +22,7 @@ const headCells = [
   { id: "dueDate", label: "Due" },
   { id: "createDate", label: "Created" },
   { id: "updateDate", label: "Updated" },
+  { id: "status", label: "Status" },
 ];
 const maxCaracteresToDisplay = 200;
 const transportLayer = new TransportLayer();
@@ -148,6 +149,7 @@ export default function Tickets(props: any) {
               <TableCell>
                 {moment((item.updatedDate), ("DD-MM-YYYY")).isValid() ? moment(item.updatedDate).format("DD-MM-YYYY") : " "}
               </TableCell>
+              <TableCell>{item.status} </TableCell>
             </TableRow>
           ))}
         </TableBody>

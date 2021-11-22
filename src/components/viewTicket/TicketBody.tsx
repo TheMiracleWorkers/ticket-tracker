@@ -13,8 +13,11 @@ function TicketBody(props: { ticket: TicketInterface | undefined }) {
 
           <Typography variant="body1">
             <strong>Description</strong>
-            <p>{ticket.description}</p>
           </Typography>
+          <Typography variant="body1">
+            {ticket.description}
+          </Typography>
+
 
         </Grid>
     );

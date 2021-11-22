@@ -42,6 +42,33 @@ export default function EditTicketForm(props: {
             value: 3,
         }
     ];
+
+    const status = [
+        {
+            label: 'Unassigned',
+            value: 1,
+        },
+        {
+            label: 'Open',
+            value: 2,
+        },
+        {
+            label: 'In Progress',
+            value: 3,
+        },
+        {
+            label: 'Resolved',
+            value: 4,
+        },
+        {
+            label: 'Done',
+            value: 5,
+        },
+        {
+            label: 'Re-opened',
+            value: 6,
+        }
+    ];
     
     const formik = useFormik({
         initialValues: {
@@ -50,6 +77,7 @@ export default function EditTicketForm(props: {
             dueDate: ticket?.dueDate,
             createdDate: ticket?.createdDate,
             updatedDate: ticket?.updatedDate,
+            status:ticket?.status,
             assigned: "",
             priority: ticket?.priority
         },
@@ -62,11 +90,12 @@ export default function EditTicketForm(props: {
                 'due_date': values.dueDate && new Date(values.dueDate),
                 'created_at': ticket?.createdDate,
                 'updated_at': ticket?.updatedDate,
+                'status': values.status,
                 'priority': values.priority
             });
             
             transportLayer.updateTicketPromise(updateTicket)
-                .then(res => {                 
+                .then(res => {
                     props.onClose();
                     window.location.reload();
                 }).catch(err => {
@@ -107,14 +136,24 @@ export default function EditTicketForm(props: {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
+                            select
                             required
                             id="status"
                             name="status"
                             label="Status"
                             fullWidth
                             variant="standard"
-                            disabled
-                        />
+                            value={formik.values.status}
+                            onChange={event => formik.setFieldValue("status", (event.target.value))}
+                            onBlur={formik.handleBlur}                     
+                        >
+                            {status.map((option)=> (
+                                <MenuItem key={option.value} value={option.label}>
+                                    {option.label}
+                                </MenuItem>                            
+                            ))}
+                        </TextField>
+
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
