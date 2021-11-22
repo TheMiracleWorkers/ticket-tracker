@@ -29,7 +29,7 @@ function TransportLayerTest() {
       })
       .catch((response: AxiosResponse) => {
         // Handle error.
-        console.log(response);
+        console.log('response');
       });
     setLoading(true);
   }
