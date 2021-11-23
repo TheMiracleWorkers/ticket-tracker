@@ -35,7 +35,6 @@ export default function EditUserForm(props: {
             transportLayer.updateUserPromise(updateUser)
                 .then(res => {                 
                     props.onClose();
-                    window.location.reload();
                 }).catch(err => {
                     // TODO: Show error
                 });

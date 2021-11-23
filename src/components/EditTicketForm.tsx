@@ -78,7 +78,6 @@ export default function EditTicketForm(props: {
                 (responseElement: any) => new Project(responseElement)
             );
             setProjects(allProjects);
-            console.log(projects);
         })
     }
 
@@ -115,7 +114,6 @@ export default function EditTicketForm(props: {
             transportLayer.updateTicketPromise(updateTicket)
                 .then(res => {
                     props.onClose();
-                    window.location.reload();
                 }).catch(err => {
                     // TODO: Show error
                 });

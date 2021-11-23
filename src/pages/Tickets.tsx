@@ -98,8 +98,6 @@ export default function Tickets(props: any) {
     const id = ticketId as number;
     setRowClicked(id);
     setModalOpen(true);
-    console.log(id);
-    console.log(rowClicked);
   }
 
   function onModalClose() {
@@ -114,6 +112,7 @@ export default function Tickets(props: any) {
     setModalEditTicketOpen(true);
   }
   function onModalEditTicketClose() {
+    fetchAllTicket();
     setModalEditTicketOpen(false);
   }
 
