@@ -58,12 +58,17 @@ function App() {
                         username: json.user.username
                     });
                     // Refresh token
-                    refresh_token()
                     startInterval()
                 } else {
-                    setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
+                    if(json.non_field_errors !== undefined) {
+                        setMessage({status: 'error', show_message: true, message: json.non_field_errors})
+                    } else {
+                        setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
+                    }
                 }
-            });
+            }).catch(err=>{
+            setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
+        });
     }
 
     // Register user
@@ -75,25 +80,37 @@ function App() {
             },
             body: JSON.stringify(data)
         })
-            .then(res => res.json())
-            .then(json => {
-                if (json.token !== undefined) {
-                    setMessage({status: 'success', show_message: true, message: 'Successfully registered account! Please login'})
-                } else {
-                    setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to register user!'})
+            .then(res => {
+                if(!res.ok) throw res
+                else return res.json()
+            })
+            .then(() => {
+                setMessage({status: 'success', show_message: true, message: 'Successfully registered account! Please login'})
+            })
+            .catch(async (error) => {
+                let json = await error.json()
+                let message = 'Something went wrong while trying to register user!'
+                if(json.non_field_errors !== undefined) {
+                    message = json.non_field_errors
+                } else if(json.username !== undefined) {
+                    message = "Username: " + json.username
+                } else if(json.email !== undefined) {
+                    message = "Email: " + json.email
+                } else if(json.password !== undefined) {
+                    message = "Password: " + json.password
                 }
+                setMessage({status: 'error', show_message: true, message: message})
             });
     }
 
     // Refresh token
     function startInterval(): void {
-        if (user.logged_in) {
-            refreshInterval = setInterval(function () {
-                refresh_token()
-            }, 500000);
-        }
+        refreshInterval = setInterval(function () {
+            refresh_token()
+        }, 500000);
     }
 
+    // Refresh JWT token
     function refresh_token(): void {
         fetch(process.env.REACT_APP_REST_API + 'token-refresh/', {
             method: 'POST',
@@ -113,7 +130,7 @@ function App() {
                 } else {
                     handle_logout()
                 }
-            });
+            }).catch();
     }
 
     // Change variables on route change
@@ -123,8 +140,11 @@ function App() {
     })
 
     // Start interval on page load
-    window.addEventListener('load', (event) => {
-        startInterval()
+    window.addEventListener('load', () => {
+        if (user.logged_in) {
+            refresh_token()
+            startInterval()
+        }
     });
 
     return (

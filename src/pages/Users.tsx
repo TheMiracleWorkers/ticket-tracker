@@ -66,6 +66,7 @@ export default function Users(props: any) {
     };
 
     function onModalEditUserClose() {
+        fetchAllUsers()
         setModalEditUserOpen(false);
     }
 

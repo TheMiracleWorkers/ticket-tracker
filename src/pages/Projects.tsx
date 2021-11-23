@@ -5,7 +5,6 @@ import {AxiosResponse} from "axios";
 import {TransportLayer} from "../transportation/TransportLayer";
 import Project from "../domainObjects/Project";
 import Button from "@mui/material/Button";
-import AddTicket from "./AddTicket";
 import ProjectForm from "../components/ProjectForm";
 
 const transportLayer = new TransportLayer();
