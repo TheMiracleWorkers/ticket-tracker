@@ -12,6 +12,8 @@ import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {useEffect, useState} from "react";
 import Project from "../domainObjects/Project";
+import User from '../domainObjects/User';
+import { TransportUsers } from '../transportation/TransportUsers';
 
 const validationSchema = yup.object({
     title: yup
@@ -31,7 +33,9 @@ export default function AddTicketForm(props: {
     onClose: Function;
 }) {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const transportLayer = new TransportLayer();
+    const transportUser = new TransportUsers();
     const history = useHistory();
 
     const priorities = [
@@ -58,11 +62,25 @@ export default function AddTicketForm(props: {
             console.log(projects);
         })
     }
-
+    
+    function getAllUsers() {
+        transportUser
+            .getAllUsersPromise()
+            .then((response: any) => {
+                const allUsers: User[] = response.data.map(
+                    (responseElement: any) => new User(responseElement)
+                );
+                setUsers(allUsers);
+            })
+    }
+   
     useEffect(() => {
         getAllProjects();
     }, []);
 
+    useEffect(() => {
+        getAllUsers();
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -71,6 +89,7 @@ export default function AddTicketForm(props: {
             dueDate: null,
             priority: '',
             project: '',
+            assignedUserId: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -80,6 +99,7 @@ export default function AddTicketForm(props: {
                 'due_date': values.dueDate && new Date(values.dueDate),
                 'priority': values.priority,
                 'project': values.project,
+                'assigned_user': values.assignedUserId,
             });
             transportLayer.postTicket(newTicket).catch(err => {
                 // TODO: Show error
@@ -194,14 +214,23 @@ export default function AddTicketForm(props: {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
+                            select
                             required
                             id="assigned"
                             name="assigned"
                             label="Assigned"
                             fullWidth
                             variant="standard"
-                            disabled
-                        />
+                            value={formik.values.assignedUserId}
+                            onChange={event => formik.setFieldValue("assignedUserId", (event.target.value))}
+                            onBlur={formik.handleBlur}
+                        >
+                            {users.map((user) => (
+                                <MenuItem key={user.id} value={user.id}>
+                                    {user.username}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <TextField
