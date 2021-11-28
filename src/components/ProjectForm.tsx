@@ -8,6 +8,7 @@ import {Modal, Stack, Box} from "@mui/material";
 import {TransportLayer} from '../transportation/TransportLayer';
 import Project, {ProjectInterface} from "../domainObjects/Project";
 import { SxProps } from "@mui/system";
+import {useEffect, useState} from "react";
 
 const validationSchema = yup.object({
     name: yup
@@ -19,8 +20,8 @@ const validationSchema = yup.object({
 export default function ProjectForm(props: {
     onClose: Function;
     modalIsOpen: boolean;
-    project?: Project | undefined;
-}) {
+    project?: Project | null;
+}) {    
     const transportLayer = new TransportLayer();
 
     const boxStyle: SxProps = {
@@ -35,28 +36,58 @@ export default function ProjectForm(props: {
         p: 4,
     };
 
+    function closeForm(){
+        formik.resetForm();
+        props.onClose();
+    }
+
+    function addProject(values : any)
+    {
+        const newProject = new Project({
+            'name': values.name,
+        });
+        transportLayer.postProject(newProject).catch(err => {
+            // TODO: Show error
+        }).then(res =>{
+            closeForm();            
+        });         
+    }
+
+    function updateProject(project : any, values : any){
+        project.name = values.name;
+
+        transportLayer.updateProjectPromise(project).catch(err => {
+            // TODO: Show error
+        }).then(res =>{
+            closeForm();             
+        });         
+    }
+
     const formik = useFormik({
         initialValues: {
-            name: '',
+            name: props.project ? props.project.name : '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {            
-            const newProject = new Project({
-                'name': values.name,
-            });
-            transportLayer.postProject(newProject).catch(err => {
-                // TODO: Show error
-            }).then(res =>{
-                formik.resetForm();
-                props.onClose();                
-            });                        
+        onSubmit: (values) => {    
+            if (props.project){                
+                updateProject(props.project, values);
+            } 
+            else {
+                addProject(values);
+            }                           
         },
     });
+
+    useEffect(() => {       
+        if (props.project) {
+            formik.setFieldValue('name', props.project?.name);
+        }
+    }, [props.project]);    
 
     return (
         <React.Fragment>
             <Modal open={props.modalIsOpen}>
-                <Box sx={boxStyle}>
+                <Box sx={boxStyle}>                    
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={12}>
@@ -80,7 +111,7 @@ export default function ProjectForm(props: {
                                     <Button color="primary" variant="contained" type="submit">
                                         Submit
                                     </Button>
-                                    <Button color="primary" variant="outlined" onClick={() => props.onClose()}>
+                                    <Button color="primary" variant="outlined" onClick={() => closeForm()}>
                                         Cancel
                                     </Button>
                                 </Stack>

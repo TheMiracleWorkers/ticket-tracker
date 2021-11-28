@@ -13,7 +13,8 @@ const transportLayer = new TransportLayer();
 const headCells = [
     { id: 'id', label: 'Id' },
     { id: 'name', label: 'Name' },
-    { id: 'delete', label: 'Delete?'},  
+    { id: 'delete', label: 'Delete?'},
+    { id: 'edit', label: 'Edit'}
 ]
 
 export default function Projects(props: any) {
@@ -23,6 +24,7 @@ export default function Projects(props: any) {
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(projects, headCells, filterFn);
     const [, setSearchText] = React.useState('');
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const [editProject, setEditProject] = useState<Project|null>(null);
 
     useEffect(() => {
         fetchAllProjects();
@@ -68,7 +70,6 @@ export default function Projects(props: any) {
     }
 
 
-
     function onModalClose() {
         setModalIsOpen(false);
         refreshProjects();
@@ -77,15 +78,21 @@ export default function Projects(props: any) {
     function handleDeletePressed(project: Project) {
         transportLayer.deleteProject(project).then(r => refreshProjects())
     }
+
+    function handleEditPressed(project: Project){
+        setEditProject(project);
+        setModalIsOpen(true);
+    }
    
 
     function handleAddProjectPressed(){
+        setEditProject(null);
         setModalIsOpen(true);
     }
 
     return (
         <React.Fragment>            
-            <ProjectForm modalIsOpen={modalIsOpen} onClose={onModalClose}/>
+            <ProjectForm modalIsOpen={modalIsOpen} onClose={onModalClose} project={editProject}/>
             <Typography variant="h1">Projects</Typography>
             <Button sx={{m:2}} variant="outlined" onClick={handleAddProjectPressed}>+ Add Project</Button>
             <TblContainer>
@@ -96,7 +103,8 @@ export default function Projects(props: any) {
                         (<TableRow key={item.id}>
                             <TableCell>{item.id} </TableCell>
                             <TableCell>{item.name} </TableCell>
-                            <TableCell><Button onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>                            
+                            <TableCell><Button onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>  
+                            <TableCell><Button onClick={() => handleEditPressed(new Project(item))}>Edit</Button></TableCell>                          
                         </TableRow>))
 }
 
