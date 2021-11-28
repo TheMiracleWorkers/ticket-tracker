@@ -9,6 +9,8 @@ export interface TicketInterface {
     priority: number | null;
     project: number | null;
     project_name: string;
+    assignedUserId: number | null;
+    assignedUserName: string;
 }
 
 export default class Ticket implements TicketInterface{
@@ -21,7 +23,9 @@ export default class Ticket implements TicketInterface{
     updatedDate: Date | null;
     priority: number | null;
     project: number | null;
-    project_name: string;
+    project_name: string; 
+    assignedUserId: number | null;
+    assignedUserName: string;
 
     constructor(json: any) {
         this.id = json.id ? json.id : null;
@@ -34,6 +38,8 @@ export default class Ticket implements TicketInterface{
         this.priority = json.priority ? json.priority : null;
         this.project = json.project ? json.project : null;
         this.project_name = json.project_name;
+        this.assignedUserId = json.assigned_user ? json.assigned_user : null;
+        this.assignedUserName = json.assigned_username;
     }
 
     toJSON() {
@@ -48,6 +54,8 @@ export default class Ticket implements TicketInterface{
             status: this.status,
             project: this.project,
             project_name: this.project_name,
+            assigned_user: this.assignedUserId,
+            assigned_username: this.assignedUserName
         }
     }
 }

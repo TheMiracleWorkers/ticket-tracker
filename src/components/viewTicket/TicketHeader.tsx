@@ -70,7 +70,7 @@ function TicketHeader(props: {
           </Grid>
           <Grid item>
             <Typography variant="body1" fontSize={"small"}>
-              Placeholder, Name
+              {ticket.assignedUserName}
             </Typography>
           </Grid>
         </Grid>
