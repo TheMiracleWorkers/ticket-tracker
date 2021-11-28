@@ -3,9 +3,14 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
-import { MenuItem, Stack } from "@mui/material";
+import { Box, Chip, MenuItem, Select, Stack} from "@mui/material";
 import User, { UserInterface } from '../domainObjects/User';
 import { TransportUsers } from '../transportation/TransportUsers';
+import Role from '../domainObjects/Role';
+import { useEffect, useState } from 'react';
+import { TransportLayerRoles } from '../transportation/TransportLayerRoles';
+
+
 
 export default function EditUserForm(props: {
     onClose: Function;
@@ -13,7 +18,8 @@ export default function EditUserForm(props: {
 }) {
     const transportLayer = new TransportUsers();
     const user = props.user;
-
+    const [roles, setRoles] = useState<Role[]>([]);
+    const transportRole = new TransportLayerRoles();    
     const formik = useFormik({
         initialValues: {
             username: user?.username,
@@ -31,7 +37,6 @@ export default function EditUserForm(props: {
                 'last_login': user?.last_login,
                 'date_joined': user?.date_joined,
             });
-
             transportLayer.updateUserPromise(updateUser)
                 .then(res => {                 
                     props.onClose();
@@ -41,6 +46,22 @@ export default function EditUserForm(props: {
         },
     });
 
+    function getAllRoles() {
+        transportRole
+            .getAllRolesPromise()
+            .then((response: any) => {
+                const allRoles: Role[] = response.data.map(
+                    (responseElement: any) => new Role(responseElement)
+                );
+                setRoles(allRoles);                
+            })
+    }
+
+    useEffect(() => {
+        getAllRoles();
+    }, []);
+
+ 
     return (
         <React.Fragment>
             
@@ -70,22 +91,37 @@ export default function EditUserForm(props: {
                             onChange={formik.handleChange}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            select
+
+                    <Grid item xs={12} sm={4}>                       
+                        <Select                            
                             id="groups"
                             name="groups"
                             label="Roles"
                             fullWidth
+                            multiple
                             variant="standard"
-                            value={(formik.values.groups) ? formik.values.groups : ''}
+                            value={(formik.values.groups) }
                             onChange={formik.handleChange}
-                        >
-                            <MenuItem key="" value="" disabled>Select role</MenuItem>
-                            <MenuItem key="TBD" value="TBD">TBD</MenuItem>
-                        </TextField>
+                        renderValue={(selected) => {
+                                    return (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => {
+                                            const option = roles.find((o) => o.url === value);
+                                            return <Chip key={value} label={option?.name} />;})}
+                                    </Box>
+                                );
+                            }}
+                           >
+                                {roles.map((role) => (
+                                    <MenuItem
+                                     key={role.url}
+                                     value={role.url}
+                                    >
+                                        {role.name}
+                                    </MenuItem>
+                                ))}
+                       </Select>                        
                     </Grid>
-
                     <Grid item xs={12}>
                         <Stack spacing={2} direction="row">
                             <Button color="primary" variant="contained" type="submit">
