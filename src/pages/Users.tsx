@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
+import {TableBody, TableRow, TableCell, Typography, Box, Chip} from '@mui/material';
 import useTable from "../components/UseTable";
 import { TransportUsers } from "../transportation/TransportUsers";
 import User, {UserInterface} from "../domainObjects/User";
 import {AxiosResponse} from "axios";
 import moment from "moment";
 import EditUser from "./EditUser";
+import { TransportLayerRoles } from "../transportation/TransportLayerRoles";
+import Role from "../domainObjects/Role";
 
 const transportLayer = new TransportUsers();
 // Header information of the table, key is the name of the 
@@ -26,14 +28,10 @@ export default function Users(props: any) {
     const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(users, headCells, filterFn);
     const [, setSearchText] = React.useState('');
     const [userToUpdate, setUserToUpdate] = useState<UserInterface>();
+    const [roles, setRoles] = useState<Role[]>([]);
+    const transportRole = new TransportLayerRoles();
 
-    useEffect(() => {
-        fetchAllUsers();
-    }, []);
-
-    useEffect(() => {
-        handleSearch(props.searchTextInput);
-    }, [props]);
+       
 
     function fetchAllUsers() {
         transportLayer
@@ -43,6 +41,7 @@ export default function Users(props: any) {
                     (responseElement: any) => new User(responseElement)
                 );
                 setUsers(allUsers);
+                console.log(allUsers);
                 setFilterFn({
                     fn: (allUsers) => {
                         return allUsers;
@@ -53,6 +52,30 @@ export default function Users(props: any) {
                 // Handle error
             });
     }
+
+    function getAllRoles() {
+        transportRole
+            .getAllRolesPromise()
+            .then((response: any) => {
+                const allRoles: Role[] = response.data.map(
+                    (responseElement: any) => new Role(responseElement)
+                );
+                setRoles(allRoles);  
+                console.log(allRoles);
+            })
+    }
+
+    useEffect(() => {
+        fetchAllUsers();
+    }, []);
+
+    useEffect(() => {
+        handleSearch(props.searchTextInput);
+    }, [props]);
+
+    useEffect(() => {
+        getAllRoles();
+    }, []);
 
     const handleSearch = (text: any): void => {
         setSearchText(text)
@@ -105,8 +128,17 @@ export default function Users(props: any) {
                         recordsAfterPagingAndSorting().map(item =>
                         (<TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
                             <TableCell>{item.username} </TableCell>
-                            <TableCell>{item.email} </TableCell>
-                            <TableCell>{item.groups} </TableCell>
+                            <TableCell>{item.email} </TableCell>                            
+                            <TableCell>{                             
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                   {                                   
+                                    item.groups.toString().split(",").map((value) => {
+                                        const option = roles.find((o) => o.url === value);
+                                        return typeof option !== 'undefined' &&<Chip key={option?.url} label={option?.name} />
+                                    })}
+                                </Box>                                                        
+                            }
+                            </TableCell>
                             <TableCell>{moment(item.last_login).format('DD-MM-YYYY HH:mm')} </TableCell>
                             <TableCell>{moment(item.date_joined).format('DD-MM-YYYY HH:mm')} </TableCell>
                         </TableRow>))
