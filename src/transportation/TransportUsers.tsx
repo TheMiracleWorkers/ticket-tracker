@@ -7,20 +7,6 @@ export class TransportUsers {
     baseURL: this.apiUrl,
   });
 
-  getAllUsers(onAllUsersReceive: Function) {
-    if (this?.apiUrl === undefined) {
-      console.log('API string undefined in environment variables ".env"');
-    }
-    axios
-      .get(this.apiUrl + "users")
-      .then((response: any) => {
-        const allUsers: User[] = response.data.map((responseElement: any) => new User(responseElement));
-        onAllUsersReceive(allUsers);
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  }
 
   getAllUsersPromise() {
     return this.axiosInstance.request({
