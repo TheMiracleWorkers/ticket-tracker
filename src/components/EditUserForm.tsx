@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import {useFormik} from "formik";
 import Button from "@mui/material/Button";
-import {Box, Chip, MenuItem, Select, Stack} from "@mui/material";
+import {Box, Chip, MenuItem, Select, Stack, InputLabel} from "@mui/material";
 import User, {UserInterface} from '../domainObjects/User';
 import {TransportUsers} from '../transportation/TransportUsers';
 import Role from '../domainObjects/Role';
@@ -92,7 +92,9 @@ export default function EditUserForm(props: {
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
+                        <InputLabel style={{fontSize: "0.75rem"}} id="roles-label">Roles</InputLabel>
                         <Select
+                            labelId="roles-label"
                             id="groups"
                             name="groups"
                             label="Roles"

@@ -29,14 +29,20 @@ export default function TopHeader(props: TopHeaderProps) {
 
     let buttonText;
     let modal;
+    let search
     switch (location.pathname) {
         case "/tickets":
             buttonText = "+ Add ticket"
+            search = true
             modal = <AddTicket modalIsOpen={modalIsOpen} onClose={onModalClose}/>
             break;
         case "/projects":
             buttonText = "+ Add project"
+            search = true
             modal = <ProjectForm modalIsOpen={modalIsOpen} onClose={onModalClose}/>
+            break;
+        case "/users":
+            search = true
             break;
         default:
             buttonText = "";
@@ -58,7 +64,7 @@ export default function TopHeader(props: TopHeaderProps) {
                     ) : ("")}
                 </Toolbar>
                 <Toolbar>
-                    {buttonText ? (
+                    {search ? (
                         <SearchInput type={'input'} placeholder={" Search..."} label={"search"} name={"search"}
                                      value={props.searchText}
                                      onChange={(e) => props.setSearchText(e.target.value)}/>

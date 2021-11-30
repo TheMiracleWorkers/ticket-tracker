@@ -6,15 +6,15 @@ export class TransportLayer {
     apiUrl = process.env.REACT_APP_REST_API;
     axiosInstance = axios.create({
         baseURL: this.apiUrl,
+        headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`
+        }
     });
 
     getAllTicketsPromise() {
         return this.axiosInstance.request({
             method: "GET",
             url: "/tickets",
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
@@ -22,9 +22,6 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/tickets/" + id,
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
@@ -33,9 +30,6 @@ export class TransportLayer {
             method: "POST",
             url: "/tickets/",
             data: ticket.toJSON(),
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         })
     }
 
@@ -44,9 +38,6 @@ export class TransportLayer {
             method: "PUT",
             url: "/tickets/" + ticket.id + "/",
             data: ticket.toJSON(),
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
@@ -54,9 +45,6 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/projects",
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
@@ -64,9 +52,6 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/projects/" + id,
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
@@ -75,9 +60,6 @@ export class TransportLayer {
             method: "POST",
             url: "/projects/",
             data: project.toJSON(),
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         })
     }
 
@@ -86,18 +68,11 @@ export class TransportLayer {
             method: "PUT",
             url: "/projects/" + project.id + "/",
             data: project.toJSON(),
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
         });
     }
 
     deleteProject(project: Project) {
-        return this.axiosInstance.delete("/projects/" + project.id + "/", {
-            headers: {
-                        Authorization: `JWT ${localStorage.getItem('token')}`
-            }
-        });
+        return this.axiosInstance.delete("/projects/" + project.id + "/");
     }
 
 }

@@ -138,7 +138,9 @@ function App() {
                 } else {
                     handle_logout()
                 }
-            }).catch();
+            }).catch(err => {
+            handle_logout()
+        });
     }
 
     // Change variables on route change

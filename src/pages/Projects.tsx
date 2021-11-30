@@ -17,6 +17,7 @@ const headCells = [
 ]
 
 export default function Projects(props: any) {
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
     const [projects, setProjects] = useState<Project[]>([]);
     const [filterFn, setFilterFn] = useState({
@@ -32,7 +33,6 @@ export default function Projects(props: any) {
         resetPage
     } = useTable(projects, headCells, filterFn);
     const [, setSearchText] = React.useState('');
-    const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const [editProject, setEditProject] = useState<Project | null>(null);
 
     function fetchAllProjects() {
@@ -66,24 +66,23 @@ export default function Projects(props: any) {
         setSearchText("");
     };
 
-    function refreshProjects() {
+    function onModalClose() {
+        setModalIsOpen(false);
         fetchAllProjects();
     }
 
-
-    function onModalClose() {
-        setModalIsOpen(false);
-        refreshProjects();
-    }
-
     function handleDeletePressed(project: Project) {
-        transportLayer.deleteProject(project).then(r => refreshProjects())
+        transportLayer.deleteProject(project).then(r => fetchAllProjects())
     }
 
     function handleEditPressed(project: Project) {
         setEditProject(project);
         setModalIsOpen(true);
     }
+
+    window.addEventListener('load', () => {
+        fetchAllProjects()
+    });
 
     useEffect(fetchAllProjects, []);
 
@@ -100,11 +99,20 @@ export default function Projects(props: any) {
                 <TableBody>
                     {
                         recordsAfterPagingAndSorting().map(item =>
-                            (<TableRow key={item.id} onClick={() => handleEditPressed(new Project(item))}>
+                            (<TableRow key={item.id} onClick={(e) => {
+                                const target = e.target as Element;
+                                if(target.getAttribute('type') !== 'button') {
+                                    handleEditPressed(new Project(item))
+                                }
+                            }}>
                                 <TableCell>{item.id} </TableCell>
                                 <TableCell>{item.name} </TableCell>
                                 <TableCell><Button
-                                    onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>
+                                    onClick={() => {
+                                        if (window.confirm('Are you sure to delete this project?')) {
+                                            handleDeletePressed(new Project(item))
+                                        }
+                                    }}>Delete</Button></TableCell>
                             </TableRow>))
                     }
 

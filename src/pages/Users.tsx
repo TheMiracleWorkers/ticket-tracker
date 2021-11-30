@@ -10,6 +10,7 @@ import {TransportLayerRoles} from "../transportation/TransportLayerRoles";
 import Role from "../domainObjects/Role";
 
 const transportLayer = new TransportUsers();
+const transportRole = new TransportLayerRoles();
 // Header information of the table, key is the name of the 
 // property to sort by when the header is clicked 
 const headCells = [
@@ -39,7 +40,6 @@ export default function Users(props: any) {
     const [, setSearchText] = React.useState('');
     const [userToUpdate, setUserToUpdate] = useState<UserInterface>();
     const [roles, setRoles] = useState<Role[]>([]);
-    const transportRole = new TransportLayerRoles();
 
     function fetchAllUsers() {
         transportLayer

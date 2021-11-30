@@ -80,7 +80,7 @@ export default function ProjectForm(props: {
         if (props.project) {
             formik.setFieldValue('name', props.project?.name);
         }
-    }, [props.project, formik]);
+    }, [props.project]);
 
     return (
         <React.Fragment>
