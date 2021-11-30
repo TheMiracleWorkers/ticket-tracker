@@ -14,9 +14,9 @@
 <p align="center">
     <a href="#how-to-use">How to use</a>
     ·
-    <a href="#features">Available Scripts</a>
+    <a href="#available-scripts">Available Scripts</a>
     ·
-    <a href="#commands">Learn More</a>
+    <a href="#learn-more">Learn More</a>
  </p>
 
 
