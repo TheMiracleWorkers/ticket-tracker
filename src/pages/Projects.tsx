@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {TableBody, TableRow, TableCell, Typography} from '@mui/material';
+import React, {useEffect, useState} from "react";
+import {TableBody, TableCell, TableRow, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import {AxiosResponse} from "axios";
 import {TransportLayer} from "../transportation/TransportLayer";
@@ -11,28 +11,29 @@ const transportLayer = new TransportLayer();
 // Header information of the table, key is the name of the
 // property to sort by when the header is clicked
 const headCells = [
-    { id: 'id', label: 'Id' },
-    { id: 'name', label: 'Name' },
-    { id: 'delete', label: 'Delete?'},
-    { id: 'edit', label: 'Edit'}
+    {id: 'id', label: 'Id'},
+    {id: 'name', label: 'Name'},
+    {id: 'delete', label: 'Delete?'},
 ]
 
 export default function Projects(props: any) {
 
-    const [projects, setProjects] = useState<Project[]>([]);    
-    const [filterFn, setFilterFn] = useState({ fn: (items: any) => { return projects; } })
-    const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(projects, headCells, filterFn);
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [filterFn, setFilterFn] = useState({
+        fn: (items: any) => {
+            return projects;
+        }
+    })
+    const {
+        TblContainer,
+        TblHead,
+        TblPagination,
+        recordsAfterPagingAndSorting,
+        resetPage
+    } = useTable(projects, headCells, filterFn);
     const [, setSearchText] = React.useState('');
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
-    const [editProject, setEditProject] = useState<Project|null>(null);
-
-    useEffect(() => {
-        fetchAllProjects();
-    }, []);
-
-    useEffect(() => {
-        handleSearch(props.searchTextInput);
-    }, [props]);
+    const [editProject, setEditProject] = useState<Project | null>(null);
 
     function fetchAllProjects() {
         transportLayer
@@ -54,7 +55,7 @@ export default function Projects(props: any) {
     }
 
     const handleSearch = (text: any): void => {
-
+        resetPage()
         setSearchText(text)
         setFilterFn({
             fn: items => {
@@ -79,41 +80,40 @@ export default function Projects(props: any) {
         transportLayer.deleteProject(project).then(r => refreshProjects())
     }
 
-    function handleEditPressed(project: Project){
+    function handleEditPressed(project: Project) {
         setEditProject(project);
         setModalIsOpen(true);
     }
-   
 
-    function handleAddProjectPressed(){
-        setEditProject(null);
-        setModalIsOpen(true);
-    }
+    useEffect(fetchAllProjects, []);
+
+    useEffect(() => {
+        handleSearch(props.searchTextInput);
+    }, [props]);
 
     return (
-        <React.Fragment>            
+        <React.Fragment>
             <ProjectForm modalIsOpen={modalIsOpen} onClose={onModalClose} project={editProject}/>
             <Typography variant="h1">Projects</Typography>
-            <Button sx={{m:2}} variant="outlined" onClick={handleAddProjectPressed}>+ Add Project</Button>
             <TblContainer>
-            <TblHead />
-            <TableBody>
-                {
-                    recordsAfterPagingAndSorting().map(item =>
-                        (<TableRow key={item.id}>
-                            <TableCell>{item.id} </TableCell>
-                            <TableCell>{item.name} </TableCell>
-                            <TableCell><Button onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>  
-                            <TableCell><Button onClick={() => handleEditPressed(new Project(item))}>Edit</Button></TableCell>                          
-                        </TableRow>))
-}
+                <TblHead/>
+                <TableBody>
+                    {
+                        recordsAfterPagingAndSorting().map(item =>
+                            (<TableRow key={item.id} onClick={() => handleEditPressed(new Project(item))}>
+                                <TableCell>{item.id} </TableCell>
+                                <TableCell>{item.name} </TableCell>
+                                <TableCell><Button
+                                    onClick={() => handleDeletePressed(new Project(item))}>Delete</Button></TableCell>
+                            </TableRow>))
+                    }
 
-    </TableBody>
-    </TblContainer>
-    <TblPagination />
-    </React.Fragment>
-)
+                </TableBody>
+            </TblContainer>
+            <TblPagination/>
+        </React.Fragment>
+    )
 
 }
-export { }
+export {}
 

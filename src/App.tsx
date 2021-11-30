@@ -8,7 +8,7 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-import {Router, Switch, Route} from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from 'history';
 import * as React from "react";
 import {Alert} from "@mui/material";
@@ -60,13 +60,17 @@ function App() {
                     // Refresh token
                     startInterval()
                 } else {
-                    if(json.non_field_errors !== undefined) {
+                    if (json.non_field_errors !== undefined) {
                         setMessage({status: 'error', show_message: true, message: json.non_field_errors})
                     } else {
-                        setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
+                        setMessage({
+                            status: 'error',
+                            show_message: true,
+                            message: 'Something went wrong while trying to login!'
+                        })
                     }
                 }
-            }).catch(err=>{
+            }).catch(err => {
             setMessage({status: 'error', show_message: true, message: 'Something went wrong while trying to login!'})
         });
     }
@@ -81,22 +85,26 @@ function App() {
             body: JSON.stringify(data)
         })
             .then(res => {
-                if(!res.ok) throw res
+                if (!res.ok) throw res
                 else return res.json()
             })
             .then(() => {
-                setMessage({status: 'success', show_message: true, message: 'Successfully registered account! Please login'})
+                setMessage({
+                    status: 'success',
+                    show_message: true,
+                    message: 'Successfully registered account! Please login'
+                })
             })
             .catch(async (error) => {
                 let json = await error.json()
                 let message = 'Something went wrong while trying to register user!'
-                if(json.non_field_errors !== undefined) {
+                if (json.non_field_errors !== undefined) {
                     message = json.non_field_errors
-                } else if(json.username !== undefined) {
+                } else if (json.username !== undefined) {
                     message = "Username: " + json.username
-                } else if(json.email !== undefined) {
+                } else if (json.email !== undefined) {
                     message = "Email: " + json.email
-                } else if(json.password !== undefined) {
+                } else if (json.password !== undefined) {
                     message = "Password: " + json.password
                 }
                 setMessage({status: 'error', show_message: true, message: message})

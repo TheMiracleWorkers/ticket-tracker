@@ -13,7 +13,7 @@ export interface TicketInterface {
     assignedUserName: string;
 }
 
-export default class Ticket implements TicketInterface{
+export default class Ticket implements TicketInterface {
     id: number;
     title: string;
     description: string;
@@ -23,7 +23,7 @@ export default class Ticket implements TicketInterface{
     updatedDate: Date | null;
     priority: number | null;
     project: number | null;
-    project_name: string; 
+    project_name: string;
     assignedUserId: number | null;
     assignedUserName: string;
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import * as yup from "yup";
@@ -7,13 +8,12 @@ import Button from "@mui/material/Button";
 import {MenuItem, Stack} from "@mui/material";
 import Ticket from '../domainObjects/Ticket';
 import {TransportLayer} from '../transportation/TransportLayer';
-import { useHistory } from "react-router-dom";
-import { DateTimePicker, LocalizationProvider } from '@mui/lab';
+import {useHistory} from "react-router-dom";
+import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {useEffect, useState} from "react";
 import Project from "../domainObjects/Project";
 import User from '../domainObjects/User';
-import { TransportUsers } from '../transportation/TransportUsers';
+import {TransportUsers} from '../transportation/TransportUsers';
 
 const validationSchema = yup.object({
     title: yup
@@ -22,7 +22,7 @@ const validationSchema = yup.object({
         .required('Ticket title is required'),
     description: yup
         .string()
-        .required('Ticket description is required'), 
+        .required('Ticket description is required'),
     dueDate: yup
         .date()
         .required('dueDate must be a `date` type'),
@@ -62,7 +62,7 @@ export default function AddTicketForm(props: {
             console.log(projects);
         })
     }
-    
+
     function getAllUsers() {
         transportUser
             .getAllUsersPromise()
@@ -73,7 +73,7 @@ export default function AddTicketForm(props: {
                 setUsers(allUsers);
             })
     }
-   
+
     useEffect(() => {
         getAllProjects();
     }, []);
@@ -103,7 +103,7 @@ export default function AddTicketForm(props: {
             });
             transportLayer.postTicket(newTicket).catch(err => {
                 // TODO: Show error
-            }).then(res =>{
+            }).then(res => {
                 history.push('/tickets');
                 props.onClose();
             });
@@ -148,37 +148,15 @@ export default function AddTicketForm(props: {
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            required
-                            id="status"
-                            name="status"
-                            label="Status"
-                            fullWidth
-                            variant="standard"
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            required
-                            id="category"
-                            name="category"
-                            label="Category"
-                            fullWidth
-                            variant="standard"
-                            disabled
-                        />
-                    </Grid>
                     <Grid item xs={12} sm={3}>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} >
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 label="Due Date"
                                 value={formik.values.dueDate}
                                 inputFormat="dd-MM-yyyy HH:mm"
                                 onChange={value => formik.setFieldValue("dueDate", value)}
                                 minDate={new Date()}
-                                renderInput={(params) => <TextField                                    
+                                renderInput={(params) => <TextField
                                     id="due_date"
                                     name="due_date"
                                     label="Due Date"

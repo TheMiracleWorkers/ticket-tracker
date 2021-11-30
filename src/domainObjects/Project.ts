@@ -3,7 +3,7 @@ export interface ProjectInterface {
     name: string;
 }
 
-export default class Project implements ProjectInterface{
+export default class Project implements ProjectInterface {
     id: number;
     name: string;
 

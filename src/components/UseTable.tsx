@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import { Table,
-         TableHead,
-         TableRow, 
-         TableCell, 
-         TableSortLabel, 
-         Pagination } from '@mui/material';
-import { makeStyles } from "@mui/styles";
+import React, {useState} from "react";
+import {Pagination, Table, TableCell, TableHead, TableRow, TableSortLabel} from '@mui/material';
+import {makeStyles} from "@mui/styles";
 
 
 const useStyles = makeStyles({
@@ -40,7 +35,8 @@ const useStyles = makeStyles({
         justifyContent: 'center'
     },
     paginationText: {
-        margin: '0.75em',       
+        fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+        margin: '0.75em',
     },
 })
 
@@ -82,7 +78,9 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
                             <TableSortLabel
                                 active={orderBy === headCell.id}
                                 direction={orderBy === headCell.id ? order : 'asc'}
-                                onClick={() => { handleSortRequest(headCell.id) }}>
+                                onClick={() => {
+                                    handleSortRequest(headCell.id)
+                                }}>
                                 {headCell.label}
                             </TableSortLabel>
                         </TableCell>))
@@ -92,12 +90,11 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
     }
 
 
-
     function TblPagination() {
-           
+
         const handleChangePage = (
             event: React.ChangeEvent<unknown> | null,
-                 newPage: number ) => {
+            newPage: number) => {
             setPage(newPage);
         };
 
@@ -108,23 +105,23 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
             setPage(1);
         };
 
-        
+
         return (<div className={classes.paginationContainer}>
-            
+
                 <div className={classes.paginationText}>
                     Rows Per Page:
                 </div>
                 <select onChange={handleChangeRowsPerPage} value={rowsPerPage} className={classes.paginationSelect}>
                     {pages.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
-                        ))}
+                        <option key={size} value={size}>
+                            {size}
+                        </option>
+                    ))}
                 </select>
-                <Pagination 
+                <Pagination
                     className={classes.paginationSection}
                     count={Math.ceil(filterFn.fn(records).length / rowsPerPage)}
-                    page={page}               
+                    page={page}
                     onChange={handleChangePage}
                     showFirstButton={true}
                     showLastButton={true}
@@ -132,6 +129,7 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
             </div>
         );
     }
+
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         // console.warn(a, b, orderBy)
         if (b[orderBy] < a[orderBy]) {
@@ -154,7 +152,6 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
     }
 
 
-
     // This method is created for cross-browser compatibility, if you don't
     // need to support IE11, you can use Array.prototype.sort() directly
     function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
@@ -169,11 +166,9 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
     }
 
 
-
-
     const recordsAfterPagingAndSorting = () => {
         return stableSort(filterFn.fn(records), getComparator(order, orderBy))
-              .slice((page - 1) * rowsPerPage, page * rowsPerPage)
+            .slice((page - 1) * rowsPerPage, page * rowsPerPage)
     }
 
     const resetPage = () => {

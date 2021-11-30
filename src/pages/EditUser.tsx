@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Box, Grid, Modal, Typography } from "@mui/material";
+import {Box, Grid, Modal, Typography} from "@mui/material";
 import EditUserForm from "../components/EditUserForm";
-import { SxProps } from "@mui/system";
+import {SxProps} from "@mui/system";
 import {UserInterface} from "../domainObjects/User";
 
 export default function EditUser(props: {
@@ -28,17 +28,17 @@ export default function EditUser(props: {
                 <Box sx={boxStyle}>
                     <Grid
                         container
-                        spacing={{ md: 0 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                        padding={{ md: 0.6 }}
+                        spacing={{md: 0}}
+                        columns={{xs: 4, sm: 8, md: 12}}
+                        padding={{md: 0.6}}
                         justifyContent={"space-between"}
                     >
                         <Typography variant="h4">Edit User</Typography>
-                        <EditUserForm onClose={props.onClose} user={props.user} />
+                        <EditUserForm onClose={props.onClose} user={props.user}/>
                     </Grid>
                 </Box>
             </Modal>
-            
+
         </div>
     )
 }

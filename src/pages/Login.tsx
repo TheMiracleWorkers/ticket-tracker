@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
+import {Button, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, Typography} from '@mui/material';
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {useFormik} from "formik";
