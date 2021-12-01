@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {FormControl, InputAdornment, InputLabel, IconButton, Input, Button, Grid, Typography} from '@mui/material';
+import {Button, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, Typography} from '@mui/material';
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {useFormik} from "formik";
@@ -86,7 +86,7 @@ export default function Register(props: { handle_register: (arg0: State) => void
                             <Input
                                 required
                                 id="password"
-                                inputProps={{ minLength: 8 }}
+                                inputProps={{minLength: 8}}
                                 type={values.showPassword ? 'text' : 'password'}
                                 value={formik.values.password}
                                 onChange={formik.handleChange}

@@ -1,15 +1,14 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import Button from "@mui/material/Button";
-import { Box, Chip, MenuItem, Select, Stack} from "@mui/material";
-import User, { UserInterface } from '../domainObjects/User';
-import { TransportUsers } from '../transportation/TransportUsers';
+import {Box, Chip, MenuItem, Select, Stack, InputLabel} from "@mui/material";
+import User, {UserInterface} from '../domainObjects/User';
+import {TransportUsers} from '../transportation/TransportUsers';
 import Role from '../domainObjects/Role';
-import { useEffect, useState } from 'react';
-import { TransportLayerRoles } from '../transportation/TransportLayerRoles';
-
+import {TransportLayerRoles} from '../transportation/TransportLayerRoles';
 
 
 export default function EditUserForm(props: {
@@ -19,7 +18,7 @@ export default function EditUserForm(props: {
     const transportLayer = new TransportUsers();
     const user = props.user;
     const [roles, setRoles] = useState<Role[]>([]);
-    const transportRole = new TransportLayerRoles();    
+    const transportRole = new TransportLayerRoles();
     const formik = useFormik({
         initialValues: {
             username: user?.username,
@@ -38,11 +37,11 @@ export default function EditUserForm(props: {
                 'date_joined': user?.date_joined,
             });
             transportLayer.updateUserPromise(updateUser)
-                .then(res => {                 
+                .then(res => {
                     props.onClose();
                 }).catch(err => {
-                    // TODO: Show error
-                });
+                // TODO: Show error
+            });
         },
     });
 
@@ -53,7 +52,7 @@ export default function EditUserForm(props: {
                 const allRoles: Role[] = response.data.map(
                     (responseElement: any) => new Role(responseElement)
                 );
-                setRoles(allRoles);                
+                setRoles(allRoles);
             })
     }
 
@@ -61,10 +60,10 @@ export default function EditUserForm(props: {
         getAllRoles();
     }, []);
 
- 
+
     return (
         <React.Fragment>
-            
+
             <form style={{width: "100%"}} onSubmit={formik.handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
@@ -92,35 +91,38 @@ export default function EditUserForm(props: {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>                       
-                        <Select                            
+                    <Grid item xs={12} sm={4}>
+                        <InputLabel style={{fontSize: "0.75rem"}} id="roles-label">Roles</InputLabel>
+                        <Select
+                            labelId="roles-label"
                             id="groups"
                             name="groups"
                             label="Roles"
                             fullWidth
                             multiple
                             variant="standard"
-                            value={(formik.values.groups) }
+                            value={(formik.values.groups)}
                             onChange={formik.handleChange}
-                        renderValue={(selected) => {
-                                    return (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            renderValue={(selected) => {
+                                return (
+                                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                                         {selected.map((value) => {
                                             const option = roles.find((o) => o.url === value);
-                                            return <Chip key={value} label={option?.name} />;})}
+                                            return <Chip key={value} label={option?.name}/>;
+                                        })}
                                     </Box>
                                 );
                             }}
-                           >
-                                {roles.map((role) => (
-                                    <MenuItem
-                                     key={role.url}
-                                     value={role.url}
-                                    >
-                                        {role.name}
-                                    </MenuItem>
-                                ))}
-                       </Select>                        
+                        >
+                            {roles.map((role) => (
+                                <MenuItem
+                                    key={role.url}
+                                    value={role.url}
+                                >
+                                    {role.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </Grid>
                     <Grid item xs={12}>
                         <Stack spacing={2} direction="row">

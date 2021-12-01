@@ -21,6 +21,7 @@
     #content {
         padding: 20px;
     }
+
     #top-header.open header > div:first-child, #content.open {
         margin-left: 250px;
         transition: margin-left 0.3s ease;

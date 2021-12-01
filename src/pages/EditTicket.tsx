@@ -1,16 +1,11 @@
-import { Box, Grid, Modal, Typography } from "@mui/material";
+import {Box, Grid, Modal, Typography} from "@mui/material";
 import EditTicketForm from "../components/EditTicketForm";
-import { SxProps } from "@mui/system";
-import Ticket, { TicketInterface } from '../domainObjects/Ticket';
-import { AxiosResponse } from 'axios';
-import { TransportLayer } from '../transportation/TransportLayer';
-import { useEffect, useState } from 'react';
+import {SxProps} from "@mui/system";
+import {TicketInterface} from '../domainObjects/Ticket';
 
 export default function EditTicket(props: {
-
-    modalIsOpen: boolean;
     onClose: Function;
-    ticketId: number | null;
+    ticket: TicketInterface | undefined;
 }) {
 
     const boxStyle: SxProps = {
@@ -26,43 +21,24 @@ export default function EditTicket(props: {
         p: 4,
     };
 
-    const transportLayer = new TransportLayer();
-    const [ticketToUpdate, setTicketToUpdate] = useState<TicketInterface>();
-
-    useEffect(() => {
-         fetchOneTicket();       
-    }, [props.modalIsOpen, props.ticketId]);
-
-    function fetchOneTicket() {
-        transportLayer
-            .getTicketByIdPromise(props.ticketId as number)
-            .then((response: AxiosResponse) => {
-                const ticket: Ticket = new Ticket(response.data);
-                setTicketToUpdate(ticket);
-            })
-            .catch((response: AxiosResponse) => {
-                // Handle error.
-                console.log(response);
-            });
-    }    
     return (
         <div>
-            <Modal
-                open={props.modalIsOpen}
-            >
+            <Modal open={true}>
                 <Box sx={boxStyle}>
                     <Grid
                         container
-                        spacing={{ md: 0 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                        padding={{ md: 0.6 }}
+                        spacing={{md: 0}}
+                        columns={{xs: 4, sm: 8, md: 12}}
+                        padding={{md: 0.6}}
                         justifyContent={"space-between"}
                     >
-                        <Typography variant="h4">Edit Ticket Number {"#" + props.ticketId} </Typography>
-                        <EditTicketForm onClose={props.onClose} ticket={ticketToUpdate} />
+                        {props.ticket !== undefined ? (
+                            <Typography variant="h4">Edit Ticket Number {"#" + props.ticket.id} </Typography>
+                        ) : ("")}
+                        <EditTicketForm onClose={props.onClose} ticket={props.ticket}/>
                     </Grid>
                 </Box>
-            </Modal>            
+            </Modal>
         </div>
     )
 }

@@ -1,14 +1,14 @@
-import { TicketStore } from "./TicketStore";
-import { UserStore } from "./UserStore";
+import {TicketStore} from "./TicketStore";
+import {UserStore} from "./UserStore";
 
 export class RootStore {
-  userStore: UserStore;
-  ticketStore: TicketStore;
+    userStore: UserStore;
+    ticketStore: TicketStore;
 
-  constructor() {
-    this.userStore = new UserStore(this);
-    this.ticketStore = new TicketStore(this.userStore, this);
-  }
+    constructor() {
+        this.userStore = new UserStore(this);
+        this.ticketStore = new TicketStore(this.userStore, this);
+    }
 }
 
 // const StoreContext = React.createContext(new RootStore());

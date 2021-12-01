@@ -1,14 +1,14 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import * as yup from "yup";
 import {useFormik} from "formik";
 import Button from "@mui/material/Button";
-import {Modal, Stack, Box} from "@mui/material";
+import {Box, Modal, Stack} from "@mui/material";
 import {TransportLayer} from '../transportation/TransportLayer';
-import Project, {ProjectInterface} from "../domainObjects/Project";
-import { SxProps } from "@mui/system";
-import {useEffect, useState} from "react";
+import Project from "../domainObjects/Project";
+import {SxProps} from "@mui/system";
 
 const validationSchema = yup.object({
     name: yup
@@ -21,7 +21,7 @@ export default function ProjectForm(props: {
     onClose: Function;
     modalIsOpen: boolean;
     project?: Project | null;
-}) {    
+}) {
     const transportLayer = new TransportLayer();
 
     const boxStyle: SxProps = {
@@ -29,38 +29,37 @@ export default function ProjectForm(props: {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 400,       
+        width: 400,
         bgcolor: "background.paper",
         border: "1px solid #000",
         boxShadow: 24,
         p: 4,
     };
 
-    function closeForm(){
+    function closeForm() {
         formik.resetForm();
         props.onClose();
     }
 
-    function addProject(values : any)
-    {
+    function addProject(values: any) {
         const newProject = new Project({
             'name': values.name,
         });
         transportLayer.postProject(newProject).catch(err => {
             // TODO: Show error
-        }).then(res =>{
-            closeForm();            
-        });         
+        }).then(res => {
+            closeForm();
+        });
     }
 
-    function updateProject(project : any, values : any){
+    function updateProject(project: any, values: any) {
         project.name = values.name;
 
         transportLayer.updateProjectPromise(project).catch(err => {
             // TODO: Show error
-        }).then(res =>{
-            closeForm();             
-        });         
+        }).then(res => {
+            closeForm();
+        });
     }
 
     const formik = useFormik({
@@ -68,26 +67,25 @@ export default function ProjectForm(props: {
             name: props.project ? props.project.name : '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {    
-            if (props.project){                
+        onSubmit: (values) => {
+            if (props.project) {
                 updateProject(props.project, values);
-            } 
-            else {
+            } else {
                 addProject(values);
-            }                           
+            }
         },
     });
 
-    useEffect(() => {       
+    useEffect(() => {
         if (props.project) {
             formik.setFieldValue('name', props.project?.name);
         }
-    }, [props.project]);    
+    }, [props.project]);
 
     return (
         <React.Fragment>
             <Modal open={props.modalIsOpen}>
-                <Box sx={boxStyle}>                    
+                <Box sx={boxStyle}>
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={12}>

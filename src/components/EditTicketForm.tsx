@@ -1,18 +1,18 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import * as yup from "yup";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import Button from "@mui/material/Button";
-import { MenuItem, Stack } from "@mui/material";
-import Ticket, { TicketInterface } from '../domainObjects/Ticket';
-import { TransportLayer } from '../transportation/TransportLayer';
-import { DateTimePicker, LocalizationProvider } from '@mui/lab';
+import {MenuItem, Stack} from "@mui/material";
+import Ticket, {TicketInterface} from '../domainObjects/Ticket';
+import {TransportLayer} from '../transportation/TransportLayer';
+import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Project from "../domainObjects/Project";
-import {useEffect, useState} from "react";
 import User from '../domainObjects/User';
-import { TransportUsers } from '../transportation/TransportUsers';
+import {TransportUsers} from '../transportation/TransportUsers';
 
 
 const validationSchema = yup.object({
@@ -76,6 +76,7 @@ export default function EditTicketForm(props: {
             value: 6,
         }
     ];
+
     function getAllProjects() {
         transportLayer.getAllProjectPromise().then((response: any) => {
             const allProjects: Project[] = response.data.map(
@@ -103,7 +104,7 @@ export default function EditTicketForm(props: {
     useEffect(() => {
         getAllUsers();
     }, []);
-    
+
     const formik = useFormik({
         initialValues: {
             title: ticket?.title,
@@ -111,7 +112,7 @@ export default function EditTicketForm(props: {
             dueDate: ticket?.dueDate,
             createdDate: ticket?.createdDate,
             updatedDate: ticket?.updatedDate,
-            status:ticket?.status,
+            status: ticket?.status,
             assignedUserId: ticket?.assignedUserId,
             priority: ticket?.priority,
             project: ticket ? ticket.project : "",
@@ -130,19 +131,19 @@ export default function EditTicketForm(props: {
                 'project': values.project,
                 'assigned_user': values.assignedUserId
             });
-            
+
             transportLayer.updateTicketPromise(updateTicket)
                 .then(res => {
                     props.onClose();
                 }).catch(err => {
-                    // TODO: Show error
-                });
+                // TODO: Show error
+            });
         },
     });
 
     return (
         <React.Fragment>
-            
+
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
@@ -190,12 +191,12 @@ export default function EditTicketForm(props: {
                             variant="standard"
                             value={formik.values.status}
                             onChange={event => formik.setFieldValue("status", (event.target.value))}
-                            onBlur={formik.handleBlur}                     
+                            onBlur={formik.handleBlur}
                         >
-                            {status.map((option)=> (
+                            {status.map((option) => (
                                 <MenuItem key={option.value} value={option.label}>
                                     {option.label}
-                                </MenuItem>                            
+                                </MenuItem>
                             ))}
                         </TextField>
 
@@ -212,7 +213,7 @@ export default function EditTicketForm(props: {
                         />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} >
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 label="Due Date"
                                 value={formik.values.dueDate}
@@ -221,12 +222,12 @@ export default function EditTicketForm(props: {
                                 minDate={formik.initialValues.createdDate}
                                 maxDate={new Date()}
                                 renderInput={(params) => <TextField
-                                id="due_date"
-                                name="due_date"
-                                label="Due Date"
-                                fullWidth
-                                variant="standard"
-                                {...params}
+                                    id="due_date"
+                                    name="due_date"
+                                    label="Due Date"
+                                    fullWidth
+                                    variant="standard"
+                                    {...params}
                                 />}
                             />
                         </LocalizationProvider>
@@ -242,13 +243,13 @@ export default function EditTicketForm(props: {
                             variant="standard"
                             value={formik.values.priority}
                             onChange={event => formik.setFieldValue("priority", (event.target.value))}
-                            onBlur={formik.handleBlur}                     
+                            onBlur={formik.handleBlur}
                         >
-                        {priorities.map((option)=> (
-                            <MenuItem key={option.label} value={option.value}>
-                                {option.value}
-                            </MenuItem>                            
-                        ))}
+                            {priorities.map((option) => (
+                                <MenuItem key={option.label} value={option.value}>
+                                    {option.value}
+                                </MenuItem>
+                            ))}
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={4}>

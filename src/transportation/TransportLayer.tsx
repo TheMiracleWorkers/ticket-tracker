@@ -3,74 +3,76 @@ import Ticket from "../domainObjects/Ticket";
 import Project from "../domainObjects/Project";
 
 export class TransportLayer {
-  apiUrl = process.env.REACT_APP_REST_API;
-  axiosInstance = axios.create({
-    baseURL: this.apiUrl,
-  });
-
-  getAllTicketsPromise() {
-    return this.axiosInstance.request({
-      method: "GET",
-      url: "/tickets",
+    apiUrl = process.env.REACT_APP_REST_API;
+    axiosInstance = axios.create({
+        baseURL: this.apiUrl,
+        headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`
+        }
     });
-  }
 
-  getTicketByIdPromise(id: number) {
-    return this.axiosInstance.request({
-      method: "GET",
-      url: "/tickets/" + id,
-    });
-  }
+    getAllTicketsPromise() {
+        return this.axiosInstance.request({
+            method: "GET",
+            url: "/tickets",
+        });
+    }
 
-  postTicket(ticket: Ticket) {
-    return this.axiosInstance.request({
-      method: "POST",
-      url: "/tickets/",
-      data: ticket.toJSON()
-    })
-  }
+    getTicketByIdPromise(id: number) {
+        return this.axiosInstance.request({
+            method: "GET",
+            url: "/tickets/" + id,
+        });
+    }
 
-  updateTicketPromise(ticket: Ticket) {
-    return this.axiosInstance.request({
-      method: "PUT",
-      url: "/tickets/" + ticket.id + "/",
-      data: ticket.toJSON()
-    });
-  }
+    postTicket(ticket: Ticket) {
+        return this.axiosInstance.request({
+            method: "POST",
+            url: "/tickets/",
+            data: ticket.toJSON(),
+        })
+    }
 
-  getAllProjectPromise() {
-    return this.axiosInstance.request({
-      method: "GET",
-      url: "/projects",
-    });
-  }
+    updateTicketPromise(ticket: Ticket) {
+        return this.axiosInstance.request({
+            method: "PUT",
+            url: "/tickets/" + ticket.id + "/",
+            data: ticket.toJSON(),
+        });
+    }
 
-  getProjectByIdPromise(id: number) {
-    return this.axiosInstance.request({
-      method: "GET",
-      url: "/projects/" + id,
-    });
-  }
+    getAllProjectPromise() {
+        return this.axiosInstance.request({
+            method: "GET",
+            url: "/projects",
+        });
+    }
 
-  postProject(project: Project) {
-    return this.axiosInstance.request({
-      method: "POST",
-      url: "/projects/",
-      data: project.toJSON()
-    })
-  }
+    getProjectByIdPromise(id: number) {
+        return this.axiosInstance.request({
+            method: "GET",
+            url: "/projects/" + id,
+        });
+    }
 
-  updateProjectPromise(project: Project) {
-    return this.axiosInstance.request({
-      method: "PUT",
-      url: "/projects/" + project.id + "/",
-      data: project.toJSON()
-    });
-  }
+    postProject(project: Project) {
+        return this.axiosInstance.request({
+            method: "POST",
+            url: "/projects/",
+            data: project.toJSON(),
+        })
+    }
 
-  deleteProject(project: Project){
-    return this.axiosInstance.delete("/projects/" + project.id + "/");
-  }
+    updateProjectPromise(project: Project) {
+        return this.axiosInstance.request({
+            method: "PUT",
+            url: "/projects/" + project.id + "/",
+            data: project.toJSON(),
+        });
+    }
 
+    deleteProject(project: Project) {
+        return this.axiosInstance.delete("/projects/" + project.id + "/");
+    }
 
 }

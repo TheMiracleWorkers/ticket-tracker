@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Box, Grid, Modal, Typography } from "@mui/material";
+import {Box, Grid, Modal, Typography} from "@mui/material";
 import AddTicketForm from "../components/AddTicketForm";
-import { SxProps } from "@mui/system";
+import {SxProps} from "@mui/system";
 
 export default function AddTickets(props: {
     modalIsOpen: boolean;
@@ -21,7 +21,6 @@ export default function AddTickets(props: {
         p: 4,
     };
 
-
     return (
         <div id="add-ticket">
             <Modal
@@ -30,13 +29,15 @@ export default function AddTickets(props: {
                 <Box sx={boxStyle}>
                     <Grid
                         container
-                        spacing={{ md: 0 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                        padding={{ md: 0.6 }}
+                        spacing={{md: 0}}
+                        columns={{xs: 4, sm: 8, md: 12}}
+                        padding={{md: 0.6}}
                         justifyContent={"space-between"}
                     >
-                        <Typography variant="h4">Add Ticket</Typography>
-                        <AddTicketForm onClose={props.onClose} />
+                        <Typography variant="h4" gutterBottom noWrap={true}>Add Ticket</Typography>
+                        <Grid item xs={4} sm={8} md={12}>
+                            <AddTicketForm onClose={props.onClose}/>
+                        </Grid>
                     </Grid>
                 </Box>
             </Modal>

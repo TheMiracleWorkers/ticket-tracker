@@ -1,7 +1,6 @@
+import React from "react";
 
-import React  from "react";
-
-import { Button as MuiButton, makeStyles, ButtonProps } from "@material-ui/core";
+import {Button as MuiButton, ButtonProps, makeStyles} from "@material-ui/core";
 
 
 interface IButtonProps extends ButtonProps {
@@ -24,10 +23,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Button({ fontSize = "medium", children, ...rest }: IButtonProps) {
+function Button({fontSize = "medium", children, ...rest}: IButtonProps) {
     const classes = useStyles();
     return (
-        <MuiButton classes={{ label: classes[fontSize] }} {...rest}>
+        <MuiButton classes={{label: classes[fontSize]}} {...rest}>
             {children}
         </MuiButton>
     );

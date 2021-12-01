@@ -1,7 +1,25 @@
 import * as React from 'react';
 
-import {ChevronLeft, ChevronRight, Home, FormatListBulleted, Settings, PersonOutline, AccountTree} from '@mui/icons-material';
-import {Drawer as MuiDrawer, List, Divider, ListItem, ListItemIcon, ListItemText, styled, Theme, CSSObject} from '@mui/material';
+import {
+    AccountTree,
+    ChevronLeft,
+    ChevronRight,
+    FormatListBulleted,
+    Home,
+    PersonOutline,
+    Settings
+} from '@mui/icons-material';
+import {
+    CSSObject,
+    Divider,
+    Drawer as MuiDrawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    styled,
+    Theme
+} from '@mui/material';
 import {Link} from "react-router-dom";
 
 // Open sidebar
@@ -85,7 +103,7 @@ export default function SideMenu() {
             "element": <Settings/>,
             "to": "/settings",
         }
-        
+
     }
 
     return (

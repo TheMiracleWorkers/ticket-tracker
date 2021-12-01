@@ -1,10 +1,10 @@
 import React from "react"
-import { InputBase, InputBaseProps } from "@mui/material";
+import {InputBase, InputBaseProps} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
+import {alpha, styled} from '@mui/material/styles';
 
 
-const Search = styled('div')(({ theme }) => ({
+const Search = styled('div')(({theme}) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -20,7 +20,7 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({theme}) => ({
     padding: theme.spacing(0),
     height: '100%',
     position: 'absolute',
@@ -32,7 +32,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     marginRi: 0,
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(InputBase)(({theme}) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 3),
@@ -51,18 +51,18 @@ interface Props extends InputBaseProps {
 }
 
 const searchInput: React.FC<Props> = ({
-    placeholder,
-    label,
-    name,
-    value,
-    onChange,
+                                          placeholder,
+                                          label,
+                                          name,
+                                          value,
+                                          onChange,
 
-}) => {
+                                      }) => {
 
     return (
         <Search style={{marginRight: 16}}>
             <SearchIconWrapper>
-                <SearchIcon />
+                <SearchIcon/>
             </SearchIconWrapper>
             <StyledInputBase
                 placeholder={placeholder}

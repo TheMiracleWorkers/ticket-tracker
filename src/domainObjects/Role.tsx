@@ -1,6 +1,6 @@
 export interface RoleInterface {
-    url : string;
-    name: string;  
+    url: string;
+    name: string;
 }
 
 export default class Role implements RoleInterface {
@@ -13,8 +13,9 @@ export default class Role implements RoleInterface {
     }
 
     toJSON() {
-        return { 
-        url: this.url,
-        name: this.name}
+        return {
+            url: this.url,
+            name: this.name
+        }
     }
 }

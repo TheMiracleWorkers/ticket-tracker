@@ -8,7 +8,7 @@ export interface UserInterface {
     date_joined: string | null;
 }
 
-export default class User implements UserInterface{
+export default class User implements UserInterface {
     id: number;
     url: string;
     username: string;
