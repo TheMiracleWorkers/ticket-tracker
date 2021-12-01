@@ -1,15 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import TicketHeader from "./TicketHeader";
 import {Divider, Modal} from "@mui/material";
 import Box from "@mui/material/Box";
 import TicketBody from "./TicketBody";
-import Ticket, {TicketInterface} from "../../domainObjects/Ticket";
-import {TransportLayer} from "../../transportation/TransportLayer";
-import {AxiosResponse} from "axios";
+import {TicketInterface} from "../../domainObjects/Ticket";
 import {SxProps} from "@mui/system";
-
-const transportLayer = new TransportLayer();
 
 const boxStyle: SxProps = {
     position: "relative",
@@ -31,30 +27,6 @@ function ViewTicket(props: {
     onClose: Function;
     onEdit: Function;
 }) {
-    const [ticketState, setTicketState] = useState<TicketInterface>();
-
-    useEffect(() => {
-        if (props.modalIsOpen) {
-            setTicketState(undefined);
-            fetchOneTicket();
-        } else {
-        }
-    }, [props.modalIsOpen]);
-
-    function fetchOneTicket() {
-        if (props.ticket !== undefined) {
-            transportLayer
-                .getTicketByIdPromise(props.ticket.id as number)
-                .then((response: AxiosResponse) => {
-                    const ticket: Ticket = new Ticket(response.data);
-                    setTicketState(ticket);
-                })
-                .catch((response: AxiosResponse) => {
-                    // Handle error.
-                    console.log(response);
-                });
-        }
-    }
 
     return (
         <Modal
@@ -73,9 +45,9 @@ function ViewTicket(props: {
                     padding={{md: 0.6}}
                     justifyContent={"space-between"}
                 >
-                    <TicketHeader ticket={ticketState} onClose={props.onClose} onEdit={props.onEdit}/>
+                    <TicketHeader ticket={props.ticket} onClose={props.onClose} onEdit={props.onEdit}/>
                     <Divider style={{width: "100%", margin: 20}}/>
-                    <TicketBody ticket={ticketState}/>
+                    <TicketBody ticket={props.ticket}/>
                 </Grid>
             </Box>
         </Modal>
