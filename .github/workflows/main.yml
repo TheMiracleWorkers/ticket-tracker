@@ -21,6 +21,7 @@ jobs:
       run: |
         git config --global user.email ${{ secrets.EMAIL }}
         git config --global user.name ${{ secrets.NAME }}
+        git remote set-url origin https://${{ secrets.TOKEN }}@github.com/TheMiracleWorkers/ticket-tracker.git
         npm run deploy
     - name: Updating Domain
       run: echo "Update domain"
