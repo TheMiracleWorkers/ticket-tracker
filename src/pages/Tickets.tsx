@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {TableBody, TableCell, TableRow, Typography} from "@mui/material";
+import {TableBody, TableCell, TableRow, Typography, CircularProgress} from "@mui/material";
 import useTable from "../components/UseTable";
 import {TransportLayer} from "../transportation/TransportLayer";
 import Ticket, {TicketInterface} from "../domainObjects/Ticket";
@@ -25,6 +25,7 @@ const transportLayer = new TransportLayer();
 
 export default function Tickets(props: any) {
     const [tickets, setTickets] = useState<Ticket[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filterFn, setFilterFn] = useState({
         fn: (items: any) => {
             return tickets;
@@ -37,7 +38,7 @@ export default function Tickets(props: any) {
         recordsAfterPagingAndSorting,
         resetPage
     } = useTable(tickets, headCells, filterFn);
-    const [, setSearchText] = React.useState("");
+    const [, setSearchText] = useState("");
 
     const [ticketToUpdate, setTicketToUpdate] = useState<TicketInterface>();
 
@@ -57,9 +58,11 @@ export default function Tickets(props: any) {
                         return allTickets;
                     },
                 });
+                setLoading(false)
             })
             .catch((response: AxiosResponse) => {
                 // Handle error
+                setLoading(false)
             });
     }
 
@@ -151,7 +154,8 @@ export default function Tickets(props: any) {
             <TblContainer>
                 <TblHead/>
                 <TableBody>
-                    {recordsAfterPagingAndSorting().map((item) => (
+                    { tickets.length > 0 ? (
+                        recordsAfterPagingAndSorting().map((item) => (
                         <TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
                             <TableCell>{item.id} </TableCell>
                             <TableCell>{item.title} </TableCell>
@@ -169,8 +173,18 @@ export default function Tickets(props: any) {
                                 {moment((item.updatedDate), ("DD-MM-YYYY")).isValid() ? moment(item.updatedDate).format("DD-MM-YYYY") : " "}
                             </TableCell>
                             <TableCell>{item.status} </TableCell>
+                        </TableRow>))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={100}>
+                            {loading ? (
+                                <CircularProgress/>
+                            ) : (
+                                "No data found"
+                            )}
+                            </TableCell>
                         </TableRow>
-                    ))}
+                    )}
                 </TableBody>
             </TblContainer>
             <TblPagination/>

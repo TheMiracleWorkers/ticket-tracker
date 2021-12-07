@@ -101,11 +101,11 @@ export default function Register(props: { handle_register: (arg0: State) => void
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={3}>
                         <Button variant="outlined" type="submit" fullWidth>Register</Button>
                     </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={9}>
                         <Button component={Link} to="/">Already have an account?</Button>
                     </Grid>
                 </Grid>
