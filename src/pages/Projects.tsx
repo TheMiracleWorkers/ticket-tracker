@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {TableBody, TableCell, TableRow, Typography} from '@mui/material';
+import {CircularProgress, TableBody, TableCell, TableRow, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import {AxiosResponse} from "axios";
 import {TransportLayer} from "../transportation/TransportLayer";
@@ -20,6 +20,7 @@ export default function Projects(props: any) {
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
     const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filterFn, setFilterFn] = useState({
         fn: (items: any) => {
             return projects;
@@ -48,9 +49,11 @@ export default function Projects(props: any) {
                         return allProjects;
                     },
                 });
+                setLoading(false)
             })
             .catch((response: AxiosResponse) => {
                 // Handle error
+                setLoading(false)
             });
     }
 
@@ -97,7 +100,7 @@ export default function Projects(props: any) {
             <TblContainer>
                 <TblHead/>
                 <TableBody>
-                    {
+                    { projects.length > 0 ? (
                         recordsAfterPagingAndSorting().map(item =>
                             (<TableRow key={item.id} onClick={(e) => {
                                 const target = e.target as Element;
@@ -114,8 +117,17 @@ export default function Projects(props: any) {
                                         }
                                     }}>Delete</Button></TableCell>
                             </TableRow>))
-                    }
-
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={100}>
+                                {loading ? (
+                                    <CircularProgress/>
+                                ) : (
+                                    "No data found"
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </TblContainer>
             <TblPagination/>

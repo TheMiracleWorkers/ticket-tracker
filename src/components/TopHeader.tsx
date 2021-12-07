@@ -59,7 +59,7 @@ export default function TopHeader(props: TopHeaderProps) {
             <AppBar className={'app-bar'}>
                 <Toolbar>
                     {buttonText ? (
-                        <Button variant="outlined"
+                        <Button variant="outlined" className={'add-button'}
                                 size="medium" onClick={() => setModalIsOpen(true)}>{buttonText} </Button>
                     ) : ("")}
                 </Toolbar>

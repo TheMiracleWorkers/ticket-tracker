@@ -8,7 +8,7 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-import {Route, Router, Switch} from "react-router-dom";
+import {Redirect, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from 'history';
 import * as React from "react";
 import {Alert} from "@mui/material";
@@ -178,6 +178,8 @@ function App() {
                 ) : ("")}
 
                 <Switch>
+
+                    <Redirect from='/ticket-tracker' to='/' />
 
                     {!user.logged_in ? (
                         <Route exact path="/">

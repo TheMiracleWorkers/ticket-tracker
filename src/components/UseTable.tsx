@@ -16,14 +16,22 @@ const useStyles = makeStyles({
             backgroundColor: '#fffbf2',
             cursor: 'pointer',
         },
+        "@media (max-width: 768px)": {
+            overflowX: 'auto',
+            display: 'block',
+        }
     },
     paginationContainer: {
-
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
         padding: '1em',
-        fontSize: '.75em'
+        fontSize: '.75em',
+        "@media (max-width: 768px)": {
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            flex: '0 0 100%',
+        }
     },
     paginationSelect: {
         width: 45,
@@ -32,11 +40,17 @@ const useStyles = makeStyles({
     paginationSection: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        "@media (max-width: 768px)": {
+            marginTop: '10px',
+        }
     },
     paginationText: {
         fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
         margin: '0.75em',
+        "@media (max-width: 768px)": {
+            margin: '0',
+        }
     },
 })
 
@@ -122,6 +136,8 @@ export default function useTable(records: any[], headCells: any[], filterFn: { f
                     className={classes.paginationSection}
                     count={Math.ceil(filterFn.fn(records).length / rowsPerPage)}
                     page={page}
+                    siblingCount={0}
+                    boundaryCount={1}
                     onChange={handleChangePage}
                     showFirstButton={true}
                     showLastButton={true}

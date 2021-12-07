@@ -83,11 +83,11 @@ export default function Login(props: { handle_login: (arg0: State) => void; }) {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={3}>
                         <Button variant="outlined" type="submit" fullWidth>Login</Button>
                     </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={9}>
                         <Button component={Link} to="/register">Don't have an account yet?</Button>
                     </Grid>
                 </Grid>

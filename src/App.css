@@ -28,6 +28,22 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    input[name="search"] {
+        padding-left: 5px !important;
+    }
+
+    .add-button {
+        font-size: 0 !important;
+    }
+
+    .add-button:after {
+        font-size: 1rem;
+        content: '+';
+    }
+
+}
+
 #content h1 {
     font-size: 25px;
     font-weight: bold;

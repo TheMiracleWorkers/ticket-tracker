@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Chip, TableBody, TableCell, TableRow, Typography} from '@mui/material';
+import {Box, Chip, CircularProgress, TableBody, TableCell, TableRow, Typography} from '@mui/material';
 import useTable from "../components/UseTable";
 import {TransportUsers} from "../transportation/TransportUsers";
 import User, {UserInterface} from "../domainObjects/User";
@@ -25,6 +25,7 @@ export default function Users(props: any) {
     const [modalEditUserOpen, setModalEditUserOpen] = useState(false);
 
     const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filterFn, setFilterFn] = useState({
         fn: (items: any) => {
             return users;
@@ -54,9 +55,11 @@ export default function Users(props: any) {
                         return allUsers;
                     },
                 });
+                setLoading(false)
             })
             .catch((response: AxiosResponse) => {
                 // Handle error
+                setLoading(false)
             });
     }
 
@@ -128,7 +131,7 @@ export default function Users(props: any) {
             <TblContainer>
                 <TblHead/>
                 <TableBody>
-                    {
+                    { users.length > 0 ? (
                         recordsAfterPagingAndSorting().map(item =>
                             (<TableRow key={item.id} onClick={() => handleClickEvent(item.id)}>
                                 <TableCell>{item.username} </TableCell>
@@ -147,8 +150,17 @@ export default function Users(props: any) {
                                 <TableCell>{moment(item.last_login).format('DD-MM-YYYY HH:mm')} </TableCell>
                                 <TableCell>{moment(item.date_joined).format('DD-MM-YYYY HH:mm')} </TableCell>
                             </TableRow>))
-                    }
-
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={100}>
+                                {loading ? (
+                                    <CircularProgress/>
+                                ) : (
+                                    "No data found"
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </TblContainer>
             <TblPagination/>
