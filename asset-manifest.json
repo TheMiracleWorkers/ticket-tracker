@@ -1,22 +1,24 @@
 {
   "files": {
     "main.css": "/ticket-tracker/static/css/main.e95566bb.chunk.css",
-    "main.js": "/ticket-tracker/static/js/main.ed7d1ab8.chunk.js",
-    "main.js.map": "/ticket-tracker/static/js/main.ed7d1ab8.chunk.js.map",
+    "main.js": "/ticket-tracker/static/js/main.ade1f156.chunk.js",
+    "main.js.map": "/ticket-tracker/static/js/main.ade1f156.chunk.js.map",
     "runtime-main.js": "/ticket-tracker/static/js/runtime-main.90830708.js",
     "runtime-main.js.map": "/ticket-tracker/static/js/runtime-main.90830708.js.map",
-    "static/js/2.e70b26df.chunk.js": "/ticket-tracker/static/js/2.e70b26df.chunk.js",
-    "static/js/2.e70b26df.chunk.js.map": "/ticket-tracker/static/js/2.e70b26df.chunk.js.map",
+    "static/js/2.f379a520.chunk.js": "/ticket-tracker/static/js/2.f379a520.chunk.js",
+    "static/js/2.f379a520.chunk.js.map": "/ticket-tracker/static/js/2.f379a520.chunk.js.map",
     "static/js/3.87b0366c.chunk.js": "/ticket-tracker/static/js/3.87b0366c.chunk.js",
     "static/js/3.87b0366c.chunk.js.map": "/ticket-tracker/static/js/3.87b0366c.chunk.js.map",
     "index.html": "/ticket-tracker/index.html",
+    "service-worker.js": "/ticket-tracker/service-worker.js",
+    "service-worker.js.map": "/ticket-tracker/service-worker.js.map",
     "static/css/main.e95566bb.chunk.css.map": "/ticket-tracker/static/css/main.e95566bb.chunk.css.map",
-    "static/js/2.e70b26df.chunk.js.LICENSE.txt": "/ticket-tracker/static/js/2.e70b26df.chunk.js.LICENSE.txt"
+    "static/js/2.f379a520.chunk.js.LICENSE.txt": "/ticket-tracker/static/js/2.f379a520.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.90830708.js",
-    "static/js/2.e70b26df.chunk.js",
+    "static/js/2.f379a520.chunk.js",
     "static/css/main.e95566bb.chunk.css",
-    "static/js/main.ed7d1ab8.chunk.js"
+    "static/js/main.ade1f156.chunk.js"
   ]
 }
