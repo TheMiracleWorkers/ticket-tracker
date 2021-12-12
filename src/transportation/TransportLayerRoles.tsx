@@ -1,4 +1,5 @@
 import axios from "axios";
+import inMemoryJWT from "../domainObjects/inMemoryJWTManager";
 
 
 export class TransportLayerRoles {
@@ -12,8 +13,8 @@ export class TransportLayerRoles {
             method: "GET",
             url: "/roles",
             headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            }
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 }

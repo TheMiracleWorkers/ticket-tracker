@@ -14,6 +14,7 @@ import * as React from "react";
 import {Alert} from "@mui/material";
 import PrivateRoute from "./components/PrivateRoute";
 import Projects from "./pages/Projects";
+import inMemoryJWT from "./domainObjects/inMemoryJWTManager";
 
 const history = createBrowserHistory();
 let refreshInterval: NodeJS.Timeout
@@ -22,7 +23,7 @@ function App() {
 
     const [searchText, setSearchText] = React.useState("");
     const [user, setUser] = React.useState({
-        logged_in: !!localStorage.getItem('token'),
+        logged_in: false,
         username: '',
     });
 
@@ -34,7 +35,7 @@ function App() {
 
     // Log user out
     function handle_logout(): void {
-        localStorage.removeItem('token');
+        inMemoryJWT.deleteToken();
         setUser({logged_in: false, username: ''});
         clearInterval(refreshInterval)
     }
@@ -52,7 +53,7 @@ function App() {
             .then(json => {
                 if (json.user !== undefined) {
                     setMessage({status: '', show_message: false, message: ''})
-                    localStorage.setItem('token', json.token);
+                    inMemoryJWT.setToken(json.token);
                     setUser({
                         logged_in: true,
                         username: json.user.username
@@ -125,12 +126,12 @@ function App() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({token: localStorage.getItem('token')})
+            body: JSON.stringify({ token: inMemoryJWT.getToken()})
         })
             .then(res => res.json())
             .then(json => {
                 if (json.user !== undefined) {
-                    localStorage.setItem('token', json.token);
+                    inMemoryJWT.setToken(json.token);
                     setUser({
                         logged_in: true,
                         username: json.user.username
