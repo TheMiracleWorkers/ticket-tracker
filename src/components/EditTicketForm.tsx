@@ -220,7 +220,6 @@ export default function EditTicketForm(props: {
                                 inputFormat="dd-MM-yyyy HH:mm"
                                 onChange={value => formik.setFieldValue("dueDate", value)}
                                 minDate={formik.initialValues.createdDate}
-                                maxDate={new Date()}
                                 renderInput={(params) => <TextField
                                     id="due_date"
                                     name="due_date"

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Ticket from "../domainObjects/Ticket";
 import Project from "../domainObjects/Project";
+import inMemoryJWT from "../domainObjects/inMemoryJWTManager";
 
 export class TransportLayer {
     apiUrl = process.env.REACT_APP_REST_API;
@@ -15,6 +16,9 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/tickets",
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
@@ -22,6 +26,9 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/tickets/" + id,
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
@@ -30,6 +37,9 @@ export class TransportLayer {
             method: "POST",
             url: "/tickets/",
             data: ticket.toJSON(),
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         })
     }
 
@@ -38,6 +48,9 @@ export class TransportLayer {
             method: "PUT",
             url: "/tickets/" + ticket.id + "/",
             data: ticket.toJSON(),
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
@@ -45,6 +58,9 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/projects",
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
@@ -52,6 +68,9 @@ export class TransportLayer {
         return this.axiosInstance.request({
             method: "GET",
             url: "/projects/" + id,
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
@@ -60,6 +79,9 @@ export class TransportLayer {
             method: "POST",
             url: "/projects/",
             data: project.toJSON(),
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         })
     }
 
@@ -68,11 +90,21 @@ export class TransportLayer {
             method: "PUT",
             url: "/projects/" + project.id + "/",
             data: project.toJSON(),
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
         });
     }
 
     deleteProject(project: Project) {
-        return this.axiosInstance.delete("/projects/" + project.id + "/");
+        return this.axiosInstance.request({
+            method: "DELETE",
+            url: "/projects/" + project.id + "/",
+            headers: {
+                Authorization: `JWT ${inMemoryJWT.getToken()}`
+            },
+        })
+       
     }
 
 }
