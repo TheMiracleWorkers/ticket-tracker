@@ -10,9 +10,6 @@ export class TransportLayer {
   apiUrl = process.env.REACT_APP_REST_API;
   axiosInstance = axios.create({
     baseURL: this.apiUrl,
-    headers: {
-      Authorization: `JWT ${localStorage.getItem("token")}`,
-    },
   });
 
   getAllTicketsPromise() {
@@ -116,7 +113,6 @@ export class TransportLayer {
       url: "/register/",
       data: JSON.stringify(userRegistration),
       headers: {
-        xsrfHeaderName: "X-CSRFToken",
         "Content-Type": "application/json",
       },
     });
