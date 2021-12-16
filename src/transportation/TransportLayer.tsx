@@ -2,7 +2,9 @@ import axios from "axios";
 import Ticket from "../domainObjects/Ticket";
 import Project from "../domainObjects/Project";
 import inMemoryJWT from "../domainObjects/inMemoryJWTManager";
-import { UserRegistrationInterface } from "../domainObjects/UserRegistration";
+import UserRegistration, {
+  UserRegistrationInterface,
+} from "../domainObjects/UserRegistration";
 
 export class TransportLayer {
   apiUrl = process.env.REACT_APP_REST_API;
@@ -108,11 +110,13 @@ export class TransportLayer {
   }
 
   registerUserPromise(userRegistration: UserRegistrationInterface) {
+    console.log(JSON.stringify(userRegistration));
     return this.axiosInstance.request({
       method: "POST",
       url: "/register/",
       data: JSON.stringify(userRegistration),
       headers: {
+        xsrfHeaderName: "X-CSRFToken",
         "Content-Type": "application/json",
       },
     });
