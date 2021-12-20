@@ -107,11 +107,21 @@ export class TransportLayer {
   }
 
   registerUserPromise(userRegistration: UserRegistrationInterface) {
-    console.log(JSON.stringify(userRegistration));
     return this.axiosInstance.request({
       method: "POST",
       url: "/register/",
       data: JSON.stringify(userRegistration),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  loginUserPromise(loginUser: UserRegistrationInterface) {
+    return this.axiosInstance.request({
+      method: "POST",
+      url: "token-auth/",
+      data: JSON.stringify(loginUser),
       headers: {
         "Content-Type": "application/json",
       },

@@ -39,87 +39,6 @@ function App() {
     clearInterval(refreshInterval);
   }
 
-  // Log user in
-  function handle_login(data: any): void {
-    fetch(process.env.REACT_APP_REST_API + "token-auth/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.user !== undefined) {
-          setMessage({ status: "", show_message: false, message: "" });
-          inMemoryJWT.setToken(json.token);
-          setUser({
-            logged_in: true,
-            username: json.user.username,
-          });
-          // Refresh token
-          startInterval();
-        } else {
-          if (json.non_field_errors !== undefined) {
-            setMessage({
-              status: "error",
-              show_message: true,
-              message: json.non_field_errors,
-            });
-          } else {
-            setMessage({
-              status: "error",
-              show_message: true,
-              message: "Something went wrong while trying to login!",
-            });
-          }
-        }
-      })
-      .catch((err) => {
-        setMessage({
-          status: "error",
-          show_message: true,
-          message: "Something went wrong while trying to login!",
-        });
-      });
-  }
-
-  // Register user
-  function handle_register(data: any): void {
-    fetch(process.env.REACT_APP_REST_API + "register/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (!res.ok) throw res;
-        else return res.json();
-      })
-      .then(() => {
-        setMessage({
-          status: "success",
-          show_message: true,
-          message: "Successfully registered account! Please login",
-        });
-      })
-      .catch(async (error) => {
-        let json = await error.json();
-        let message = "Something went wrong while trying to register user!";
-        if (json.non_field_errors !== undefined) {
-          message = json.non_field_errors;
-        } else if (json.username !== undefined) {
-          message = "Username: " + json.username;
-        } else if (json.email !== undefined) {
-          message = "Email: " + json.email;
-        } else if (json.password !== undefined) {
-          message = "Password: " + json.password;
-        }
-        setMessage({ status: "error", show_message: true, message: message });
-      });
-  }
-
   // Refresh token
   function startInterval(): void {
     refreshInterval = setInterval(function () {
@@ -211,7 +130,11 @@ function App() {
 
           {!user.logged_in ? (
             <Route exact path="/">
-              <Login handle_login={handle_login} />
+              <Login
+                setMessage={setMessage}
+                setUser={setUser}
+                startInterval={startInterval}
+              />
             </Route>
           ) : (
             ""
