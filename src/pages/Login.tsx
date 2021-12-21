@@ -12,11 +12,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import UserRegistration from "../domainObjects/UserRegistration";
 import { TransportLayer } from "../transportation/TransportLayer";
 import inMemoryJWT from "../domainObjects/inMemoryJWTManager";
+import {LoadingButton} from "@mui/lab";
 
 interface State {
   showPassword: boolean;
@@ -31,6 +31,8 @@ export default function Login(props: {
   setUser: Function;
   startInterval: Function;
 }) {
+
+  const [loading, setLoading] = React.useState(false)
   const [values, setValues] = React.useState<State>({
     showPassword: false,
     username: "",
@@ -47,6 +49,7 @@ export default function Login(props: {
 
   // Log user in
   const handleLogin = (loginUser: UserRegistration) => {
+    setLoading(true)
     transportLayer
       .loginUserPromise(loginUser)
       .then((response: any) => {
@@ -64,8 +67,10 @@ export default function Login(props: {
             message: "Something went wrong while trying to login!",
           });
         }
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         props.setMessage({
           status: "error",
           show_message: true,
@@ -131,9 +136,9 @@ export default function Login(props: {
           </Grid>
 
           <Grid item xs={12} sm={3}>
-            <Button variant="outlined" type="submit" fullWidth>
+            <LoadingButton loading={loading} variant="outlined" type="submit" fullWidth>
               Login
-            </Button>
+            </LoadingButton>
           </Grid>
 
           <Grid item xs={12} sm={9}>

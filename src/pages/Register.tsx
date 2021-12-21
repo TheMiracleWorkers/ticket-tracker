@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import UserRegistration from "../domainObjects/UserRegistration";
 import { TransportLayer } from "../transportation/TransportLayer";
 import { AxiosError } from "axios";
+import {LoadingButton} from "@mui/lab";
 
 interface State {
   showPassword: boolean;
@@ -25,6 +26,7 @@ interface State {
 }
 
 export default function Register(props: { setMessage: Function }) {
+  const [loading, setLoading] = React.useState(false)
   const [values, setValues] = React.useState<State>({
     showPassword: false,
     username: "",
@@ -44,6 +46,7 @@ export default function Register(props: { setMessage: Function }) {
 
   // Handle user registration.
   const handleRegister = (userRegistration: UserRegistration) => {
+    setLoading(true)
     transportLayer
       .registerUserPromise(userRegistration)
       .then((response) => {
@@ -52,13 +55,24 @@ export default function Register(props: { setMessage: Function }) {
           show_message: true,
           message: "Successfully registered account! Please login",
         });
+        setLoading(false)
       })
       .catch((error: AxiosError) => {
+        setLoading(false)
         //Request made an server response.
         if (error.response) {
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          console.log(error.response.data);
+            const json = error.response.data;
+            let message = "Something went wrong while trying to register user!";
+            if (json['non_field_errors'] !== undefined) {
+                message = json['non_field_errors'];
+            } else if (json['username'] !== undefined) {
+                message = "Username: " + json['username'];
+            } else if (json['email'] !== undefined) {
+                message = "Email: " + json['email'];
+            } else if (json['password'] !== undefined) {
+                message = "Password: " + json['password'];
+            }
+            props.setMessage({ status: "error", show_message: true, message: message });
         }
       });
   };
@@ -134,9 +148,9 @@ export default function Register(props: { setMessage: Function }) {
           </Grid>
 
           <Grid item xs={12} sm={3}>
-            <Button variant="outlined" type="submit" fullWidth>
+            <LoadingButton loading={loading} variant="outlined" type="submit" fullWidth>
               Register
-            </Button>
+            </LoadingButton>
           </Grid>
 
           <Grid item xs={12} sm={9}>
