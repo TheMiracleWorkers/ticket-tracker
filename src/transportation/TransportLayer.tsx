@@ -2,9 +2,7 @@ import axios from "axios";
 import Ticket from "../domainObjects/Ticket";
 import Project from "../domainObjects/Project";
 import inMemoryJWT from "../domainObjects/inMemoryJWTManager";
-import UserRegistration, {
-  UserRegistrationInterface,
-} from "../domainObjects/UserRegistration";
+import {UserRegistrationInterface} from "../domainObjects/UserRegistration";
 
 export class TransportLayer {
   apiUrl = process.env.REACT_APP_REST_API;
